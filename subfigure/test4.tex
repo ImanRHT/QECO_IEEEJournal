@@ -1,0 +1,45 @@
+% testsubfighyperref.tex
+\documentclass{article}
+
+\usepackage{subfigure}
+% option for use with pdflatex
+%\usepackage{hyperref}
+%\usepackage[draft]{hyperref}
+\usepackage[pdftex]{hyperref}
+
+\csname toclevel@#2\endcsname
+\begin{document}
+
+\setcounter{lofdepth}{2}
+\listoffigures
+\clearpage
+
+\section{Test of subfigure}
+
+There is a test figure \ref{fig:test} with subfigures
+\ref{fig:testsub1} and \ref{fig:testsub2}.
+
+Also referenced with \ref{fig:test}\subref{fig:testsub1} and
+\ref{fig:test}\subref{fig:testsub2}.
+
+\begin{figure}[!ht]
+    \centering
+    \unitlength .5cm
+    \subfigure[SubFig1]
+    { \label(SubFig1){fig:testsub1}
+        \begin{picture}(10,10)
+            \put(0,0){\line(1,1){10}}
+        \end{picture}
+    } \qquad
+    \subfigure[SubFig2]
+    { \label(SubFig2){fig:testsub2}
+        \begin{picture}(10,10)
+            \put(0,10){\line(1,-1){10}}
+        \end{picture}
+    } \\
+    \caption{Testfigures}
+    \label{fig:test}
+\end{figure}
+
+\end{document}
+

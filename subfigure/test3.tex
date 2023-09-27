@@ -1,0 +1,75 @@
+\documentclass{article}
+\usepackage{fullpage}
+\usepackage{subfigure}
+
+\fboxsep=-\fboxrule
+\def\textfraction{.1}
+
+\newcommand{\figbox}[1]{%
+  \fbox{%
+    \vbox to 1in{%
+      \vfil
+      \hbox to 2in{%
+        \parbox{2in}{%
+          \centering
+          #1}}%
+      \vfil}}}
+
+\begin{document}
+
+\setcounter{lofdepth}{2}
+\listoffigures
+\newpage
+
+\section{Reference Test}
+
+\begin{figure}%
+  \centering
+  \subfigure{%
+    \label{fig:A}%
+    \figbox{SUBFIG ONE:\\
+            (no opt)}}%
+  \quad
+  \subfigure[]{%
+    \label{fig:B}%
+    \figbox{SUBFIG TWO:\\
+            (empty opt)}}%
+  \label{fig:AB}\\
+%
+  \subfigure[Subfigure Three.]{%
+    \label{fig:C}%
+    \figbox{SUBFIG THREE:\\
+            (opt)}}%
+  \quad
+  \subfigure[][Subfigure Four.]{%
+    \label{fig:D}%
+    \figbox{SUBFIG FOUR:\\
+            (empty opt and opt)}}%
+  \quad
+  \subfigure[][]{%
+    \label{fig:E}%
+    \figbox{SUBFIG FIVE:\\
+            (both empty opt)}}\\
+%
+  \subfigure[The Sixth Subfigure.][Subfigure Six.]{%
+    \label{fig:F}%
+    \figbox{SUBFIG SIX:\\
+            (both opt)}}%
+  \quad
+  \subfigure[The Seventh Subfigure][]{%
+    \label{fig:G}%
+    \figbox{SUBFIG SEVEN:\\
+            (opt and empty opt)}}
+%
+  \caption{Optional argument test.}%
+  \label{fig:main}%
+\end{figure}
+
+The figure~\ref{fig:main} on page~\pageref{fig:main} is composed
+of the seven subfigures~\subref{fig:A} (aka: \ref{fig:A}),
+\subref{fig:B} (aka: \ref{fig:B}), \subref{fig:C} (aka: \ref{fig:C}),
+\subref{fig:D} (aka: \ref{fig:D}), \subref{fig:E} (aka: \ref{fig:E}),
+\subref{fig:F} (aka: \ref{fig:F}), and \subref{fig:G} (aka:
+\ref{fig:G}).
+
+\end{document}

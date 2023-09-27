@@ -1,0 +1,652 @@
+\documentclass{article}
+%\usepackage[sl]{caption}
+%\usepackage[sl]{caption2}
+%\usepackage[subfigure21]{ccaption}
+\usepackage[bf,SL,BF]{subfigure}
+%\usepackage[sl]{caption}
+%\usepackage[sl]{caption2}
+%\usepackage[subfigure21]{ccaption}
+
+\subfigcaptopadj=2pt
+
+\newcommand{\figbox}[1]{%
+  \fbox{%
+    \vbox to 1in{%
+    \vfil
+    \hbox to 2in{%
+      \hfil
+      #1%
+      \hfil}%
+    \vfil}}}
+
+\newcommand{\goodgap}{%
+  \hspace{\subfigcapskip}}
+
+\makeatletter
+  \newcommand{\setcaptype}[1]{%
+    \renewcommand{\@captype}{#1}}
+\makeatother
+
+\setcounter{lofdepth}{2}
+\setcounter{lotdepth}{2}
+
+\makeatletter
+\long\def\test#1{%
+  \begingroup 
+    \toks0{[#1]}%
+    \newlinechar`\/
+    \message{/\the\toks0:
+    \if\sf@blank{#1}%
+      EMPTY
+    \else
+      NOT empty
+    \fi}%
+  \endgroup}
+\makeatother
+
+\begin{document}
+
+\listoffigures
+\clearpage
+
+\listoftables
+\clearpage
+
+\section{Multiple figures}
+
+\figuretopcapfalse
+\tabletopcapfalse
+
+Figure~\ref{fig:Afirst}[\pageref{fig:Afirst}] has two subfigures
+\ref{fig:AfirstA}[\pageref{fig:AfirstA}] and
+\ref{fig:AfirstB}[\pageref{fig:AfirstB}].
+%
+Figure~\ref{fig:Asecond}[\pageref{fig:Asecond}] has two subfigures
+\ref{fig:AsecondA}[\pageref{fig:AsecondA}] and
+\ref{fig:AsecondB}[\pageref{fig:AsecondB}].
+%
+Figure~\ref{fig:Athird}[\pageref{fig:Athird}] has two subfigures
+\ref{fig:AthirdA}[\pageref{fig:AthirdA}] and
+\ref{fig:AthirdB}[\pageref{fig:AthirdB}].
+%
+Figure~\ref{fig:Afourth}[\pageref{fig:Afourth}] has two subfigures
+\ref{fig:AfourthA}[\pageref{fig:AfourthA}] and
+\ref{fig:AfourthB}[\pageref{fig:AfourthB}].
+%
+Figure~\ref{fig:Afifth}[\pageref{fig:Afifth}] has two subfigures
+\ref{fig:AfifthA}[\pageref{fig:AfifthA}] and
+\ref{fig:AfifthB}[\pageref{fig:AfifthB}].
+%
+Figure~\ref{fig:Asixth}[\pageref{fig:Asixth}] has two subfigures
+\ref{fig:AsixthA}[\pageref{fig:AsixthA}] and
+\ref{fig:AsixthB}[\pageref{fig:AsixthB}].
+
+\begin{figure}%
+  \begin{center}%
+    \subfigure[One subone.\label{fig:AfirstA}]{\figbox{One subone}}%
+    \goodgap
+    \subfigure[One subtwo.\label{fig:AfirstB}]{\figbox{One subtwo}}\\[-10pt]
+    \caption{First figure.}%
+    \label{fig:Afirst}%
+%
+    \subfigure[Two subone.\label{fig:AsecondA}]{\figbox{Two subone}}%
+    \goodgap
+    \subfigure[Two subtwo.\label{fig:AsecondB}]{\figbox{Two subtwo}}\\[-10pt]
+    \caption{Second figure.}%
+    \label{fig:Asecond}%
+%
+    \subfigure[Three subone.\label{fig:AthirdA}]{\figbox{Three subone}}%
+    \goodgap
+    \subfigure[Three subtwo.\label{fig:AthirdB}]{\figbox{Three subtwo}}\\[-10pt]
+    \caption{Third figure.}%
+    \label{fig:Athird}%
+  \end{center}
+\end{figure}
+
+\begin{figure}%
+  \begin{center}%
+    \subfigure[Four subone.\label{fig:AfourthA}]{\figbox{Four subone}}%
+    \goodgap
+    \subfigure[Four subtwo.\label{fig:AfourthB}]{\figbox{Four subtwo}}\\[-10pt]
+    \caption{Fourth figure.}%
+    \label{fig:Afourth}%
+%
+    \subfigure[Five subone.\label{fig:AfifthA}]{\figbox{Five subone}}%
+    \goodgap
+    \subfigure[Five subtwo.\label{fig:AfifthB}]{\figbox{Five subtwo}}\\[-10pt]
+    \caption{Fifth figure.}%
+    \label{fig:Afifth}%
+%
+    \subfigure[Six subone.\label{fig:AsixthA}]{\figbox{Six subone}}%
+    \goodgap
+    \subfigure[Six subtwo.\label{fig:AsixthB}]{\figbox{Six subtwo}}\\[-10pt]
+    \caption{Sixth figure.}%
+    \label{fig:Asixth}%
+  \end{center}
+\end{figure}
+
+\section{Multiple tables}
+
+Table~\ref{tab:Afirst}[\pageref{tab:Afirst}] has two subtables
+\ref{tab:AfirstA}[\pageref{tab:AfirstA}] and
+\ref{tab:AfirstB}[\pageref{tab:AfirstB}].
+%
+Table~\ref{tab:Asecond}[\pageref{tab:Asecond}] has two subtables
+\ref{tab:AsecondA}[\pageref{tab:AsecondA}] and
+\ref{tab:AsecondB}[\pageref{tab:AsecondB}].
+%
+Table~\ref{tab:Athird}[\pageref{tab:Athird}] has two subtables
+\ref{tab:AthirdA}[\pageref{tab:AthirdA}] and
+\ref{tab:AthirdB}[\pageref{tab:AthirdB}].
+%
+Table~\ref{tab:Afourth}[\pageref{tab:Afourth}] has two subtables
+\ref{tab:AfourthA}[\pageref{tab:AfourthA}] and
+\ref{tab:AfourthB}[\pageref{tab:AfourthB}].
+%
+Table~\ref{tab:Afifth}[\pageref{tab:Afifth}] has two subtables
+\ref{tab:AfifthA}[\pageref{tab:AfifthA}] and
+\ref{tab:AfifthB}[\pageref{tab:AfifthB}].
+%
+Table~\ref{tab:Asixth}[\pageref{tab:Asixth}] has two subtables
+\ref{tab:AsixthA}[\pageref{tab:AsixthA}] and
+\ref{tab:AsixthB}[\pageref{tab:AsixthB}].
+
+\begin{table}%
+  \begin{center}%
+    \subtable[One subone.\label{tab:AfirstA}]{\figbox{One subone}}%
+    \goodgap
+    \subtable[One subtwo.\label{tab:AfirstB}]{\figbox{One subtwo}}\\[-10pt]
+    \caption{First table.}%
+    \label{tab:Afirst}%
+%
+    \subtable[Two subone.\label{tab:AsecondA}]{\figbox{Two subone}}%
+    \goodgap
+    \subtable[Two subtwo.\label{tab:AsecondB}]{\figbox{Two subtwo}}\\[-10pt]
+    \caption{Second table.}%
+    \label{tab:Asecond}%
+%
+    \subtable[Three subone.\label{tab:AthirdA}]{\figbox{Three subone}}%
+    \goodgap
+    \subtable[Three subtwo.\label{tab:AthirdB}]{\figbox{Three subtwo}}\\[-10pt]
+    \caption{Third table.}%
+    \label{tab:Athird}%
+  \end{center}%
+\end{table}
+
+\begin{table}%
+  \begin{center}%
+    \subtable[Four subone.\label{tab:AfourthA}]{\figbox{Four subone}}%
+    \goodgap
+    \subtable[Four subtwo.\label{tab:AfourthB}]{\figbox{Four subtwo}}\\[-10pt]
+    \caption{Fourth table.}%
+    \label{tab:Afourth}%
+%
+    \subtable[Five subone.\label{tab:AfifthA}]{\figbox{Five subone}}%
+    \goodgap
+    \subtable[Five subtwo.\label{tab:AfifthB}]{\figbox{Five subtwo}}\\[-10pt]
+    \caption{Fifth table.}%
+    \label{tab:Afifth}%
+%
+    \subtable[Six subone.\label{tab:AsixthA}]{\figbox{Six subone}}%
+    \goodgap
+    \subtable[Six subtwo.\label{tab:AsixthB}]{\figbox{Six subtwo}}\\[-10pt]
+    \caption{Sixth table.}%
+    \label{tab:Asixth}%
+  \end{center}%
+\end{table}
+
+\section{Multiple figures with ``\slshape{captop}''}
+
+\figuretopcaptrue
+
+Figure~\ref{fig:Bfirst}[\pageref{fig:Bfirst}] has two subfigures
+\ref{fig:BfirstA}[\pageref{fig:BfirstA}] and
+\ref{fig:BfirstB}[\pageref{fig:BfirstB}].
+%
+Figure~\ref{fig:Bsecond}[\pageref{fig:Bsecond}] has two subfigures
+\ref{fig:BsecondA}[\pageref{fig:BsecondA}] and
+\ref{fig:BsecondB}[\pageref{fig:BsecondB}].
+%
+Figure~\ref{fig:Bthird}[\pageref{fig:Bthird}] has two subfigures
+\ref{fig:BthirdA}[\pageref{fig:BthirdA}] and
+\ref{fig:BthirdB}[\pageref{fig:BthirdB}].
+%
+Figure~\ref{fig:Bfourth}[\pageref{fig:Bfourth}] has two subfigures
+\ref{fig:BfourthA}[\pageref{fig:BfourthA}] and
+\ref{fig:BfourthB}[\pageref{fig:BfourthB}].
+%
+Figure~\ref{fig:Bfifth}[\pageref{fig:Bfifth}] has two subfigures
+\ref{fig:BfifthA}[\pageref{fig:BfifthA}] and
+\ref{fig:BfifthB}[\pageref{fig:BfifthB}].
+%
+Figure~\ref{fig:Bsixth}[\pageref{fig:Bsixth}] has two subfigures
+\ref{fig:BsixthA}[\pageref{fig:BsixthA}] and
+\ref{fig:BsixthB}[\pageref{fig:BsixthB}].
+
+\begin{figure}%
+  \begin{center}%
+    \caption{First figure.}%
+    \label{fig:Bfirst}%
+    \subfigure[One subone.\label{fig:BfirstA}]{\figbox{One subone}}%
+    \goodgap
+    \subfigure[One subtwo.\label{fig:BfirstB}]{\figbox{One subtwo}}\\
+%
+    \caption{Second figure.}%
+    \label{fig:Bsecond}%
+    \subfigure[Two subone.\label{fig:BsecondA}]{\figbox{Two subone}}%
+    \goodgap
+    \subfigure[Two subtwo.\label{fig:BsecondB}]{\figbox{Two subtwo}}\\
+%
+    \caption{Third figure.}%
+    \label{fig:Bthird}%
+    \subfigure[Three subone.\label{fig:BthirdA}]{\figbox{Three subone}}%
+    \goodgap
+    \subfigure[Three subtwo.\label{fig:BthirdB}]{\figbox{Three subtwo}}%
+  \end{center}%
+\end{figure}
+
+\begin{figure}%
+  \begin{center}%
+    \caption{Fourth figure.}%
+    \label{fig:Bfourth}%
+    \subfigure[Four subone.\label{fig:BfourthA}]{\figbox{Four subone}}%
+    \goodgap
+    \subfigure[Four subtwo.\label{fig:BfourthB}]{\figbox{Four subtwo}}\\
+%
+    \caption{Fifth figure.}%
+    \label{fig:Bfifth}%
+    \subfigure[Five subone.\label{fig:BfifthA}]{\figbox{Five subone}}%
+    \goodgap
+    \subfigure[Five subtwo.\label{fig:BfifthB}]{\figbox{Five subtwo}}\\
+%
+    \caption{Sixth figure.}%
+    \label{fig:Bsixth}%
+    \subfigure[Six subone.\label{fig:BsixthA}]{\figbox{Six subone}}%
+    \goodgap
+    \subfigure[Six subtwo.\label{fig:BsixthB}]{\figbox{Six subtwo}}%
+  \end{center}%
+\end{figure}
+
+\section{Multiple tables with ``\slshape{captop}''}
+
+\tabletopcaptrue
+
+Table~\ref{tab:Bfirst}[\pageref{tab:Bfirst}] has two subtables
+\ref{tab:BfirstA}[\pageref{tab:BfirstA}] and
+\ref{tab:BfirstB}[\pageref{tab:BfirstB}].
+%
+Table~\ref{tab:Bsecond}[\pageref{tab:Bsecond}] has two subtables
+\ref{tab:BsecondA}[\pageref{tab:BsecondA}] and
+\ref{tab:BsecondB}[\pageref{tab:BsecondB}].
+%
+Table~\ref{tab:Bthird}[\pageref{tab:Bthird}] has two subtables
+\ref{tab:BthirdA}[\pageref{tab:BthirdA}] and
+\ref{tab:BthirdB}[\pageref{tab:BthirdB}].
+%
+Table~\ref{tab:Bfourth}[\pageref{tab:Bfourth}] has two subtables
+\ref{tab:BfourthA}[\pageref{tab:BfourthA}] and
+\ref{tab:BfourthB}[\pageref{tab:BfourthB}].
+%
+Table~\ref{tab:Bfifth}[\pageref{tab:Bfifth}] has two subtables
+\ref{tab:BfifthA}[\pageref{tab:BfifthA}] and
+\ref{tab:BfifthB}[\pageref{tab:BfifthB}].
+%
+Table~\ref{tab:Bsixth}[\pageref{tab:Bsixth}] has two subtables
+\ref{tab:BsixthA}[\pageref{tab:BsixthA}] and
+\ref{tab:BsixthB}[\pageref{tab:BsixthB}].
+
+\begin{table}%
+  \begin{center}%
+    \caption{First table.}%
+    \label{tab:Bfirst}%
+    \subtable[One subone.\label{tab:BfirstA}]{\figbox{One subone}}%
+    \goodgap
+    \subtable[One subtwo.\label{tab:BfirstB}]{\figbox{One subtwo}}\\
+%
+    \caption{Second table.}%
+    \label{tab:Bsecond}%
+    \subtable[Two subone.\label{tab:BsecondA}]{\figbox{Two subone}}%
+    \goodgap
+    \subtable[Two subtwo.\label{tab:BsecondB}]{\figbox{Two subtwo}}\\
+%
+    \caption{Third table.}%
+    \label{tab:Bthird}%
+    \subtable[Three subone.\label{tab:BthirdA}]{\figbox{Three subone}}%
+    \goodgap
+    \subtable[Three subtwo.\label{tab:BthirdB}]{\figbox{Three subtwo}}\\
+  \end{center}%
+\end{table}
+
+\begin{table}%
+  \begin{center}%
+    \caption{Fourth table.}%
+    \label{tab:Bfourth}%
+    \subtable[Four subone.\label{tab:BfourthA}]{\figbox{Four subone}}%
+    \goodgap
+    \subtable[Four subtwo.\label{tab:BfourthB}]{\figbox{Four subtwo}}%
+%
+    \caption{Fifth table.}%
+    \label{tab:Bfifth}%
+    \subtable[Five subone.\label{tab:BfifthA}]{\figbox{Five subone}}%
+    \goodgap
+    \subtable[Five subtwo.\label{tab:BfifthB}]{\figbox{Five subtwo}}%
+%
+    \caption{Sixth table.}%
+    \label{tab:Bsixth}%
+    \subtable[Six subone.\label{tab:BsixthA}]{\figbox{Six subone}}%
+    \goodgap
+    \subtable[Six subtwo.\label{tab:BsixthB}]{\figbox{Six subtwo}}%
+  \end{center}%
+\end{table}
+
+
+\section{Multiple figures with ``\slshape{CAPTOP}''}
+
+\subfiguretopcaptrue
+
+Figure~\ref{fig:Cfirst}[\pageref{fig:Cfirst}] has two subfigures
+\ref{fig:CfirstA}[\pageref{fig:CfirstA}] and
+\ref{fig:CfirstB}[\pageref{fig:CfirstB}].
+%
+Figure~\ref{fig:Csecond}[\pageref{fig:Csecond}] has two subfigures
+\ref{fig:CsecondA}[\pageref{fig:CsecondA}] and
+\ref{fig:CsecondB}[\pageref{fig:CsecondB}].
+%
+Figure~\ref{fig:Cthird}[\pageref{fig:Cthird}] has two subfigures
+\ref{fig:CthirdA}[\pageref{fig:CthirdA}] and
+\ref{fig:CthirdB}[\pageref{fig:CthirdB}].
+%
+Figure~\ref{fig:Cfourth}[\pageref{fig:Cfourth}] has two subfigures
+\ref{fig:CfourthA}[\pageref{fig:CfourthA}] and
+\ref{fig:CfourthB}[\pageref{fig:CfourthB}].
+%
+Figure~\ref{fig:Cfifth}[\pageref{fig:Cfifth}] has two subfigures
+\ref{fig:CfifthA}[\pageref{fig:CfifthA}] and
+\ref{fig:CfifthB}[\pageref{fig:CfifthB}].
+%
+Figure~\ref{fig:Csixth}[\pageref{fig:Csixth}] has two subfigures
+\ref{fig:CsixthA}[\pageref{fig:CsixthA}] and
+\ref{fig:CsixthB}[\pageref{fig:CsixthB}].
+
+\begin{figure}%
+  \begin{center}%
+    \caption{First figure.}%
+    \label{fig:Cfirst}%
+    \subfigure[One subone.\label{fig:CfirstA}]{\figbox{One subone}}%
+    \goodgap
+    \subfigure[One subtwo.\label{fig:CfirstB}]{\figbox{One subtwo}}\\
+%
+    \caption{Second figure.}%
+    \label{fig:Csecond}%
+    \subfigure[Two subone.\label{fig:CsecondA}]{\figbox{Two subone}}%
+    \goodgap
+    \subfigure[Two subtwo.\label{fig:CsecondB}]{\figbox{Two subtwo}}\\
+%
+    \caption{Third figure.}%
+    \label{fig:Cthird}%
+    \subfigure[Three subone.\label{fig:CthirdA}]{\figbox{Three subone}}%
+    \goodgap
+    \subfigure[Three subtwo.\label{fig:CthirdB}]{\figbox{Three subtwo}}\\
+  \end{center}%
+\end{figure}
+
+\begin{figure}%
+  \begin{center}%
+    \caption{Fourth figure.}%
+    \label{fig:Cfourth}%
+    \subfigure[Four subone.\label{fig:CfourthA}]{\figbox{Four subone}}%
+    \goodgap
+    \subfigure[Four subtwo.\label{fig:CfourthB}]{\figbox{Four subtwo}}\\
+%
+    \caption{Fifth figure.}%
+    \label{fig:Cfifth}%
+    \subfigure[Five subone.\label{fig:CfifthA}]{\figbox{Five subone}}%
+    \goodgap
+    \subfigure[Five subtwo.\label{fig:CfifthB}]{\figbox{Five subtwo}}\\
+%
+    \caption{Sixth figure.}%
+    \label{fig:Csixth}%
+    \subfigure[Six subone.\label{fig:CsixthA}]{\figbox{Six subone}}%
+    \goodgap
+    \subfigure[Six subtwo.\label{fig:CsixthB}]{\figbox{Six subtwo}}\\
+  \end{center}%
+\end{figure}
+
+\section{Multiple tables with ``\slshape{CAPTOP}''}
+
+\subtabletopcaptrue
+
+Table~\ref{tab:Cfirst}[\pageref{tab:Cfirst}] has two subtables
+\ref{tab:CfirstA}[\pageref{tab:CfirstA}] and
+\ref{tab:CfirstB}[\pageref{tab:CfirstB}].
+%
+Table~\ref{tab:Csecond}[\pageref{tab:Csecond}] has two subtables
+\ref{tab:CsecondA}[\pageref{tab:CsecondA}] and
+\ref{tab:CsecondB}[\pageref{tab:CsecondB}].
+%
+Table~\ref{tab:Cthird}[\pageref{tab:Cthird}] has two subtables
+\ref{tab:CthirdA}[\pageref{tab:CthirdA}] and
+\ref{tab:CthirdB}[\pageref{tab:CthirdB}].
+%
+Table~\ref{tab:Cfourth}[\pageref{tab:Cfourth}] has two subtables
+\ref{tab:CfourthA}[\pageref{tab:CfourthA}] and
+\ref{tab:CfourthB}[\pageref{tab:CfourthB}].
+%
+Table~\ref{tab:Cfifth}[\pageref{tab:Cfifth}] has two subtables
+\ref{tab:CfifthA}[\pageref{tab:CfifthA}] and
+\ref{tab:CfifthB}[\pageref{tab:CfifthB}].
+%
+Table~\ref{tab:Csixth}[\pageref{tab:Csixth}] has two subtables
+\ref{tab:CsixthA}[\pageref{tab:CsixthA}] and
+\ref{tab:CsixthB}[\pageref{tab:CsixthB}].
+
+\begin{table}%
+  \begin{center}%
+    \caption{First table.}%
+    \label{tab:Cfirst}%
+    \subtable[One subone.\label{tab:CfirstA}]{\figbox{One subone}}%
+    \goodgap
+    \subtable[One subtwo.\label{tab:CfirstB}]{\figbox{One subtwo}}\\
+%
+    \caption{Second table.}%
+    \label{tab:Csecond}%
+    \subtable[Two subone.\label{tab:CsecondA}]{\figbox{Two subone}}%
+    \goodgap
+    \subtable[Two subtwo.\label{tab:CsecondB}]{\figbox{Two subtwo}}\\
+%
+    \caption{Third table.}%
+    \label{tab:Cthird}%
+    \subtable[Three subone.\label{tab:CthirdA}]{\figbox{Three subone}}%
+    \goodgap
+    \subtable[Three subtwo.\label{tab:CthirdB}]{\figbox{Three subtwo}}\\
+  \end{center}%
+\end{table}
+
+\begin{table}%
+  \begin{center}%
+    \caption{Fourth table.}%
+    \label{tab:Cfourth}%
+    \subtable[Four subone.\label{tab:CfourthA}]{\figbox{Four subone}}%
+    \goodgap
+    \subtable[Four subtwo.\label{tab:CfourthB}]{\figbox{Four subtwo}}\\
+%
+    \caption{Fifth table.}%
+    \label{tab:Cfifth}%
+    \subtable[Five subone.\label{tab:CfifthA}]{\figbox{Five subone}}%
+    \goodgap
+    \subtable[Five subtwo.\label{tab:CfifthB}]{\figbox{Five subtwo}}\\
+%
+    \caption{Sixth table.}%
+    \label{tab:Csixth}%
+    \subtable[Six subone.\label{tab:CsixthA}]{\figbox{Six subone}}%
+    \goodgap
+    \subtable[Six subtwo.\label{tab:CsixthB}]{\figbox{Six subtwo}}\\
+  \end{center}%
+\end{table}
+
+\section{Mixed figures and tables with mixed ``\slshape{captop}''}
+
+\figuretopcapfalse\setcounter{subfigure}{0}
+\subfiguretopcapfalse
+\tabletopcaptrue\setcounter{subtable}{0}
+\subtabletopcapfalse
+
+Figure~\ref{fig:Dfirst}[\pageref{fig:Dfirst}] has two subfigures
+\ref{fig:DfirstA}[\pageref{fig:DfirstA}] and
+\ref{fig:DfirstB}[\pageref{fig:DfirstB}].
+%
+Table~\ref{tab:Dfirst}[\pageref{tab:Dfirst}] has two subtables
+\ref{tab:DfirstA}[\pageref{tab:DfirstA}] and
+\ref{tab:DfirstB}[\pageref{tab:DfirstB}].
+%
+Figure~\ref{fig:Dsecond}[\pageref{fig:Dsecond}] has two subfigures
+\ref{fig:DsecondA}[\pageref{fig:DsecondA}] and
+\ref{fig:DsecondB}[\pageref{fig:DsecondB}].
+%
+Figure~\ref{fig:Dthird}[\pageref{fig:Dthird}] has two subfigures
+\ref{fig:DthirdA}[\pageref{fig:DthirdA}] and
+\ref{fig:DthirdB}[\pageref{fig:DthirdB}].
+%
+Table~\ref{tab:Dsecond}[\pageref{tab:Dsecond}] has two subtables
+\ref{tab:DsecondA}[\pageref{tab:DsecondA}] and
+\ref{tab:DsecondB}[\pageref{tab:DsecondB}].
+%
+Table~\ref{tab:Dthird}[\pageref{tab:Dthird}] has two subtables
+\ref{tab:DthirdA}[\pageref{tab:DthirdA}] and
+\ref{tab:DthirdB}[\pageref{tab:DthirdB}].
+%
+
+\begin{figure}%
+  \begin{center}%
+    \subfigure[One subone.\label{fig:DfirstA}]{\figbox{One subone}}%
+    \goodgap
+    \subfigure[One subtwo.\label{fig:DfirstB}]{\figbox{One subtwo}}\\[-10pt]
+    \caption{First figure.}%
+    \label{fig:Dfirst}%
+%
+    \setcaptype{table}%
+    \caption{First table.}%
+    \label{tab:Dfirst}%
+    \subtable[One subone.\label{tab:DfirstA}]{\figbox{One subone}}%
+    \goodgap
+    \subtable[One subtwo.\label{tab:DfirstB}]{\figbox{One subtwo}}\\
+    \listsubcaptions
+%
+    \setcaptype{figure}%
+    \subfigure[Two subone.\label{fig:DsecondA}]{\figbox{Two subone}}%
+    \goodgap
+    \subfigure[Two subtwo.\label{fig:DsecondB}]{\figbox{Two subtwo}}\\[-10pt]
+    \caption{Second figure.}%
+    \label{fig:Dsecond}%
+  \end{center}%
+\end{figure}
+
+\begin{table}%
+  \begin{center}%
+    \caption{Second table.}%
+    \label{tab:Dsecond}%
+    \subtable[Two subone.\label{tab:DsecondA}]{\figbox{Two subone}}%
+    \goodgap
+    \subtable[Two subtwo.\label{tab:DsecondB}]{\figbox{Two subtwo}}\\
+    \listsubcaptions
+%
+    \setcaptype{figure}%
+    \subfigure[Three subone.\label{fig:DthirdA}]{\figbox{Three subone}}%
+    \goodgap
+    \subfigure[Three subtwo.\label{fig:DthirdB}]{\figbox{Three subtwo}}\\[-10pt]
+    \caption{Third figure.}%
+    \label{fig:Dthird}%
+%
+    \setcaptype{table}%
+    \caption{Third table.}%
+    \label{tab:Dthird}%
+    \subtable[Three subone.\label{tab:DthirdA}]{\figbox{Three subone}}%
+    \goodgap
+    \subtable[Three subtwo.\label{tab:DthirdB}]{\figbox{Three subtwo}}\\
+  \end{center}%
+\end{table}
+
+
+\section{Mixed figures and tables with mixed ``\slshape{CAPTOP}''}
+
+\figuretopcapfalse\setcounter{subfigure}{0}
+\subfiguretopcapfalse
+\tabletopcaptrue\setcounter{subtable}{0}
+\subtabletopcaptrue
+
+Figure~\ref{fig:Efirst}[\pageref{fig:Efirst}] has two subfigures
+\ref{fig:EfirstA}[\pageref{fig:EfirstA}] and
+\ref{fig:EfirstB}[\pageref{fig:EfirstB}].
+%
+Table~\ref{tab:Efirst}[\pageref{tab:Efirst}] has two subtables
+\ref{tab:EfirstA}[\pageref{tab:EfirstA}] and
+\ref{tab:EfirstB}[\pageref{tab:EfirstB}].
+%
+Figure~\ref{fig:Esecond}[\pageref{fig:Esecond}] has two subfigures
+\ref{fig:EsecondA}[\pageref{fig:EsecondA}] and
+\ref{fig:EsecondB}[\pageref{fig:EsecondB}].
+%
+Figure~\ref{fig:Ethird}[\pageref{fig:Ethird}] has two subfigures
+\ref{fig:EthirdA}[\pageref{fig:EthirdA}] and
+\ref{fig:EthirdB}[\pageref{fig:EthirdB}].
+%
+Table~\ref{tab:Esecond}[\pageref{tab:Esecond}] has two subtables
+\ref{tab:EsecondA}[\pageref{tab:EsecondA}] and
+\ref{tab:EsecondB}[\pageref{tab:EsecondB}].
+%
+Table~\ref{tab:Ethird}[\pageref{tab:Ethird}] has two subtables
+\ref{tab:EthirdA}[\pageref{tab:EthirdA}] and
+\ref{tab:EthirdB}[\pageref{tab:EthirdB}].
+%
+
+\begin{figure}%
+  \begin{center}%
+    \subfigure[One subone.\label{fig:EfirstA}]{\figbox{One subone}}%
+    \goodgap
+    \subfigure[One subtwo.\label{fig:EfirstB}]{\figbox{One subtwo}}\\[-10pt]
+    \caption{First figure.}%
+    \label{fig:Efirst}%
+%
+    \setcaptype{table}%
+    \caption{First table.}%
+    \label{tab:Efirst}%
+    \subtable[One subone.\label{tab:EfirstA}]{\figbox{One subone}}%
+    \goodgap
+    \subtable[One subtwo.\label{tab:EfirstB}]{\figbox{One subtwo}}\\
+    \listsubcaptions
+%
+    \setcaptype{figure}%
+    \subfigure[Two subone.\label{fig:EsecondA}]{\figbox{Two subone}}%
+    \goodgap
+    \subfigure[Two subtwo.\label{fig:EsecondB}]{\figbox{Two subtwo}}\\[-10pt]
+    \caption{Second figure.}%
+    \label{fig:Esecond}%
+  \end{center}%
+\end{figure}
+
+\begin{table}%
+  \begin{center}%
+    \caption{Second table.}%
+    \label{tab:Esecond}%
+    \subtable[Two subone.\label{tab:EsecondA}]{\figbox{Two subone}}%
+    \goodgap
+    \subtable[Two subtwo.\label{tab:EsecondB}]{\figbox{Two subtwo}}\\
+    \listsubcaptions
+%
+    \setcaptype{figure}%
+    \subfigure[Three subone.\label{fig:EthirdA}]{\figbox{Three subone}}%
+    \goodgap
+    \subfigure[Three subtwo.\label{fig:EthirdB}]{\figbox{Three subtwo}}\\[-10pt]
+    \caption{Third figure.}%
+    \label{fig:Ethird}%
+%
+    \setcaptype{table}%
+    \caption{Third table.}%
+    \label{tab:Ethird}%
+    \subtable[Three subone.\label{tab:EthirdA}]{\figbox{Three subone}}%
+    \goodgap
+    \subtable[Three subtwo.\label{tab:EthirdB}]{\figbox{Three subtwo}}\\
+  \end{center}%
+\end{table}
+
+\end{document}

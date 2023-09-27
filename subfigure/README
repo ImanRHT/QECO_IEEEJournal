@@ -1,0 +1,65 @@
+README
+------
+
+  The subfigure package has been superseded by the subfig package.
+  The reason for the name change is that the new subfig package is not
+  exactly backward compatible with this package; although, it comes
+  with a configuration file that *almost* allows backward
+  compatibility, the difference is that exact spacing and layout of
+  the subfloats are not preserved.
+
+  The newer (subfig) package is an improvement over this package and
+  although this package will continue to be supported, it will no longer
+  be updated.
+
+This directory contains version 2.1.5 of the subfigure package.
+Use `make' to extract the subfigure package and run the local tests.
+
+MANIFEST:
+---------
+Makefile           UNIX makefile to extract the subfigure package
+                       and related material.
+README             This file.
+subfigure.dtx      The documented subfigure package.
+subfigure.ins      The subfigure package installation file.
+subfigure.pdf      Subfigure package documentation (as PDF).
+test.tex           Test one: Mixed tables and figures.
+test2.tex          Test two: Check for extra space around figure
+test3.tex          Test four: Test of optional args and \subref.
+test4.tex          Test four: Test of interaction with hyperref.
+test5.tex          Test five: Test for class \let of \endfigure, etc.
+
+FILES AFTER `make':
+-------------------
+Makefile           UNIX makefile to extract the subfigure package
+                       and related material.
+README             This file.
+ltxdoc.cfg         Configuration file to print change history and
+                       index on the subfigure package documentation.       
+subfigure.cfg      Set the preferred options for subfigure version 2.1.
+subfigure.dtx      The documented subfigure package.
+subfigure.ins      The subfigure package installation file.
+subfigure.pdf      Subfigure package documentation (as PDF).
+subfigure.ps       Subfigure package documentation (as PostScript).
+subfigure.sty      The subfigure package 
+test.ps            Results of test one.
+test.tex           Test one: Mixed tables and figures.
+test2.ps           Results of test two.
+test2.tex          Test two: Check for extra space around figure
+test3.ps           Results of test three.
+test3.tex          Test four: Test of optional args and \subref.
+test4.pdf          Results of test four.
+test4.tex          Test four: Test of interaction with hyperref.
+test5.tex          Test five: Test for class \let of \endfigure, etc.
+test5a.ps          Results of test five (log file).
+test5b.ps          Results of test five (output).
+
+NOTES:
+------
+
+By default, the subfigure.sty file acts like the older versions of the
+subfigure package.  To make the preferred options default move the
+subfigure.cfg file into the standard TEXINPUTS path along with the
+subfigure.sty file.  This reduces the whitespace around the subfigures
+and subtables and sets the table style to have the captions and
+subcaptions preceed the table and subtables.

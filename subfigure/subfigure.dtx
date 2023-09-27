@@ -1,0 +1,3940 @@
+% \iffalse % subfigure.dtx
+% Subfigure/subtable macros for use with the LaTeX figure/table environments.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Copyright (C) 1986-2002 Steven Douglas Cochran
+% 
+% The subfigure package is free software; it may be distributed under
+% the conditions of the LaTeX Project Public License, either version 1.1
+% of this license or (at your option) any later version. The latest
+% version of this license is in:
+%      http://www.latex-project.org/lppl.txt
+% and version 1.1 or later is part of all distributions of LaTeX version
+% 1999/06/01 or later.
+%
+% The captcont package is distributed in the hope that it will be
+% useful, but WITHOUT ANY WARRANTY; without even the implied warranty
+% of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
+% LaTeX Project Public License for more details.
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% @LaTeX-style-file{
+%%    author     = "Steven Douglas Cochran",
+%%    version    = "2.1.5",
+%%    date       = "2005/04/29",
+%%    time       = "14:24:08",
+%%    filename   = "subfigure.sty",
+%%    address    = "Digital Mapping Laboratory, School of Computer Science
+%%                  Carnegie-Mellon University, 5000 Forbes Avenue
+%%                  Pittsburgh, PA 15213-3890, USA",
+%%    telephone  = "+1 412.268.5654",
+%%    fax        = "+1 412.268.5576",
+%%    email      = "cochran@ieee.org",
+%%    codetable  = "ISO/ASCII",
+%%    keywords   = "LaTeX, float, figure, table, captcont",
+%%    supported  = "yes",
+%%    abstract   = "LaTeX package for providing support for the
+%%                  inclusion of small, `sub', figures and tables.  It
+%%                  simplifies the positioning, captioning and
+%%                  labeling of them within a single figure or table
+%%                  environment.  In addition, this package allows
+%%                  such subcaptions to be written to the List of
+%%                  Figures or List of tables if desired."
+%% }
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%<*driver>
+\NeedsTeXFormat{LaTeX2e}[1994/12/01]
+\ProvidesFile{subfigure.dtx}
+\documentclass{ltxdoc}
+\usepackage[tight,TABTOPCAP]{subfigure}[2005/04/29]
+\setlength\hfuzz{100pt}
+\setlength\vfuzz{100pt}
+\clubpenalty=10000
+\widowpenalty=10000
+\displaywidowpenalty=5000
+\brokenpenalty=5000
+\begin{document}
+  \DocInput{subfigure.dtx}
+\end{document}
+%</driver>
+%
+%<*ltxdoc>
+\AtBeginDocument{
+%  \OnlyDescription % comment out for implementation details
+  \EnableCrossrefs
+  \RecordChanges
+  \CodelineIndex}
+\AtEndDocument{
+  \PrintChanges
+  \PrintIndex}
+%</ltxdoc>
+%
+% \fi
+% \catcode`\^=14 ^^A We will use a ^ for a comment rather than ^^A.
+% \newcommand*{\Lopt}[1]{\textsf{#1}}         ^ Package options
+% \newcommand*{\Lfile}[1]{\texttt{#1}}        ^ File names
+% \newcommand*{\Lpack}[1]{\textsf{#1}}        ^ Package names
+% \newcommand*{\Lenv}[1]{\texttt{#1}}         ^ Environment names
+% \newcommand*{\Lcount}[1]{\textsl{\small#1}} ^ Counter names
+% \newcommand*{\Lif}[1]{\textsc{\bf#1}}       ^ \if names
+% ^ NOTE: Hacks added to make the final format are marked ``^finalhack''.
+%
+% \changes{v1.0}{05 Mar 1986}{Created.} 
+%
+% \changes{v1.1}{02 Nov 1988}{Initial revision.}
+%
+% \changes{v1.2}{30 Aug 1989}{Added a separate bottom margin and
+% expanded the comments.}
+% 
+% \changes{v1.3}{22 Oct 1990}{Changed test for empty subcaption inside
+% of \cmd{\@subfigure} to compare tokens and not the subcaption vs.\
+% \cmd{\@empty}. The former (incorrect) test caused an error when the
+% first two letters of the subcaption were the same.}
+% 
+% \changes{v1.4}{27 Jun 1992}{Added a hack to allow the \cmd{\label}
+% command to be used within the body of the subfigure giving a
+% reference label in the form \cmd{\arabic{thefigure}\thesubfigure}.
+% Added standard file header for style.}
+%
+% \changes{v1.5}{11 Aug 1992}{Fixed a bug which caused a problem with
+% subcaptions that contained expressions like \cmd{\sqrt};  This was
+% pointed out by Tom Scavo (scavo\@cie.uoregon.edu).  A separate bug
+% was fixed which caused different sized subcaptions to be misaligned;
+% This problem was pointed out by Simon Marshall
+% (S.Marshal\@Hull.ac.uk).  Also cleaned up the code a mite and
+% {\bf changed} the figure spacing so that if no optional section is
+% given, then the figure is only followed by \cmd{\subfigbottomskip}
+% and not that plus $(\cmd{\subfigcapskip}+\cmd{\strut}\hbox{height})$.
+% This should make it easier to adjust spacing as desired.}
+%
+% \changes{v1.6}{13 May 1993}{Changed to use the \cmd{\thefigure}
+% command in building the referenced label.  The old form caused a
+% problem when used with the report.sty as pointed out by Andrew
+% Anselmo (anselmo\@cumesb.mech.columbia.edu).  Also modified to
+% restrict the scope of the subfigure \cmd{\label} to the body of the
+% subfigure.  Added \cmd{\@thesubfigure} to allow a separate labeling
+% of the subfigure in the figure and in the text.  By default it is
+% the same as \cmd{\thesubfigure} with space appended.  Added some
+% code to print the subfigure captions to the List-of-Figures file
+% if desired.  Finally, added the corresponding support for subtables 
+% as well as subfigures.  NOTE: the optional subcaption is now a moving
+% argument and any fragile commands that appear in the subcaption must
+% be preceded by a \cmd{\protect} (just like that of the \cmd{\caption}
+% command).}
+% 
+% \changes{v2.0}{06 Mar 1995}{This version of \cmd{\subfigure} is the
+% first to be ported to \LaTeXe\ (with backward compatibility to
+% \LaTeX2.09).  \cmd{\subfigure} and \cmd{\subtable} are now identical
+% and the environment controls internal differences between them.  Now,
+% the subcaption setting portion of \cmd{\@subfloat} is broken into the
+% separate commands \cmd{\@makesubfigurecaption} and
+% \cmd{\@makesubtablecaption} to allow a separate hook for the
+% modification of how the subcaption is constructed and to allow the
+% subtable and subfigure captions to be different.  In addition, support
+% of the \Lopt{normal}, \Lopt{hang}, \Lopt{center}, \Lopt{centerlast},
+% \Lopt{nooneline}; \Lopt{scriptsize}, \ldots, \Lopt{Large}; \Lopt{up},
+% \Lopt{it}, \Lopt{sl}, \Lopt{sc}, \Lopt{md}, \Lopt{bf}, \Lopt{rm},
+% \Lopt{sf}, and \Lopt{tt} package options were added for compatibility
+% with the caption.sty by H.A. Sommerfeldt.}
+% 
+% \changes{v2.1}{23 Jan 2002}{Upgraded to fix a \cmd{\protect} bug that
+% crept in due to changes in \LaTeXe\ and to enhance the interaction
+% with the ``List-of'' files.  Backward compatibility with \LaTeX2.09 is
+% \textbf{not} supported.  This version allows optional subcaption
+% strings for the ``List-of'' files and the companion captcont.sty
+% allows further extensions.  Added check for \Lfile{subfigure.cfg} file
+% for automatic configuration.  Added more options for adjustment of the
+% look-and-feel of the subcaption.  Added the ability to independently
+% move the float caption and subcaption before or after the figure.
+% Removed extra space from the top of a figure at the top of a page and
+% some accidental whitespace.  Reduced the default space around the
+% figure and made it actual skips.  Updated the documentation to
+% describe the new changes and to make some points more clear.}
+%
+% \DoNotIndex{\@@@,\@auxout,\@bsphack,\@dottedtocline,\@empty,\@esphack}
+% \DoNotIndex{\@flushglue,\@for,\@gobble,\@ifnextchar,\@ifpackageloaded}
+% \DoNotIndex{\@ifstar,\@ifundefined,\@minipagefalse,\@nameuse,\@ne}
+% \DoNotIndex{\@rightskip,\@tempboxa,\@tempcnta,\@tempdima}
+% \DoNotIndex{\@tempdimb,\@tempskipb,\@xaddvskip,\addcontentsline}
+% \DoNotIndex{\addtolength,\advance,\alph,\arabic,\AtBeginDocument}
+% \DoNotIndex{\AtEndOfPackage,\begingroup,\bfseries,\bgroup,\box}
+% \DoNotIndex{\DeclareOption,\def,\do,\edef,\egroup,\else,\endgroup}
+% \DoNotIndex{\ExecuteOption,\ExecuteOptions,\ext@figure,\ext@table}
+% \DoNotIndex{\familydefault,\fi,\footnotesize,\fontfamily,\fontseries}
+% \DoNotIndex{\fontshape,\gdef,\global,\hbox,\hfil,\hskip,\hss,\if@minipage}
+% \DoNotIndex{\ifcase,\ifdim,\ifnum,\ifx,\ignorespaces,\InputIfFileExists}
+% \DoNotIndex{\itshape,\label,\lastskip,\leftskip,\Large,\large,\leavevmode}
+% \DoNotIndex{\let,\long,\m@ne,\mdseries,\multiply,\NeedsTeXFormat}
+% \DoNotIndex{\newcommand,\newcounter,\newdimen,\newif,\newlabel,\newskip}
+% \DoNotIndex{\noexpand,\normalsize,\numberline,\or,\p@,\par,\parbox}
+% \DoNotIndex{\parfillskip,\parindent,\ProcessOptions,\protect}
+% \DoNotIndex{\protected@write,\protected@edef,\providecommand}
+% \DoNotIndex{\ProvidesPackage,\ref,\refstepcounter,\relax,\renewcommand}
+% \DoNotIndex{\RequirePackage,\rightskip,\rmfamily,\sbox,\scriptsize}
+% \DoNotIndex{\scshape,\selectfont,\seriesdefault,\setbox,\setcounter}
+% \DoNotIndex{\setlength,\sffamily,\shapedefault,\slshape,\small,\space}
+% \DoNotIndex{\string,\strut,\thefigure,\thepage,\thetable,\ttfamily,\tw@}
+% \DoNotIndex{\typeout,\undefined,\upshape,\usebox,\vbox,\vskip,\vspace}
+% \DoNotIndex{\vtop,\wd,\xdef,\z@,\z@skip}
+%
+% \CheckSum{787}% 
+% ^ Allow a little more freedom in typesetting floats.
+% \setcounter{topnumber}{8}
+% \def\topfraction{.8}
+% \setcounter{bottomnumber}{8}
+% \def\bottomfraction{.8}
+% \setcounter{totalnumber}{8}
+% \def\textfraction{.2}
+% \def\floatpagefraction{.8}
+% \setcounter{dbltopnumber}{8}
+% \def\dbltopfraction{.8}
+% \def\dblfloatpagefraction{.8}
+%
+% ^ Add some space above any footnotes.
+% \skip\footins=1.5\baselineskip
+%
+% \makeatletter
+%
+%   ^ Remove some space above minipage footnotes.
+%   \skip\@mpfootins=2.6\p@
+%
+%   ^ Define a raggedright for use in tabular's.
+%   \newcommand{\rr}{^
+%     \@rightskip\@flushglue
+%     \rightskip\@rightskip
+%     \leftskip\z@
+%     \parindent\z@}
+%
+%   ^ Turn off any list entries by ``eating'' any \addcontentsline stuff.
+%   \newcommand*{\eatthree}[3]{}^
+%   \newcommand*{\turnofflistentry}{\let\addcontentsline=\eatthree}
+%
+%   ^ Print text (#2) only if reference (r@#1) is defined.
+%   \newcommand{\PrintIfDefined}[3]{^
+%     \@bsphack
+%     \@ifundefined{r@#1}{#3}{#2}^
+%     \@esphack}
+%
+% \makeatother
+%
+% \def\docdate{2005/03/15}
+% \def\fileversion{v2.1.5}
+% \def\filedate{2002/03/15}
+% \def\filename{subfigure.dtx}
+%
+% \title{The \Lpack{subfigure} Package\footnote{This paper documents
+%        the \Lpack{subfigure} package \fileversion, last revised \filedate.}}
+% \author{Steven Douglas Cochran\\[5pt]
+%         Digital Mapping Laboratory, School of Computer Science \\
+%         Carnegie-Mellon University, 5000 Forbes Avenue \\
+%         Pittsburgh, PA 15213--3890, USA\\[5pt]
+%         \texttt{sdc+@cs.cmu.edu}}
+% \date{\docdate}
+%
+% \maketitle
+%
+% \begin{abstract}
+% \noindent
+% This article documents the \LaTeX\ package `\Lpack{subfigure}', which
+% provides support for the inclusion of small, `sub', figures and
+% tables.  It simplifies the positioning, captioning and labeling of
+% such objects within a single \Lenv{figure} or \Lenv{table}
+% environment.  In addition, this package allows such subcaptions to be
+% written to a List-of-Figures or List-of-Tables if desired.  The
+% `\Lpack{subfigure}' package also cooperates with the `\Lpack{caption}'
+% and `\Lpack{caption2}' packages by H.A. Sommerfeldt
+% \cite{Somm95a,Somm95b}, the `\Lpack{ccaption}' and `\Lpack{tocloft}'
+% packages \cite{Wils01,Wils01B} by Peter Wilson, the `\Lpack{hyperref}'
+% package by Sebastian Rahtz \cite{Raht02}, the `\Lpack{captcont}' package
+% \cite{Coch02}, and should be compatible with all other packages that
+% modify or extend the \Lenv{float} environment or the \cmd{\caption} or
+% \cmd{\label} commands.
+%
+% \end{abstract}
+%
+% \newpage
+% \tableofcontents
+%
+% \newpage
+% \setcounter{lotdepth}{2}^
+% \listoftables
+% \setcounter{lofdepth}{2}^
+% \listoffigures
+%
+% \newpage
+% \section{Introduction}
+% \enlargethispage{24pt}^finalhack
+% 
+% This package provides support for the manipulation and reference of
+% small or `sub' figures and tables within a single \Lenv{figure} or
+% \Lenv{table} environment\@.\footnote{Section~\ref{sec:customfloat}
+% describes how to add support for additional \Lenv{float}
+% environments.}  It is convenient to use this package when your
+% subfigures are to be separately captioned, referenced, or when such
+% subcaptions are to be included in the List-of-Figures.
+% 
+% Before using the \Lpack{subfigure} package, consider the following to
+% see if you really need it.  If you simply want to center your figure,
+% then you can use |\centerline|, |\centering| or the \Lenv{center}
+% environment to do so.  If your figure has a short width or if you wrap
+% your figure in a |\parbox| or a \Lenv{minipage} of a short width, then
+% you can place multiple figures or tables side-by-side.  For example,
+% the following will put two images side-by-side in a single figure as
+% shown in figure~\ref{fig:1figs}:\footnote{You might have to use the
+% optional position arguments `[b]' or `[t]' if the figures are of
+% different heights.}
+%
+% \begin{verbatim}
+%     \begin{figure}%
+%       \centering
+%       \parbox{1.2in}{...figure code...}%
+%       \qquad
+%       \begin{minipage}{1.2in}%
+%         ...figure code...
+%       \end{minipage}%
+%       \caption{Here are two figures side-by-side.}%
+%       \label{fig:1figs}%
+%     \end{figure}
+% \end{verbatim}
+% \vspace{-1\baselineskip}
+% \begin{figure}^
+%   \abovecaptionskip=6pt^
+%   \centering
+%   \parbox{1.2in}{^
+%     \fboxsep=-\fboxrule
+%     \fbox{\hbox to 1.2in{\vbox to 15mm{\null\vfil}\hfil}}}^
+%   \qquad
+%   \begin{minipage}{1.2in}^
+%     \fboxsep=-\fboxrule
+%     \fbox{\hbox to 1.2in{\vbox to 15mm{\null\vfil}\hfil}}^
+%   \end{minipage}^
+%   \caption{Here are two figures side-by-side.}^
+%   \label{fig:1figs}^
+%   \vspace{-10pt}
+% \end{figure}
+% 
+% \noindent
+% Further, if you place the caption inside the |\parbox| or
+% \Lenv{minipage}, then the width of the caption will be limited to the
+% width of the parbox or minipage as shown in figures~\ref{fig:2figsA}
+% and \ref{fig:2figsB}:
+% 
+% \begin{verbatim}
+%     \begin{figure}%
+%       \centering
+%       \parbox{1.2in}{%
+%         ...figure code...
+%         \caption{First.}%
+%         \label{fig:2figsA}}%
+%       \qquad
+%       \begin{minipage}{1.2in}%
+%         ...figure code...
+%         \caption{Second.}%
+%         \label{fig:2figsB}%
+%       \end{minipage}%
+%     \end{figure}%
+% \end{verbatim}
+% \vspace{-\baselineskip}
+% \begin{figure}^
+%   \abovecaptionskip=2pt^
+%   \centering
+%   \parbox{1.2in}{^
+%     \fboxsep=-\fboxrule
+%     \fbox{\hbox to 1.2in{\vbox to 15mm{\vfil\null}\hfil}}^
+%     \caption{First.}^
+%     \label{fig:2figsA}}^
+%   \qquad
+%   \begin{minipage}{1.2in}^
+%     \fboxsep=-\fboxrule
+%     \fbox{\hbox to 1.2in{\vbox to 15mm{\vfil\null}\hfil}}^
+%     \caption{Second.}^
+%     \label{fig:2figsB}^
+%   \end{minipage}^
+%   \vspace{-10pt}
+% \end{figure}
+%
+% For more information on typesetting figures and tables, see the
+% document ``Using Imported Graphics in \LaTeXe'' by Keith Reckdahl
+% \cite{Reck97}.
+% 
+% \section{The User Interface}
+% \vspace{-5pt}^finalhack
+% \enlargethispage{12pt}^finalhack
+% 
+% To use this package place
+% \begin{quote}
+%   |\usepackage|\oarg{options}\marg{subfigure}
+% \end{quote}
+% in the preamble of your document.  The supported options are shown in
+% table~\ref{tab:options}.
+% \DescribeMacro{\subfigure}
+% \DescribeMacro{\subtable}
+%  Within a \Lenv{figure} or \Lenv{table}
+% environment, you can use the following commands to create a subfigure
+% or subtable ``box'' with an optional subcaption underneath.
+% \vspace{-2pt}
+% \begin{quote}
+%   |\subfigure|\oarg{list\_entry}\oarg{subcaption}\marg{figure}\\
+%   |\subtable|\oarg{list\_entry}\oarg{subcaption}\marg{figure}
+% \end{quote}
+% \vspace{-2pt}
+% 
+% \noindent
+% If a subcaption argument is given (including the null subcaption
+% `{\ttfamily [$\;$]}') then the subfigure is labeled with a counter
+% formatted by the command `|\thesubfigure|' which returns, by default,
+% `(a)', `(b)', etc.  The counter used for labeling the subfigures is
+% \Lcount{subfigure} and is incremented for each subfigure regardless of
+% whether a subcaption was printed. The internals of the |\subtable|
+% command are symmetric to those of the |\subfigure| command.  Further,
+% if a List-of-Figures (or List-of-Tables) is generated, then the
+% \meta{list\_entry} argument controls how the caption text is used
+% there.  Table~\ref{tab:calling} shows the possibilities.
+%
+% \changes{v2.1.4}{30 Apr 2002}{Changed the label and caption defaults
+% from \cmd{\rmfamily}\cmd{\mdseries}\cmd{\upshape} to 
+% \cmd{\familydefault}\cmd{\seriesdefault} \cmd{\shapedefault}.}
+% \DeleteShortVerb{\|}
+% \begin{table}
+%   \def\M#1{\vspace*{#1}}
+%   \centering
+%   \caption{\Lpack{subfigure} package options.}
+%   \label{tab:options}
+%   \vspace{8pt}
+%   \fbox{\begin{tabular}{|p{0.36\textwidth}|p{0.63\textwidth}|} \hline
+%     \multicolumn{1}{|c|}{{\large\bf\strut Option}} 
+%                         & \multicolumn{1}{c|}{{\large\bf Description}}
+%                                                          \\ \hline\hline
+%     \Lopt{normal}       & \rr Provides `normal' subcaptions, this is the
+%                           default. \\ \hline 
+%     \raisebox{-1.4ex}{\Lopt{hang}, \Lopt{isu}}
+%                         & \rr Causes the label to be a hanging
+%                           indentation to the subcaption paragraph.
+%                           (\Lopt{isu} is a synonym for \Lopt{hang}.)
+%                           \\ \hline 
+%     \raisebox{-1.4ex}{\Lopt{center}}
+%                         & \rr Causes each line of the paragraph to be
+%                           separately centered.  Overrides 
+%                           \Lopt{centerlast}.\\ \hline
+%     \raisebox{-1.4ex}{\Lopt{centerlast}, \Lopt{anne}}
+%                         & \rr Causes the last line only to be centered.
+%                           Overrides \Lopt{nooneline}.  (\Lopt{anne} is 
+%                           a synonym for \Lopt{centerlast}.) \\ \hline
+%     \raisebox{-2.6ex}{\Lopt{nooneline}}
+%                         & \rr If a subcaption fits on one line it will, by
+%                           default, be centered.  This option
+%                           treats a single line like a mid-line of a
+%                           multi-line caption.\\ \hline
+%     \raisebox{-1.4ex}{\Lopt{raggedright}}
+%                         & \rr Causes the subcaption text to be raggedright.
+%                           Overrides \Lopt{center} and \Lopt{centerlast}.
+%                           \\ \hline\hline
+%     \Lopt{scriptsize{\rm,} footnotesize{\rm,} small{\rm,}\hfil\null\linebreak
+%           normalsize{\rm,} large{\rm,} Large}
+%                         & \rr Sets the font size of the subcaptions (both
+%                           the label and the text), \Lopt{footnotesize}
+%                           is default. \\ \hline
+%     \M{1.8ex}
+%     \Lopt{rm{\rm,} sf{\rm,} tt{\rm,} md{\rm,} bf{\rm,}\efill
+%             up{\rm,} it{\rm,} sl{\rm,} sc{\rm,}}\hfil\null\linebreak
+%     \Lopt{RM{\rm,} SF{\rm,} TT{\rm,} MD{\rm,} BF{\rm,}\efill
+%             UP{\rm,} IT{\rm,} SL{\rm,} SC}
+%                         & \rr The lowercase commands set the font attributes
+%                           of the subcaption label.  The capitalized version
+%                           sets the font attributes of the text. Family,
+%                           shape and style attributes may be mixed.
+%                           The default is to set the document defaults for
+%                           the family, series and shape.\\ \hline\hline
+%     \M{4ex}
+%     \Lopt{figbotcap}{\rm,} \Lopt{tabbotcap}{\rm,}\hfil\null\linebreak
+%     \Lopt{FIGBOTCAP}{\rm,} \Lopt{TABBOTCAP}
+%                         & \rr Sets the figure or table numbering based on
+%                           the assumption that the figure or table caption
+%                           comes after the subfigures or subtables.  The
+%                           capitalized version also places the subcaption
+%                           after the figure (``\Lopt{FIGBOTCAP}'' and 
+%                           ``\Lopt{TABBOTCAP}'' are the default settings).
+%                           \\ \hline
+%     \M{3.9ex}
+%     \Lopt{figtopcap}{\rm,} \Lopt{tabtopcap}{\rm,}\hfil\null\linebreak
+%     \Lopt{FIGTOPCAP}{\rm,} \Lopt{TABTOPCAP}
+%                         & \rr Sets the figure or table numbering based on
+%                           the assumption that the figure or table caption
+%                           precedes the subfigures or subtables.  The
+%                           capitalized version also places the subcaption
+%                           before the figure (``\Lopt{TABTOPCAP}'' is the 
+%                           preferred table setting, see 
+%                           section~\ref{sec:position} for details).
+%                           \\ \hline\hline
+%     \M{2.6ex}
+%     \Lopt{loose}{\rm,} \Lopt{tight}
+%                         & \rr The (default) \Lopt{loose} option sets the
+%                           historically normal whitespace around the subfloat.
+%                           The \Lopt{tight} option sets less space around the 
+%                           subfigure (this is the preferred setting).
+%                           \\ \hline
+%   \end{tabular}}%
+% \end{table}
+% \MakeShortVerb{\|}
+%
+% \begin{table}
+%   \centering
+%   \caption{\cmd{\subfigure} calling arguments.}
+%   \label{tab:calling}
+%   \begingroup\small
+%   \begin{tabular}{llc}                                      \\ \hline
+%     {\normalsize Subfigure Command}
+%                       & {\normalsize LoF/LoT}
+%                             & \multicolumn{1}{r}{\hbox to .25in{%
+%                                                    \hss\normalsize 
+%                                                    Subfigure Caption}}
+%                                                             \\ \hline
+%     \cmd{\subfigure}\{\dots fig\dots\}
+%                       &     &                               \\
+%     \cmd{\subfigure}[~]\{\dots fig\dots\}
+%                       & (b)\ \ . . . . . . . . . .  
+%                             & (b)                           \\
+%     \cmd{\subfigure}[Subcaption.]\{\dots fig\dots\}
+%                       & (c) Subcaption. . . .
+%                             & (c) Subcaption.               \\
+%     \cmd{\subfigure}[\space][Subcaption.]\{\dots fig\dots\}
+%                       &     & (d) Subcaption.               \\
+%     \cmd{\subfigure}[\space][\space]\{\dots fig\dots\}
+%                       &     & (e)                           \\
+%     \cmd{\subfigure}[List\_entry.][Subcaption.]\{\dots fig\dots\}
+%                       & (f) List\_entry. . . .
+%                             & (f) Subcaption.               \\
+%     \cmd{\subfigure}[List\_entry.][~]\{\dots fig\dots\}
+%                       & (g) List\_entry. . . .
+%                             & (g)                           \\ \hline
+%   \end{tabular}
+%   \endgroup
+%   \vspace{-8pt}
+% \end{table}
+% 
+% If you wish to reference a specific subfigure or subtable, you can
+% include a |\label| inside the body of either the \meta{subcaption} or
+% \meta{figure} argument to the command (but not the \meta{list\_entry}
+% argument).  If supplied by itself, the \meta{subcaption} is a ``moving
+% argument''\footnote{See \cite[\textsection~4.7 and
+% \textsection~C.1.3]{Lamp94} for a more detailed description of
+% ``moving arguments'' and ``fragile'' commands.} and, therefore, any
+% ``fragile'' commands contained within it must be |\protect|'ed.  If
+% the \meta{list\_entry} argument is supplied, then the
+% \meta{subcaption} is not a ``moving argument''; however, the
+% \meta{list\_entry} is.
+% 
+% {\bf Note:} since the |\subfigure| and |\subtable| commands have optional
+% arguments, delimited with square brackets, before their required argument,
+% you cannot use the `]' character at the top level of either the
+% \meta{subcaption} or \meta{list\_entry} argument.  To overcome this
+% problem, you must wrap the portion of the text containing the `]'
+% character (or the entire argument), in a pair of curly brackets (see
+% \cite[\textsection~C.1.1]{Lamp94} for more detail).  For example:
+% 
+% \begin{verbatim}
+%   \subfigure[This does not $sqrt[3]{8}$ work.]{... figure text ...}
+%   \subfigure[This works {$sqrt[3]{8}$} fine.]{... figure text ...}
+%   \subfigure[{This also works $sqrt[3]{8}$ fine.}]{... figure text ...}
+% \end{verbatim}
+% 
+% One final note, the |\subfigure| and |\subtable| commands are
+% actually identical and it is the surrounding environment that defines 
+% actually identical and it is the surrounding environment that defines 
+% whether a subtable or subfigure will be generated and not which command 
+% is used.  At the user level, the choice of names is purely cosmetic
+% (and historical).  Therefore you can use |\subfigure| for any float
+% ({\it e.g.\/}, \Lenv{figure}, \Lenv{table}, or other) environment. 
+%
+% \subsection{Format Options}
+% \label{sec:format}
+%
+% There are six options for formatting the layout of the caption label
+% and text.  The first is \Lopt{normal}, which produces the style shown
+% in figure~\ref{fig:format-01}.  The other options may be used in
+% various combinations to produce the layouts shown in
+% figures~\ref{fig:format-02} thru \ref{fig:format-14}.  Note that some
+% combinations, like \Lopt{center} and \Lopt{centerlast} do not make
+% sense since \Lopt{center} overrides \Lopt{centerlast}.  Also, 
+% \Lopt{nooneline}, when combined with either \Lopt{center} or
+% \Lopt{centerlast} has no effect (unless the \Lopt{hang} option is 
+% also set); and, \Lopt{raggedright} overrides both \Lopt{center} and
+% \Lopt{centerlast}.
+% 
+% \begingroup
+% \def\sc{Short.}
+% \def\lc{This is a long caption of gibberish: Aafas d taed 
+%         gaihgghn adf irin sadf aets etsd na.}
+% \def\b{\fboxsep=-\fboxrule
+%        \fbox{\hbox to 2.0in{\vbox to 2mm{\vfil\null}\hfil}}}
+% \def\g{\hspace{.5in}}
+% \subfigtopskip=20pt
+% \subfigcapskip=-3pt
+% \subfigbottomskip=0pt
+% \abovecaptionskip=5pt
+% \begin{figure}^
+%   \centering
+%   \turnofflistentry
+%   \subcaphangfalse
+%   \subcapcenterfalse
+%   \subcapcenterlastfalse
+%   \subcapnoonelinefalse
+%   \subcapraggedrightfalse
+%   \subfigure[\sc]{\b}\g\subfigure[\lc]{\b}\\
+%   \caption{Format option [\Lopt{normal}].}^
+%   \label{fig:format-01}^
+%   \subcapnoonelinetrue
+%   \subfigure[][\sc]{\b}\g\subfigure[][\lc]{\b}\\
+%   \caption{Format option [\Lopt{nooneline}].}^
+%   \label{fig:format-02}^
+%   \subcapcenterlasttrue
+%   \subcapnoonelinefalse
+%   \subfigure[][\sc]{\b}\g\subfigure[][\lc]{\b}\\
+%   \caption{Format option [\Lopt{centerlast}]; \Lopt{centerlast} overrides
+%            \Lopt{nooneline}.\footnotemark}
+%   \label{fig:format-03}^
+%   \subcapcentertrue
+%   \subcapcenterlastfalse
+%   \subfigure[][\sc]{\b}\g\subfigure[][\lc]{\b}\\
+%   \caption{Format option [\Lopt{center}]; \Lopt{center} overrides 
+%            \Lopt{nooneline} and \Lopt{centerlast}.}^
+%   \label{fig:format-04}^
+%   \subcaphangtrue
+%   \subcapcenterfalse
+%   \subfigure[][\sc]{\b}\g\subfigure[][\lc]{\b}\\
+%   \caption{Format option [\Lopt{hang}].}
+%   \label{fig:format-05}
+%   \subcapnoonelinetrue
+%   \subfigure[][\sc]{\b}\g\subfigure[][\lc]{\b}\\
+%   \caption{Format options [\Lopt{hang},\Lopt{nooneline}].}
+%   \label{fig:format-06}
+%   \subcapcenterlasttrue
+%   \subcapnoonelinefalse
+%   \subfigure[][\sc]{\b}\g\subfigure[][\lc]{\b}\\
+%   \caption{\Lpack{Subfigure}\ format options [\Lopt{hang},^
+%            \Lopt{centerlast}].}
+%   \label{fig:format-07}
+%   \vspace{2\baselineskip}
+%   \begin{minipage}{\linewidth}
+%      \footnotetext{\raise1ex\hbox to 0pt{\hss\tiny\thefootnote}^
+%       So this is the same as [\Lopt{centerlast},\Lopt{nooneline}].  Only
+%       the shortest number of options to achieve an effect is shown.
+%       Adding any combination of overridden options has no effect.}
+%   \end{minipage}
+% \end{figure}
+% 
+% \begin{figure}
+%   \turnofflistentry
+%   \centering
+%   \subcaphangtrue
+%   \subcapcenterfalse
+%   \subcapcenterlasttrue
+%   \subcapnoonelinetrue
+%   \subcapraggedrightfalse
+%   \subfigure[][\sc]{\label{fig:format-08A}\b}\g\subfigure[][\lc]{\b}\\
+%   \caption{Format options [\Lopt{hang},\Lopt{centerlast},\Lopt{nooneline}].}
+%   \label{fig:format-08}
+%   \subcapcentertrue
+%   \subcapcenterlastfalse
+%   \subcapnoonelinefalse
+%   \subfigure[][\sc]{\b}\g\subfigure[][\lc]{\b}\\
+%   \caption{Format options [\Lopt{hang},\Lopt{center}]; 
+%            \Lopt{center} overrides \Lopt{centerlast}.}
+%   \label{fig:format-09}
+%   \subcapnoonelinetrue
+%   \subfigure[][\sc]{\label{fig:format-10A}\b}\g\subfigure[][\lc]{\b}\\
+%   \caption{Format options [\Lopt{hang},\Lopt{center},\Lopt{nooneline}];
+%            \Lopt{center} overrides \Lopt{centerlast}.}
+%   \label{fig:format-10}
+%   \subcaphangfalse
+%   \subcapcenterfalse
+%   \subcapnoonelinefalse
+%   \subcapraggedrighttrue
+%   \subfigure[][\sc]{\b}\g\subfigure[][\lc]{\b}\\
+%   \caption{Format option [\Lopt{raggedright}];
+%            \Lopt{raggedright} overrides \Lopt{center} and \Lopt{centerlast}.}
+%   \label{fig:format-11}
+%   \subcapnoonelinetrue
+%   \subfigure[][\sc]{\b}\g\subfigure[][\lc]{\b}\\
+%   \caption{Format options [\Lopt{raggedright},\Lopt{noonelirne}]; 
+%            \Lopt{raggedright} overrides \Lopt{center} and \Lopt{centerlast}.}
+%   \label{fig:format-12}
+%   \subcaphangtrue
+%   \subcapnoonelinefalse
+%   \subfigure[][\sc]{\b}\g\subfigure[][\lc]{\b}\\
+%   \caption{Format options [\Lopt{hang},\Lopt{raggedright}];
+%            \Lopt{raggedright} overrides \Lopt{center} and \Lopt{centerlast}.}
+%   \label{fig:format-13}
+%   \subcapnoonelinetrue
+%   \subfigure[][\sc]{\label{fig:format-14A}\b}\g\subfigure[][\lc]{\b}\\
+%   \caption{\Lpack{Subfigure}\ format options [\Lopt{hang},\Lopt{raggedright},
+%            \Lopt{nooneline}]; \Lopt{raggedright} overrides \Lopt{center}
+%            and \Lopt{centerlast}.}
+%   \label{fig:format-14}
+% \end{figure}
+% \endgroup
+%
+% \addtocontents{lof}{^
+%   \string\contentsline
+%     {figure}
+%     {\numberline{\ref{fig:format-01}--\ref{fig:format-14}}^
+%      {\ignorespaces \Lpack{Subfigure}\ format options.}}^
+%      {\pageref{fig:format-01}--\pageref{fig:format-14}}}
+% 
+% \subsection{Font Size and Style Options}
+% \label{sec:font}
+% 
+% There are twenty-four options for setting the font of the subcaption.
+% The first six set the size of both the subcaption label and text.
+% They are: \Lopt{scriptsize}, \Lopt{footnotesize} (default),
+% \Lopt{small}, \Lopt{normalsize}, \Lopt{large}, and \Lopt{Large}.
+% Their effect is shown in figure~\ref{fig:font1}.
+% 
+% The next nine, \Lopt{rm}: \Lopt{sf}, \Lopt{tt}, \Lopt{md}, \Lopt{bf},
+% \Lopt{up}, \Lopt{it}, \Lopt{sl}, and \Lopt{sc}, set the family, series
+% or shape of the subcaption label, as shown in
+% figures~\ref{fig:font2A}--~\ref{fig:font2I}.  The last nine:
+% \Lopt{RM}, \Lopt{SF}, \Lopt{TT}, \Lopt{MD}, \Lopt{BF}, \Lopt{UP},
+% \Lopt{IT}, \Lopt{SL}, and \Lopt{SC}, do the same for the text of the
+% subcaption, as shown in figure~\ref{fig:font2J}--\ref{fig:font2R}.
+% These size and style options may be combined in 3456 ways to set the
+% label and text of the subcaption (as long as the selected font
+% combination exists\@!)  The font family for the text and label may be
+% set as roman (\Lopt{rm}/\Lopt{RM}), sans serif (\Lopt{sf}/\Lopt{SF}),
+% and typewriter (\Lopt{tt}/\Lopt{TT}).  These may be combined with
+% those for the font series, medium (\Lopt{md}/\Lopt{MD}) and bold
+% (\Lopt{bf}/\Lopt{BF}); and the font shape, upright
+% (\Lopt{up}/\Lopt{UP}), italic (\Lopt{it}/\Lopt{IT}), slanted
+% (\Lopt{sl}/\Lopt{SL}), and small caps (\Lopt{sc}/\Lopt{SC}).
+% 
+% \begin{figure}^
+%   \def\b{\fboxsep=-\fboxrule
+%          \fbox{\hbox to 2.0in{\vbox to 2mm{\vfil\null}\hfil}}}^
+%   \subfigtopskip=8pt^
+%   \subfigcapskip=0pt^
+%   \subfigbottomskip=4pt^
+%   \centering
+%   {\renewcommand{\subcapsize}{\scriptsize}^
+%    \subfigure[][Font option {[scriptsize]}.]{\b}}\qquad
+%   {\renewcommand{\subcapsize}{\footnotesize}^
+%    \subfigure[][Font option {[footnotesize]}.]{\b}}\\
+%   {\renewcommand{\subcapsize}{\small}^
+%    \subfigure[][Font option {[small]}.]{\b}}\qquad
+%   {\renewcommand{\subcapsize}{\normalsize}^
+%    \subfigure[][Font option {[normalsize]}.]{\b}}\\
+%   {\renewcommand{\subcapsize}{\large}^
+%    \subfigure[][Font option {[large]}.]{\b}}\qquad
+%   {\renewcommand{\subcapsize}{\Large}^
+%    \subfigure[][Font option {[Large]}.]{\b}}%
+%   \caption[\Lpack{Subfigure} font size options.]{%
+%            \Lpack{Subfigure} font size options.  (Default:
+%            \Lopt{footnotesize}).}^
+%   \label{fig:font1}^
+% \end{figure}
+%
+% \begin{figure}^
+%   \def\b{\fboxsep=-\fboxrule
+%          \fbox{\hbox to 2.0in{\vbox to 2mm{\vfil\null}\hfil}}}^
+%   \subfigtopskip=8pt^
+%   \subfigcapskip=0pt^
+%   \subfigbottomskip=4pt^
+%   \centering
+%   \begin{minipage}{2.0in}^
+%     {\renewcommand{\subcaplabelfont}{\rmfamily}^
+%      \subfigure[][Subcaption label font option {[\Lopt{rm}]}.]{\b^
+%        \label{fig:font2A}}}\\
+%     {\renewcommand{\subcaplabelfont}{\sffamily}^
+%      \subfigure[][Subcaption label font option {[\Lopt{sf}]}.]{\b}}\\
+%     {\renewcommand{\subcaplabelfont}{\ttfamily}^
+%      \subfigure[][Subcaption label font option {[\Lopt{tt}]}.]{\b}}\\
+%     {\renewcommand{\subcaplabelfont}{\mdseries}^
+%      \subfigure[][Subcaption label font option {[\Lopt{md}]}.]{\b}}\\
+%     {\renewcommand{\subcaplabelfont}{\bfseries}^
+%      \subfigure[][Subcaption label font option {[\Lopt{bf}]}.]{\b}}\\
+%     {\renewcommand{\subcaplabelfont}{\upshape}^
+%      \subfigure[][Subcaption label font option {[\Lopt{up}]}.]{\b}}\\
+%     {\renewcommand{\subcaplabelfont}{\itshape}^
+%      \subfigure[][Subcaption label font option {[\Lopt{it}]}.]{\b}}\\
+%     {\renewcommand{\subcaplabelfont}{\slshape}^
+%      \subfigure[][Subcaption label font option {[\Lopt{sl}]}.]{\b}}\\
+%     {\renewcommand{\subcaplabelfont}{\scshape}^
+%      \subfigure[][Subcaption label font option {[\Lopt{sc}]}.]{^
+%        \label{fig:font2I}\b}}\\
+%   \end{minipage}^
+%   \qquad
+%   \begin{minipage}{2.0in}^
+%     {\renewcommand{\subcapfont}{\rmfamily}^
+%      \subfigure[][Subcaption font option {[\Lopt{RM}]}.]{^
+%        \label{fig:font2J}\b}}\\
+%     {\renewcommand{\subcapfont}{\sffamily}^
+%      \subfigure[][Subcaption font option {[\Lopt{SF}]}.]{\b}}\\
+%     {\renewcommand{\subcapfont}{\ttfamily}^
+%      \subfigure[][Subcaption font option {[\Lopt{TT}]}.]{\b}}\\
+%     {\renewcommand{\subcapfont}{\mdseries}^
+%      \subfigure[][Subcaption font option {[\Lopt{MD}]}.]{\b}}\\
+%     {\renewcommand{\subcapfont}{\bfseries}^
+%      \subfigure[][Subcaption font option {[\Lopt{BF}]}.]{\b}}\\
+%     {\renewcommand{\subcapfont}{\upshape}^
+%      \subfigure[][Subcaption font option {[\Lopt{UP}]}.]{\b}}\\
+%     {\renewcommand{\subcapfont}{\itshape}^
+%      \subfigure[][Subcaption font option {[\Lopt{IT}]}.]{\b}}\\
+%     {\renewcommand{\subcapfont}{\slshape}^
+%      \subfigure[][Subcaption font option {[\Lopt{SL}]}.]{\b}}\\
+%     {\renewcommand{\subcapfont}{\scshape}^
+%      \subfigure[][Subcaption font option {[\Lopt{SC}]}.]{^
+%        \label{fig:font2R}\b}}^
+%   \end{minipage}^
+%   \caption[\Lpack{Subfigure} font style options.]{%
+%           \Lpack{Subfigure} font style options. (Default:
+%           \Lopt{rm,md,up,RM,MD,UP}).  Note: The above single options
+%           are loaded after the default settings and multiple options are
+%           allowed, see the text, section~\ref{sec:font}.}^
+%   \label{fig:font2}^
+% \end{figure}
+% 
+% \subsection{Caption Position Options}
+% \enlargethispage{12pt}^finalhack
+% \label{sec:position}
+% 
+% There are eight options that control the {\em position\/} of the
+% subcaption and how the subcaption {\em numbering\/} is related to the
+% ``containing'' figure or table's caption.  The following shows only
+% the subfigure-related options, but the subtable options are symmetric.
+% 
+% The first option, \Lopt{figbotcap} tells the subfigure command that
+% the ``containing'' figure's |\caption| occurs {\bf after} the
+% subfigures.  This information is needed to decide if the current
+% figure counter shows the number for the last figure (\Lopt{figbotcap})
+% or for the current one (\Lopt{figtopcap}, see below).
+% 
+% The second option, \Lopt{figtopcap} tells the subfigure command that
+% the ``containing'' figure's |\caption| occurs {\bf before} the
+% subfigures.  The subcaption is automatically placed below the figure
+% for each of these options.
+% 
+% The third option, \Lopt{FIGBOTCAP}, is similar to \Lopt{figbotcap},
+% except that it also forces the subcaption to be placed under the
+% figure.  This is the default setting for figures (and \Lopt{TABBOTCAP}
+% for tables) and is shown in figure~\ref{fig:position1}.
+% 
+% The fourth option, \Lopt{FIGTOPCAP}, is similar to \Lopt{figtopcap},
+% except that it forces the subcaption to be placed above the figure
+% box.  (While not the default, it is the preferred format for tables,
+% which uses the option \Lopt{TABTOPCAP}\@.)  An example of this option
+% is shown in figure~\ref{fig:position2}.  Note that the baseline of the
+% subfigure is along the top of the two subfigures.  See
+% section~\ref{sec:custom-position} for another way of positioning the
+% caption when captions are placed above the figure or table.
+% 
+% \begin{figure}^
+%   \subfigtopskip=8pt^
+%   \subfigcapskip=0pt^
+%   \subfigbottomskip=4pt^
+%   \abovecaptionskip=5pt^
+%   \centering
+%   \subfigure[First caption.]{^
+%     \fbox{\hbox to 1.5in{\vbox to 15mm{\vfil\null}\hfil}}}^
+%   \hspace{0.2in}^
+%   \subfigure[Second long, long, long, long, long, long, caption.]{^
+%     \fbox{\hbox to 1.5in{\vbox to 10mm{\vfil\null}\hfil}}}^
+%   \caption{Subcaption position option [\Lopt{FIGBOTCAP}].} 
+%   \label{fig:position1}^
+% \end{figure}
+%
+% \begin{figure}^
+%   \subfigtopskip=8pt^
+%   \subfigcapskip=0pt^
+%   \subfigbottomskip=0pt^
+%   \belowcaptionskip=5pt^
+%   \caption{Subcaption position option: [\Lopt{FIGTOPCAP}].}^
+%   \label{fig:position2}^
+%   \centering
+%   \figuretopcaptrue
+%   \subfiguretopcaptrue
+%   \subfigure[First caption.]{^
+%     \fbox{\hbox to 1.5in{\vbox to 15mm{\vfil\null}\hfil}}}^
+%   \hspace{0.2in}^
+%   \subfigure[Second long, long, long, long, long, long caption.]{^
+%     \fbox{\hbox to 1.5in{\vbox to 10mm{\vfil\null}\hfil}}}^
+%   \setcounter{subfigure}{0}^
+%   \vspace{-18pt}
+% \end{figure}
+%
+% \subsection{Recent Changes and Backward Compatibility}
+% \enlargethispage{24pt}^finalhack
+% \label{sec:back-compat}
+% 
+% There are some significant changes in this version of the
+% \Lpack{subfigure} package.  One of them was to pack the subfigure
+% tighter together by removing the space at the top of the subfigure at
+% the beginning of a page, or minipage, and to reduce the spacing around
+% the subfigure, see table~\ref{tab:spacing}.  If you have been using an
+% older version of the \Lpack{subfigure} package ({\it i.e.\/}, version
+% 2.0 or eariler) than the default (\Lopt{loose}) setting will not cause
+% any change in your existing documents.\footnote{If you have been using
+% a beta release version of \Lpack{subfigure} 2.1, than you will need to 
+% use the \Lopt{tight} option in order to maintain the ``look-and-feel'' 
+% that you are used to.}
+% 
+% If you want to use the new and preferred, \Lopt{tight} option, your
+% subfigures will take up less space and should provide a more balanced
+% visual appearance for your paper.
+% 
+% The second significant change is the ability to make the text on the
+% List-of-Figures page different than that in the subcaption.  The use
+% of a second optional argument to the |\subfigure| command is shown in
+% table~\ref{tab:calling}.  This should not cause any compatibility
+% problems.
+% 
+% The third significant change is the it is now possible to have the
+% captions and subcaptions come before or after the corresponding
+% figure/table portion.  While the default settings support the old view
+% of the subcaptions following the figure/table and, in turn, followed
+% by the main caption.  The preferred format is for figures to retain
+% that layout and for tables to have both their subcaption and main
+% captions come before the table portion.  This preferred setting may be
+% specified by adding the option \Lopt{TABTOPCAP} when loading the
+% \Lpack{subfigure} package.
+% 
+% The fourth update is that the font style options have been generalized
+% so that an option from each of the family, series and shape, may be
+% combined, as long as that combination exists; and you can set the font
+% of the label and text separately.  In addition, the the |\space| that
+% separated the label from the text in the subcaption has been replaced
+% with a horizontal skip of |\subfiglabelskip| which has the default
+% value of |0.33em plus 0.07em minus 0.03em|.  This extension should not
+% cause any compatibility problems.
+% 
+% The last major change is that there is now a |\subref| command that
+% allows a reference to the subfigure without the figure number.  An
+% example of the use of this command is shown later in
+% section~\ref{sec:ex3}.  Associated with this change is that the
+% |\label| command will accept an optional argument, for use with the
+% \Lpack{hyperref} package, when used within the scope of the
+% |\subfigure| or |\subtable|, see section~\ref{sec:hyperref} for details.
+% 
+% \DeleteShortVerb{\|}
+% \MakeShortVerb{\/}
+% \begin{table}^
+%   \def\pz{\phantom{0}}^
+%   \centering
+%   \caption{\Lpack{Subfigure} spacing changes.}^
+%   \label{tab:spacing}^
+%   \vspace{4pt}^
+%   \begin{tabular}{|l|c|c|c|}         \hline
+%     \multicolumn{1}{|c|}{\bf{\Lpack{subfigure}}}
+%                         & \multicolumn{1}{c|}{{\bf Old (v2.0)}} 
+%                                & \multicolumn{1}{c|}{\bf\Lopt{loose}}
+%                                      & \multicolumn{1}{c|}{\bf\Lopt{tight}} \\
+%     \multicolumn{1}{|c|}{{\bf Constant}} 
+%                         & \multicolumn{1}{c|}{{\bf Value}} 
+%                                & \multicolumn{1}{c|}{{\bf Option}}
+%                                          & \multicolumn{1}{c|}{{\bf Option}}
+%                                                  \\ \hline
+%     /\subfigtopskip/    & 10 pt &  10 pt  & 5 pt \\
+%     /\subfigcapskip/    & 10 pt &  10 pt  & 0 pt \\
+%     /\subfigcaptopadj/  &  |    &\pz0 pt  & 3 pt \\
+%     /\subfigbottomskip/ & 10 pt &  10 pt  & 5 pt \\
+%     /\subfigcapmargin/  & 10 pt &  10 pt  & 0 pt \\
+%     /\subfiglabelskip/  &  |    & 0.33 em & 
+%                                  \vtop{\hbox to 1.2in{0.33 em plus 0.07 em}
+%                                        \hbox to 1.2in{\hfill minus 0.03 em}}
+%                                               \\[8pt] \hline
+%   \end{tabular}^
+% \end{table}
+% \DeleteShortVerb{\/}
+% \MakeShortVerb{\|}
+% 
+% The \Lpack{subfigure} package checks for and loads a configuration
+% file called \Lfile{subfigure.cfg} which is placed anywhere that \LaTeX\
+% will look for classes or packages (see
+% section~\ref{sec:customization}).  By default, the \Lfile{subfigure.sty}
+% file tries to look unchanged from older versions.  In order to
+% have it automatically use the preferred settings, you can add a
+% configuration file containing the options \Lopt{tight} to reduce the
+% extra whitespace around the subfigures and \Lopt{TABTOPCAP} to show
+% that table captions will come before the table and the the subcaptions
+% for tables should be set above the subtable.  The following line is all 
+% you need in your configuration file:
+% 
+% \iffalse
+%<*newconf>
+% \fi
+%    \begin{macrocode}
+\ExecuteOptions{tight,TABTOPCAP}
+%    \end{macrocode}
+% \iffalse
+%</newconf>
+% \fi
+% 
+% You could also load the subfigure package with the options with the
+% following in your \LaTeX\ preamble:
+% \begin{quote}
+%   |\usepackage[tight,TABTOPCAP]{subfigure}|
+% \end{quote}
+% 
+% \subsection{Frequently Asked Questions}
+% \label{sec:faq}
+% 
+% The four most frequently asked questions about the \Lpack{subfigure}
+% package are:
+% 
+% \begin{enumerate}
+%   \item ``My subfigures are not aligned along their bottoms. Why?''
+% 
+%     Remember! The \Lpack{subfigure} package aligns subfigure along
+%     their baselines with the subcaption (if any) sticking out above or
+%     below.  The above problem is usually due to using a \Lenv{minipage},
+%     \Lenv{tabular} or \Lenv{array} environment that, by default,
+%     places the baseline at the center of the box that it generates.
+%     If the two subfigures are different sizes, or if one subfigure is
+%     generated in some other way with its baseline not at the expected
+%     place (perhaps an |\includegraphics|), then the subfigures will be
+%     misaligned.  One solution is to use the environment options `[t]'
+%     or `[b]' to move the baseline to the top or bottom rather than the
+%     center.
+% 
+%   \item ``How can I get my figures/subfigures to line up the way I want?''
+% 
+%     A similar question, but this one is caused by extra whitespace in
+%     the source text generating spaces next to the figures, and |\par|'s
+%     generated by blanklines.  The main thing is {\it be aware\/} that 
+%     extra whitespace can move figures and subfigures around, sometimes 
+%     a lot and sometimes just a little so that they look ``wrong''.  
+%     Placing too many `\%'s at the end of the lines is better than too 
+%     few in the figure and table environments.  (See the discussion of 
+%     ``white space'' in section~\ref{sec:examples}.)
+% 
+%   \item ``I have too many subfigures for one page, How can I spread
+%           them over two or more pages and continue the numbering?''
+%     \begin{description}
+%       \item[Option 1:] Adjust the \Lcount{figure} and \Lcount{subfigure}
+%                        counters (or the \Lcount{table} and 
+%                        \Lcount{subtable} counters) as needed before and
+%                        after each figure (or table) See, for example 
+%                        \emph{Using Imported Graphics in \LaTeXe}
+%                        \cite[\textsection~30]{Reck97}.
+%       \item[Option 2:] Use the \Lpack{ccaption} package by Peter Wilson 
+%                        \cite{Wils01}.
+%       \item[Option 3:] Use the simpler \Lpack{captcont} package by
+%                        Steven Cochran \cite{Coch02}.
+%     \end{description}
+%     All of these options work well.  Of the packages, the 
+%     \Lpack{ccaption} package is bigger and offers more control over 
+%     what is done (and things to do) at the expense of being a little 
+%     harder to use.  The \Lpack{captcont} package is easier to use, 
+%     but only provides for continued floats.
+% \newpage^finalhack
+%   \item ``Why do I get a garbled caption or an error when I use
+%           square brackets?''
+% \vspace{-2pt}
+% \begin{verbatim}
+%   \subfigure[SHIFT: ``register[3] $<<=$ 3;'']{... figure text ...}
+% \end{verbatim}
+% \vspace{-12pt}
+%     Since the |\subfigure| and |\subtable| commands have optional 
+%     arguments, delimited with square brackets, before their required
+%     argument, you cannot use the `]' character at the top level of
+%     either the \meta{subcaption} or \meta{list\_entry} argument.  To
+%     overcome this problem, you must wrap all or the portion of the text
+%     containing the `]' character, in a pair of curly brackets
+%     (see \cite[\textsection~C.1.1]{Lamp94} for more detail). For example:
+% \begin{verbatim}
+%   \subfigure[SHIFT: ``register{[3]} $<<=$ 3;'']{... figure text ...}
+% \end{verbatim}
+% \vspace{-16pt}
+% \noindent
+% or
+% \vspace{-4pt}
+% \begin{verbatim}
+%   \subfigure[{SHIFT: ``register[3] $<<=$ 3;''}]{... figure text ...}.
+% \end{verbatim}
+% \vspace{-12pt}
+% \end{enumerate}
+% 
+% \section{Three Examples}
+% \label{sec:examples}
+% 
+% The easiest way to show the use of this package is to give a few
+% examples.  The two most important things to remember when working
+% with the \Lpack{subfigure} package are that (1) the subfigures are
+% aligned along their baselines (see figure~\ref{fig:layout} and
+% section~\ref{sec:customlayout}) and (2) that whitespace in the
+% \Lenv{figure} environment are significant and affect the layout.
+% 
+% The baseline of the subfigure is usually at the bottom of the
+% subfigure or (when the subcaption appears at the top) at the bottom of
+% the subcaption {\em and\/} the |\subfigcapskip| space---which is usually
+% the same as the top of the subfigure.  However sometimes, especially
+% when using the \Lenv{tabular}, \Lenv{array}, or \Lenv{minipage} 
+% environments to build the figure, the baseline appears elsewhere.  The 
+% above environments are all aligned at their center by default but that 
+% may be changed with the optional `{\bf [t]}' or `{\bf [b]}' arguments.  
+% As a last resort you can wrap all of your figures in a |\vtop| box with 
+% a |\vbox to 0pt{\null}| at the top followed by the figure.
+% 
+% If your figure is not quite centered or where you want it to be, the
+% problem is often a space character being placed to one side or the
+% other of the figure.  Some general rules of thumb are:\footnote{See
+% chapters 7 and 8 of ``The \TeX book'' \cite{Knut86} for details.}
+% \begin{itemize}\itemsep0pt
+%   \item Two end-of-lines following each other (ignoring any
+%         whitespace) are turned into a |\par| or paragraph break.
+%   \item Multiple whitespace (including the end-of-line) are
+%         compressed into a single space.
+%   \item The spaces after a macro command name ({\it e.g.\/}, |\foo|) 
+%         are ignored.
+%   \item A `\%' character at the end of the line suppresses the
+%         end-of-line and all of the spaces (if any) at the
+%         beginning of the next line.
+% \end{itemize}
+% 
+% To suppress significant extra whitespace, you can add some `\%'
+% characters at the end of each line that doesn't end with a command name.
+% This is more than is required, but extra `\%' usually don't cause a
+% problem.
+% 
+% The other case where things are not correctly centered is when the
+% subfigure uses only the label for the subcaption.  This is often the
+% case when the description for each subfigure is given in the figure
+% caption rather than in each subcaption.  In this case, the default
+% label has the form `(a)\ \ ' where the trailing space is defined by
+% |\subfiglabelskip|.  In this case the style should redefine this space
+% as `0pt' so that the label is perfectly centered (see 
+% section~\ref{sec:ex3}, below for an example).
+% 
+% \subsection{A Simple Example}
+% \enlargethispage{12pt}
+% 
+% The first example, shown in figure~\ref{3figs}, specifies |\centering|
+% \DescribeMacro{\subfigure}
+% to horizontally center the set of subfigures, and uses |\\| and 
+% some horizontal space (using |\qquad|) to control the placement of 
+% the subfigures.  Note that the alignment of the top two subfigures
+% is along the bottom of the figure portion of each.
+% 
+% \begin{figure}^
+%   \centering
+%   \fboxsep=-\fboxrule
+%   \fbox{^  
+%     \begin{minipage}{4.0in}^
+%       \vspace{10pt}^
+%       \centering
+%       \begin{minipage}{3.5in}^
+%         \subfigtopskip=3pt^
+%         \subfigcapskip=-2pt^
+%         \subfigbottomskip=5pt^
+%         \subfigcapmargin=3pt^
+%         \abovecaptionskip=5pt^
+%         \centering
+%           \subfigure[First.]{^
+%             \fbox{\hbox to 20mm{\vbox to 15mm{\vfil\null}\hfil}}}\qquad
+%           \subfigure[Second figure.]{^
+%             \fbox{\hbox to 20mm{\vbox to 10mm{\vfil\null}\hfil}}}\\[6pt]
+%           \subfigure[Third.]{\label{3figs-c}^
+%             \fbox{\hbox to 20mm{\vbox to 10mm{\vfil\null}\hfil}}}\\
+%           \caption{Three subfigures.}^
+%           \label{3figs}^
+%           \rr
+%           \vspace{15pt}^
+%           Figure~\ref{3figs} contains two top `subfigures' and
+%           figure~\ref{3figs-c}.$\!$\footnotemark
+%         \end{minipage}^
+%       \vspace{4pt}^
+%     \end{minipage}}
+%   \vspace{-5pt}^
+% \end{figure}
+% \footnotetext{In this and later boxed figures, the boxes are intended to
+% represent a portion of the page in which the figure occurs.  This is
+% usually to show the figure along with some text or to show the effect
+% of some option on multiple pages.}
+%
+% \begin{verbatim}
+%   \begin{figure}%
+%     \centering
+%     \subfigure[First.]{...}\qquad
+%     \subfigure[Second figure.]{...}\\
+%     \subfigure[Third.]{\label{3figs-c}...}%
+%     \caption{Three subfigures.}
+%     \label{3figs}
+%   \end{figure}
+%   ...
+%   Figure~\ref{3figs} contains two top `subfigures' and
+%   figure~\ref{3figs-c}.
+% \end{verbatim}
+%
+% \subsection{A More Advanced Example}
+% 
+% A second example, shown in figure~\ref{fig:ex2}, demonstrates how to
+% change the subfigure labels and have the subfigure captions printed in
+% the List-of-Figures.
+% 
+% The first |\renewcommand| changes the reference to |\thesubfigure| to
+% return both the figure number and the subfigure number separated with
+% a period.  The next two |\renewcommand|'s turn off the |\p@subfigure|
+% (since it is now included in |\thesubfigure| and adds the colon and
+% space to the subfigure label.  Later in the file, the
+% \Lcount{lofdepth} is set to ``2'' so allow the subfigure captions to
+% show and the |\listoffigures| is loaded.  Finally, the \Lenv{figure}
+% is defined and a little following text is given that refers to it.
+% 
+% \begin{verbatim}
+%   \renewcommand{\thesubfigure}{\thefigure.\arabic{subfigure}}
+%   \makeatletter
+%     \renewcommand{\p@subfigure}{}
+%     \renewcommand{\@thesubfigure}{\thesubfigure:\hskip\subfiglabelskip}
+%   \makeatother
+%   ...
+%   \setcounter{lofdepth}{2}
+%   \listoffigures
+%   ...
+%   \begin{figure}%
+%     \centering
+%     \subfigure[First.]{%
+%       \label{fig:first}%
+%       ...}%
+%     \qquad
+%     \subfigure[Second.]{%
+%       \label{fig:second}%
+%       ...}%
+%     \caption{Two subfigures.}
+%   \end{figure}                  
+%   ...
+%   See figures~\ref{fig:first} and \ref{fig:second}.
+% \end{verbatim}%
+% 
+% \begin{figure}^
+%   \centering
+%   \fboxsep=-\fboxrule
+%   \renewcommand{\thesubfigure}{\thefigure.\arabic{subfigure}}^
+%   \makeatletter
+%     \renewcommand{\p@subfigure}{}^
+%     \renewcommand{\@thesubfigure}{\thesubfigure:\hskip\subfiglabelskip}^
+%   \makeatother
+%   \fbox{^
+%     \begin{minipage}{4.0in}^
+%       \centering
+%       \begin{minipage}{3.5in}^
+%         \setcounter{lofdepth}{2}^
+%         \vspace{.1in}^
+%         \section*{ List of Figures}^
+%         \vspace{-15pt}^
+%         \hspace{40pt}\dots
+%         \vspace{3pt}^
+%         \contentsline{figure}{\numberline{\ref{fig:ex2}}^
+%                      {\ignorespaces Two subfigures.}}{\pageref{fig:ex2}}^
+%         \contentsline{subfigure}{\numberline{\ref{fig:first}}^
+%                      {\ignorespaces First.}}{\pageref{fig:first}}^
+%         \contentsline{subfigure}{\numberline{\ref{fig:second}}^
+%                      {\ignorespaces Second.}}{\pageref{fig:second}}^
+%         \hspace{40pt}\dots
+%         \vspace{8pt}^
+%       \end{minipage}^
+%     \end{minipage}}\\
+%   \fbox{^
+%     \begin{minipage}{4.0in}^
+%       \centering
+%       \begin{minipage}{3.5in}^
+%         \subfigtopskip=3pt^
+%         \subfigcapskip=-2pt^
+%         \abovecaptionskip=5pt^
+%         \vspace{10pt}^
+%         \centering
+%         \subfigure[First.]{^
+%           \label{fig:first}^
+%           \fbox{\hbox to 22mm{\vbox to 15mm{\vfil\null}\hfil}}}^
+%         \hspace{14pt}^
+%         \subfigure[Second.]{^
+%           \label{fig:second}^
+%           \fbox{\hbox to 22mm{\vbox to 15mm{\vfil\null}\hfil}}}\\
+%         \caption{Two subfigures.}^
+%         \label{fig:ex2}^
+%         \rr
+%         \vspace{15pt}^
+%         See figures~\ref{fig:first} and \ref{fig:second}.
+%         \vspace{4pt}^
+%       \end{minipage}^
+%     \end{minipage}}^
+%   \vspace{-8pt}
+% \end{figure}
+% \vspace{-12pt}^finalhack
+%
+% \subsection{An Example Without Subcaption Text}
+% \label{sec:ex3}
+% 
+% The last example, shown in figure~\ref{fig:ex3}, demonstrates a
+% \DescribeMacro{\subref}
+% \DescribeMacro{\Subref}
+% \enlargethispage{12pt}
+% commonly required format where the subfigure are just labeled and the
+% description occurs in the main caption.  This is easy to do by using
+% the ``empty'' optional caption arguments ``[\space ][\space ]''.  This
+% creates a label for the subfigure in the text, but it does not show on
+% the List-of-Figures page.  However, by default the caption may not be
+% perfectly centered, so |\subfiglabelskip| is reduced to zero points to
+% ensure that there is not any extra space hidden in the subcaption.  To
+% refer to the subfigure label within the text or the main caption, you
+% can use the |\subref| command, which is similar to the |\ref| command,
+% but does not carry the figure number.  (The |\Subref| command is the
+% same but sets it with |\subcaplabelfont|).
+%
+% \begin{figure}^
+%   \centering
+%   \fboxsep=-\fboxrule
+%   \subfiglabelskip=0pt
+%   \fbox{^
+%     \begin{minipage}{4.0in}^
+%       \centering
+%       \begin{minipage}{3.5in}^
+%         \setcounter{lofdepth}{2}^
+%         \vspace{.1in}^
+%         \section*{ List of Figures}^
+%         \vspace{-15pt}^
+%         \hspace{40pt}\dots
+%         \vspace{3pt}^
+%         \contentsline{figure}{\numberline{\ref{fig:ex3}}^
+%                      {\ignorespaces A set of four subfigures.}}^
+%                      {\pageref{fig:ex3}}^
+%         \hspace{40pt}\dots
+%         \vspace{8pt}^
+%       \end{minipage}^
+%     \end{minipage}}\\
+%   \fbox{^
+%     \begin{minipage}{4.0in}^
+%       \centering
+%       \begin{minipage}{3.5in}^
+%         \subfigtopskip=3pt^
+%         \subfigcapskip=-2pt^
+%         \subfigbottomskip=3pt^
+%         \abovecaptionskip=5pt^
+%         \vspace{7pt}^
+%         \centering
+%         \makeatletter
+%         \subfigure[][]{^
+%           \label{fig:ex3-a}^
+%           \fbox{\hbox to 1.2in{\vbox to 15mm{\null\vfil}\hfil}}}%
+%         \hspace{8pt}%
+%         \subfigure[][]{^
+%           \label{fig:ex3-b}^
+%           \fbox{\hbox to 1.2in{\vbox to 15mm{\null\vfil}\hfil}}}\\
+%         \subfigure[][]{^
+%           \label{fig:ex3-c}^
+%           \fbox{\hbox to 1.2in{\vbox to 15mm{\null\vfil}\hfil}}}%
+%         \hspace{8pt}%
+%         \subfigure[][]{^
+%           \label{fig:ex3-d}^
+%           \fbox{\hbox to 1.2in{\vbox to 15mm{\null\vfil}\hfil}}}%
+%         \caption[A set of four subfigures.]{A set of four subfigures:
+%                  \subref{fig:ex3-a} describes the first subfigure;
+%                  \subref{fig:ex3-b} describes the second subfigure;
+%                  \subref{fig:ex3-c} describes the third subfigure; and,
+%                  \subref{fig:ex3-d} describes the last subfigure.}^
+%         \label{fig:ex3}^
+%         \rr
+%         \vspace{15pt}^
+%         The text references the main figure as figure~\ref{fig:ex3}
+%         or part of it as figures~\ref{fig:ex3-a}--\subref{fig:ex3-c}.
+%         \vspace{4pt}^
+%       \end{minipage}^
+%     \end{minipage}}^
+%   \vspace{-12pt}
+% \end{figure}
+%
+% \enlargethispage{12pt}
+% \begin{verbatim}
+%   \subfiglabelskip=0pt
+%   ...
+%   \listoffigures
+%   ...
+%   \begin{figure}%
+%     \centering
+%     \subfigure[][]{%
+%       \label{fig:ex3-a}%
+%       ...figure code...}%
+%     \hspace{8pt}%
+%     \subfigure[][]{%
+%       \label{fig:ex3-b}%
+%       ...figure code...}\\
+%     \subfigure[][]{%
+%       \label{fig:ex3-c}%
+%       ...figure code...}%
+%     \hspace{8pt}%
+%     \subfigure[][]{%
+%       \label{fig:ex3-d}%
+%       ...figure code...}%
+%     \caption[A set of four subfigures.]{A set of four subfigures:
+%              \subref{fig:ex3-a} describes the first subfigure;
+%              \subref{fig:ex3-b} describes the second subfigure;
+%              \subref{fig:ex3-c} describes the third subfigure; and,
+%              \subref{fig:ex3-d} describes the last subfigure.}%
+%     \label{fig:ex3}%
+%   \end{figure}
+%   ...
+%   The text references the main figure as figure~\ref{fig:ex3} or part
+%   of it as figures~\ref{fig:ex3-a}--\subref{fig:ex3-c}.
+% \end{verbatim}%
+% 
+% \section{Customization}
+% \label{sec:customization}
+%
+% The following sections describe the internal parameters used by the
+% \Lpack{subfigure} package to define the layout of the subfigures
+% or tables, as well as the labels and captions the accompany them.
+% In addition, adjustments to the entries on a ``List-of'' page and
+% the addition of new \Lenv{float} environments are described.
+% 
+% Adjusting these values allows extensive customization of the
+% \Lpack{subfigure} package.  If you want to customize the package, an
+% alternative to actually changing the code is to create a a file called
+% \Lfile{subfigure.cfg} and place it anywhere that \LaTeX\ will look for
+% classes or packages.  Any changes placed in the file will affect the
+% predefined parameters and you can override the default settings.  Any
+% user options will be processed after this file is loaded.
+% 
+% In order to change the major commands in the \Lpack{subfigure} package
+% with this configure file, you will need to use the |\AtEndOfPackage|
+% command to defer that portion of your changes until the end of the
+% package.
+% 
+% \subsection{Changing the Layout}
+% \enlargethispage{15pt}^finalhack
+% \label{sec:customlayout}
+%
+% \noindent
+% The layout of the |\subfigure| or |\subtable| is defined by several
+% internal values which may be changed to customize appearance of the
+% object.  The following illustration shows the relationship of these
+% values.  Figure~\ref{fig:layout-A} shows the standard layout with the
+% caption following the figure.  The figure is vertically centered with
+% |\subfigtopskip| of space added above, then |\subfigcapskip| of 
+% space is added below the figure followed by the subcaption and, 
+% finally, |\subfigbottomskip| of space added at the bottom.  The baseline
+% is located at the bottom of the figure.  It is along this baseline that 
+% adjacent subfigure boxes are aligned.  Figure~\ref{fig:layout-C} shows 
+% the case where the caption precedes the figure ({\it ie.\/}, 
+% |\subfiguretopcaptrue| or |\subtabletopcaptrue|).  In this case the
+% various boxes and glue are reversed,$\!$\footnote{The \cmd{\subfigtopskip}
+% and \cmd{\subfigbottomskip} actually follow the \Lif{figuretopcap}
+% and \Lif{tabletopcap} flags, so that the actual top spacing used is
+% \cmd{\subfigtopskip} when the flags are {\bf false} and 
+% \cmd{\subfigbottomskip} when they are {\bf true}.}
+% except that the |\subfigcapskip| is increased by |\subfigcaptopadj|.
+% The other two cases, figures~\ref{fig:layout-B} and
+% \subref{fig:layout-D}, show the cases where there is no caption.  Note
+% that the |\subfigcapskip| is left out when there is no caption.
+% Note also, for all of these cases, that the space at the top of the
+% subfigure is automatically removed for items that are the first box 
+% in a vertical list or other than the first box in a horizontal list.  
+% This allows tighter packing of the subfigures and the full use of 
+% the page or \Lenv{minipage}.
+% 
+% Each of these values |\subfigtopskip|, |\subfigcapskip|, and
+% |\subfigbottomskip|; as well as |\subfigcapmargin| and
+% |\subfiglabelskip| (the latter not shown in figure~\ref{fig:layout})
+% may be changed from their defaults (see
+% table~{\PrintIfDefined{tab:defaults}{\ref{tab:defaults}}{\ref{tab:spacing}}})
+% to adjust the subfigure for the current layout style.  In addition,
+% they may all assume negative values, which in some cases may solve
+% problems with the layout.  Even though these constants are ``skips'',
+% only the last two (|\subfigcapmargin| and |\subfiglabelskip|) will
+% shrink or expand since the others assume their natural size in the
+% subfigure box and are fixed at that size.
+%
+% \begin{figure}[p]
+%   \subfigtopskip=10pt^
+%   \subfigcapskip=4pt^
+%   \subfigbottomskip=12pt^
+%   \abovecaptionskip=3pt^
+%   \centering
+%   \fboxsep=-\fboxrule
+%   \newbox{\tempbox}
+%   \newdimen{\tempdima}
+%   \newdimen{\tempdimb}
+%   \setbox\tempbox\hbox{
+%   $\stackrel{\longleftrightarrow}{\cs{subfigcapmargin}}$}
+%   \setbox\tempbox\hbox{\cs{subfigcapmargin}}
+%   \tempdimb \wd\tempbox
+%   \setbox\tempbox\hbox to \tempdimb{^
+%     \kern -.5mm\hbox{$\leftarrow$}\kern -.5mm^
+%     \leaders\hrule width1pt height2.6pt depth-2.2pt\hfill
+%     \kern -.13mm$\rightarrow$}
+%   \tempdima \wd\tempbox
+%   \advance\tempdima 1mm
+%   \tempdimb \tempdima
+%   \multiply\tempdimb -2
+%   \advance\tempdimb 4.5in
+%   \advance\tempdimb -4mm
+%   \subfigure[Standard layout {[FIGBOTCAP] or [TABBOTCAP]}.]{
+%     \label{fig:layout-A}
+%     \fbox{\parbox{4.5in}{
+%       \vspace{1pt}
+%       \hbox to 4.5in{
+%         \hspace{1.5in}
+%         $\left\updownarrow\vrule width0pt height11pt depth1pt\right.$
+%         (\cs{subfigtopskip})
+%         \hfil}
+%       \fbox{\vbox to 45pt{
+%         \vskip1pt
+%         \vskip\baselineskip
+%         \vfil
+%         \hbox to 4.5in{
+%           \hfil
+%           {\scshape subfigure} or {\scshape subtable}
+%           \hfil}
+%         \vfil
+%         \vbox to 0pt{%
+%           \vss
+%           \hbox to 4.5in{
+%             \hspace{9pt}
+%             {\small Baseline}
+%             \hfil}}
+%         \vspace{1pt}}}
+%       \hbox to 4.5in{
+%         \hspace{1.5in}
+%         $\left\updownarrow\vrule width0pt height11pt depth1pt\right.$
+%         \cs{subfigcapskip}
+%         \hfil}
+%       \hbox to 4.5in{
+%         \hbox to\tempdima{
+%           \vbox to 20pt{
+%             \vfil
+%             \copy\tempbox
+%             \vfil
+%             \hbox{\kern .5mm\cs{subfigcapmargin}}
+%             \vfil}}
+%         \fbox{\vbox to 20pt{
+%           \vfil
+%           \hbox to\tempdimb{
+%             \hfil
+%             {\scshape subcaption}
+%             \hfil}
+%           \vfil}}
+%         \hbox to\tempdima{
+%           \vbox to 20pt{
+%             \vfil
+%             \copy\tempbox
+%             \vfil
+%             \hbox{\kern .5mm\cs{subfigcapmargin}}
+%             \vfil}}
+%         \hfill}
+%       \hbox to 4.5in{
+%         \hspace{1.5in}
+%         $\left\updownarrow\vrule width0pt height11pt depth1pt\right.$
+%         \cs{subfigbottomskip}
+%         \hfil}}}}
+%
+%   \subfigure[Standard layout {[FIGBOTCAP] or [TABBOTCAP]} with no
+%              caption present.]{
+%     \label{fig:layout-B}
+%     \fbox{\parbox{4.5in}{
+%       \vspace{1pt}
+%       \hbox to 4.5in{
+%         \hspace{1.5in}
+%         $\left\updownarrow\vrule width0pt height11pt depth1pt\right.$
+%         (\cs{subfigtopskip})
+%         \hfil}
+%       \fbox{\vbox to 45pt{
+%         \vskip1pt
+%         \vskip\baselineskip
+%         \vfil
+%         \hbox to 4.5in{
+%           \hfil
+%           {\scshape subfigure} or {\scshape subtable}
+%           \hfil}
+%         \vfil
+%         \hbox to 4.5in{
+%           \hspace{9pt}
+%           {\small Baseline}
+%           \hfil}
+%         \vspace{1pt}}}
+%       \hbox to 4.5in{
+%         \hspace{1.5in}
+%         $\left\updownarrow\vrule width0pt height11pt depth1pt\right.$
+%         \cs{subfigbottomskip}
+%         \hfil}}}}
+%
+%   \subfigure[Reversed layout {[FIGTOPCAP] or [TABTOPCAP]}.]{
+%     \label{fig:layout-C}
+%     \fbox{\parbox{4.5in}{
+%       \vspace{1pt}
+%       \hbox to 4.5in{
+%         \hspace{1.5in}
+%         $\left\updownarrow\vrule width0pt height11pt depth1pt\right.$
+%         (\cs{subfigbottomskip})
+%         \hfil}
+%       \hbox to 4.5in{
+%         \hbox to\tempdima{
+%           \vbox to 20pt{
+%             \vfil
+%             \copy\tempbox
+%             \vfil
+%             \hbox{\kern -.5mm\cs{subfigcapmargin}}
+%             \vfil}}
+%         \fbox{\vbox to 20pt{
+%           \vfil
+%           \hbox to\tempdimb{
+%             \hfil
+%             {\scshape subcaption}
+%             \hfil}
+%           \vfil}}
+%         \hbox to\tempdima{
+%           \vbox to 20pt{
+%             \vfil
+%             \box\tempbox
+%             \vfil
+%             \hbox{\kern -.5mm\cs{subfigcapmargin}}
+%             \vfil}}
+%         \hfill}
+%       \hbox to 4.5in{
+%         \hbox to 0pt{
+%           \hspace{9pt}
+%           \smash{\raisebox{-6.5pt}{\small Baseline}}
+%           \hss}
+%         \hspace{1.5in}
+%         $\left\updownarrow\vrule width0pt height11pt depth1pt\right.$
+%         \cs{subfigcapskip}$+$\cs{subfigcaptopadj}
+%         \hfil}
+%       \fbox{\vbox to 45pt{
+%         \vfil
+%         \hbox to 4.5in{
+%           \hfil
+%           {\scshape subfigure} or {\scshape subtable}
+%           \hfil}
+%         \vfil}}
+%       \hbox to 4.5in{
+%         \hspace{1.5in}
+%         $\left\updownarrow\vrule width0pt height11pt depth1pt\right.$
+%         \cs{subfigtopskip}
+%         \hfil}}}}
+%
+%   \subfigure[Reversed layout {[FIGTOPCAP] or [TABTOPCAP]} with no
+%             caption present.]{
+%     \label{fig:layout-D}
+%     \fbox{\parbox{4.5in}{
+%       \vspace{1pt}
+%       \hbox to 4.5in{
+%         \hbox to 0pt{
+%           \hspace{9pt}
+%           \smash{\raisebox{-6.5pt}{\small Baseline}}
+%           \hss}
+%         \hspace{1.5in}
+%         $\left\updownarrow\vrule width0pt height11pt depth1pt\right.$
+%         (\cs{subfigbottomskip})
+%         \hfil}
+%       \fbox{\vbox to 45pt{
+%         \vfil
+%         \hbox to 4.5in{
+%           \hfil
+%           {\scshape subfigure} or {\scshape subtable}
+%           \hfil}
+%         \vfil}}
+%       \hbox to 4.5in{
+%         \hspace{1.5in}
+%         $\left\updownarrow\vrule width0pt height11pt depth1pt\right.$
+%         \cs{subfigtopskip}
+%         \hfil}}}}
+%   \caption{Subfigure and subtable layout.}
+%   \label{fig:layout}
+% \end{figure}
+%
+% \subsection{Adjusting the Subcaption}
+% \label{sec:customlabel}
+% 
+% The subfigure label has three forms.  The first is the one that
+% \DescribeMacro{\subref}
+% \DescribeMacro{\Subref}
+% appears in the text when you use the |\ref| command; the second is the
+% one that appears on the List-of-Figures page and may be used to
+% reference individual subfigures within the figure and subfigure captions,
+% using the |\subref| or |\Subref| commands; and the third is the fully
+% formatted version used under the subfigure as the label part of the caption.
+% 
+% The |\ref| command yields the string, saved by the |\label| command,
+% composed by concatenating the value of |\p@subfigure| to
+% |\thesubfigure|.  By default these are defined by: ``|\thefigure|''
+% and ``|(\alph{subfigure})|'', respectively, which produces a reference
+% of the figure number followed by the subfigure letter in parentheses.
+% 
+% The label used on the List-of-Figures page may be retrieved with the
+% |\subref| command (this value is saved by the |\label| command when
+% the |\label| command is used within the scope of the subfigure.  This is
+% the string defined by |\@@thesubfigure|, which, by default, is the
+% value ``|\thesubfigure|'' (or ``|(\alph{subfigure})|'').
+%
+% The label used with the subcaption text is defined by the internal
+% value |\@thesubfigure|, which, by default, has the
+% value\hfil\null\linebreak
+% \centerline{``\cmd{\thesubfigure}\cmd{\hskip}\cmd{\subfiglabelskip}''.}
+% It is prefixed by |\subcapsize\subcaplabelfont| and followed by the
+% subcaption text which is set with |\subcapfont|.
+%
+% \changes{v2.1.4}{30 Apr 2002}{Changed the label and caption defaults
+% from \cmd{\rmfamily}\cmd{\mdseries}\cmd{\upshape} to 
+% \cmd{\familydefault}\cmd{\seriesdefault} \cmd{\shapedefault}.}
+% Note that by default |\subcaplabelfont| has the default value
+% ``|{\familydefault| |\seriesdefault\shapedefault}|''.  The package
+% options described in table~\ref{tab:options} allow you to set these
+% values for your paper.  If you update the |\@subfigure| command, you
+% should include any separator character or spacing between the label
+% and the start of the subcaption text.  The default is
+% |\hskip\subfiglabelskip| placed after the label.
+% 
+% Finally, the text of the subcaption is prefixed by |\subcapfont| which
+% may be changed using the set of nine lower-case font options described
+% in table~\ref{tab:options}\@.$\!$\footnote{It is also prefixed by
+% \cmd{\subcapsize} as part of the overall label and caption.} \ One other
+% way of changing the layout of the lapel and caption is by replacing
+% the |\@makesubfigurecaption| or |\@makesubtablecaption| command (which
+% by default are identical).
+% 
+% \subsection{Adjusting the Subfigure and Subtable Counters}
+% \label{sec:counters}
+%
+% To create some special effects, such as continuing the subfigure
+% \DescribeMacro{\c@figure}
+% \DescribeMacro{\c@table}
+% numbering across several pages as part of one long continued figure,
+% you can back off the number change from a caption with the command:
+% \begin{quote}
+%   |\addtocounter{|\Lcount{figure}|}{|-1|}|
+% \end{quote}
+% within the \Lenv{figure} environment.  In addition, you can adjust for 
+% previous subfigures or subtables with one of the following (here
+% we assume that two subfigures or subtables appeared in the previous
+% pages:
+% \begin{quote}
+%   |\addtocounter{|\Lcount{subfigure}|}{|2|}|
+% \end{quote}
+% \vspace{-5pt}
+% \noindent
+% or
+% \vspace{-5pt}
+% \begin{quote}
+%   |\addtocounter{|\Lcount{subtable}|}{|2|}|.
+% \end{quote}
+% 
+% Two other things that may be necessary, if you switch between figures
+% and tables in the same \Lenv{figure} environment ({\it e.g.\/}, by
+% changing |\@captype|, see section~\ref{sec:float_env}), is to add the
+% command |\listsubcaptions| following the last subfigure when the
+% subfigure is using the \Lopt{TOPCAP} or \Lopt{topcap} option.  This is
+% necessary to flush the list of subcaptions before the next
+% \Lenv{subfigure} or \Lenv{subtable}.  This also may be necessary if
+% you switch between |\figuretopcaptrue| and |\figuretopcapfalse|.  The
+% other thing that may be required in some cases, is to reset the
+% subfigure counter by entering:
+% \begin{quote}
+%   |\setcounter{|\Lcount{subfigure}|}{|0|}|
+% \end{quote}
+% \noindent
+% This should only be necessary if you are dynamically switching between
+% different \Lpack{subfigure} options, or changing the |\@captype|,
+% within a float environment.
+% 
+% \subsection{Modifying the List-of-Figures and List-of-Tables}
+% \label{sec:listof}
+% 
+% To generate a List-of-Figures, or List-of-Tables, page you need to 
+% \DescribeMacro{\l@subfigure}
+% \DescribeMacro{\@dottedxxxline}
+% add a |\listoffigures| or |\listoftables| command where
+% you want the list to appear.  These
+% commands also cause the appropriate captions and subcaptions to be
+% written to a file with the extensions \Lfile{lof} (\Lfile{lot}).  If
+% you want the subcaption text to appear in the List-of-Figures or
+% List-of-Tables page, you need to change the value of the counter
+% \Lcount{lofdepth} (\Lcount{lotdepth}) counter from its default of `1'.
+% For example, to have the \Lpack{subfigure} subcaptions to appear on
+% the List-of-Figures, add the following to the preamble of your
+% paper:
+% \begin{quote}
+%   |\setcounter{|\Lcount{lofdepth}|}{2}|
+% \end{quote}
+%
+% If you want to change how the subcaption appears on the ``List-of''
+% pages you can change its format by redefining the |\l@subfigure|
+% or |\l@subtable| command.  Usually you will want to use the
+% |\@dottedxxxline| command
+% \PrintIfDefined{sec:dl}{(section~\ref{sec:dl},
+% page~\pageref{sec:dl})\space}{} to help with the formatting.  For
+% instance the default value of |\l@subfigure| is:
+%
+% \begin{verbatim}
+%   \newcommand{\l@subfigure}{%
+%     \@dottedxxxline{\ext@subfigure}{2}{3.8em}{2.5em}}
+% \end{verbatim}
+% \vspace{-10pt}
+%
+% \noindent
+% The arguments of the |\@dottedxxxline| command are:
+% \begin{quote}
+%   \begin{enumerate}
+%     \itemsep -\parsep
+%     \item \underline{\smash{\textsf{Type}}}.  The usual values are
+%           : \Lfile{lof} or \Lfile{lot}.  The internal
+%           values |\ext@subfigure| and |\ext@subtable| stand for
+%           these extensions.
+%     \item \underline{\textsf{Level}}.  By default this is `2'
+%           for the \Lcount{subfigure} and \Lcount{subtable}.  If the level
+%           is greater than \Lcount{\meta{Type}depth} (where
+%           \underline{\smash{\meta{Type}}} is the first argument, above),
+%           then no line is produced.  
+%     \item \underline{\textsf{Indent}}.  Total indentation
+%           from the left margin. 
+%     \item \underline{\textsf{Numwidth}}.  Width of box for the
+%           label number if the \underline{\textsf{Title}} has a
+%           |\numberline| command.   This is also the amount of extra
+%           indentation added to second and later lines of a multiple
+%           line entry.    
+%     \item \underline{\textsf{Title}}.  Contents of entry ({\it e.g.\/} the
+%           \meta{list\_entry} or \meta{subcaption}).
+%     \item \underline{\smash{\textsf{Page}}}.  The page number of the
+%           figure or table.
+%   \end{enumerate}
+% \end{quote}
+%
+% \noindent
+% The final two arguments, \underline{\textsf{title}} and
+% \underline{\smash{\textsf{page}}}, are automatically appended to the
+% value of |\l@subfigure| (and symmetrically for |\l@subtable|).
+%
+% For example, to change the amount of space reserved for the label 
+% (if, for instance, you have a lot of figures and the and you need extra
+%  space for the figure number) you could widen the 
+% \texttt{2.5em} space for the label to \texttt{4.0em}:
+% \begin{verbatim}
+%   \makeatletter
+%     \renewcommand{\l@subfigure}{%
+%       \@dottedxxxline{\ext@subfigure}{2}{3.8em}{4.0em}}
+%   \makeatother
+% \end{verbatim}
+%
+% \subsection{Aligning Captions Above the Figure}
+% \label{sec:custom-position}
+%
+% \begin{figure}^
+%   \figuretopcaptrue
+%   \subfigtopskip=-5pt^
+%   \subfigcapskip=-3pt^
+%   \subfigbottomskip=2pt^
+%   \centering
+%   \caption{Caption position option: [\Lopt{figtopcap}] with changing
+%            settings of \cmd{\subfiguretopcap}.}^
+%   \label{fig:position3}^
+%   \subfiguretopcapfalse
+%   \subfigure[First caption.]{\hbox to 1.5in{\hfil\null}}^
+%   \hspace{0.2in}^
+%   \subfigure[Second long, long, long, long, 
+%              long, long, long, long caption.]{^
+%     \hbox to 1.5in{\hfil\null}}\\[5pt]
+%   \subfiguretopcaptrue
+%   \subfigure{\fbox{\hbox to 1.5in{\vbox to 15mm{\vfil\null}\hfil}}}^
+%   \hspace{0.2in}^
+%   \subfigure{\fbox{\hbox to 1.5in{\vbox to 10mm{\vfil\null}\hfil}}}^
+%   \setcounter{subfigure}{0}
+% \end{figure}
+%
+% \noindent
+% For unbalanced sets of captions placed, above the figures or tables,
+% \DescribeMacro{\subfiguretopcaptrue}
+% \DescribeMacro{\subfiguretopcapfalse}
+% \DescribeMacro{\figuretopcaptrue}
+% the caption portion looks unbalanced, such as the ones in 
+% figure~\ref{fig:position2}.  If you prefer to have the caption portion
+% aligned along the top rather than the bottom, as shown in 
+% figure~\ref{fig:position3}, you can use the
+% \Lopt{figtopcap} option as in figure~\ref{fig:position2}, but use
+% two ``empty'' subfigures to position the captions followed by 
+% two more containing the figures, but without captions.  The code
+% to produce this example is: 
+%
+% \begin{verbatim}
+%   \begin{figure}%
+%   \centering
+%     \caption{Caption position option: [\Lopt{figtopcap}] with changing
+%              settings of \subfiguretopcap.}%
+%     \label{fig:position3}%
+%     \subfiguretopcapfalse
+%     \subfigure[First caption.]{\hbox to 1.5in{\hfil\null}}%
+%     \hspace{0.2in}%
+%     \subfigure[Second long, long, long, long, 
+%                long, long, long, long caption.]{%
+%       \hbox to 1.5in{\hfil\null}}\\[5pt]
+%     \subfiguretopcaptrue
+%     \subfigure{\fbox{\hbox to 1.5in{\vbox to 15mm{\vfil\null}\hfil}}}%
+%     \hspace{0.2in}%
+%     \subfigure{\fbox{\hbox to 1.5in{\vbox to 10mm{\vfil\null}\hfil}}}%
+%   \end{figure}
+% \end{verbatim}
+% 
+% This example makes use of one of the four flags that control how the
+% caption labels are numbered and where the subcaption appears.  Two are
+% for |\subfigure| and two for |\subtable|.  The first of each set tell
+% the |\subfigure| or |\subtable| command that the related main caption
+% appears before or after the set of subfloats.  |\figuretopcaptrue| and
+% |\tabletopcaptrue| indicate that the caption appears before and
+% |\figureotopcapfalse| and |\tabletopcapfalse| indicate that the it
+% appears after.  The other two flags force the subcaption to be placed
+% before (|\subfiguretopcaptrue| and |\subtabletopcaptrue|) or after the
+% actual subfigure or subtable (|\subfiguretopcapfalse| and
+% |\subtabletopcapfalse|).
+% 
+% There are two difficulties with this approach, first, you need to keep
+% changing the setting of |\subfiguretopcap|, and second, if you have
+% more than one row of subfigures or subtables, then you will need to
+% fiddle with the counter (see section~\ref{sec:counters} to keep the
+% numbers straight.  The reason that this format is not supported by the
+% \Lpack{subfigure} package is that you need information about all of
+% the subfigure or subtables on a row to box the figures correctly and
+% this information is not available locally.
+% 
+% \subsection{Adding Subfloats to New Environments}
+% \enlargethispage{15pt}^finalhack
+% \label{sec:customfloat}
+% 
+% It is easy to add a \Lenv{subfloat} command to a new environment.  For
+% instance, let us assume we have a new \Lenv{float}
+% environment\footnote{For information on creating new float
+% environments, see any of the following: \cite{Lamp01}, \cite{Wils01}
+% or \cite{Ling01}.} called ``\Lenv{map}'' in which various maps are
+% displayed and for which a List-of-Maps is to be generated in the
+% contents section.  If we wanted to have \Lenv{submaps}, then we could
+% define the following:
+% 
+% \vspace{-4pt}
+% \begin{verbatim}
+%   \makeatletter
+%     \newcounter{submap}[map]
+%     \newif\ifmaptopcap
+%     \newif\ifsubmaptopcap
+%     \newcommand{\p@submap}{\themap}
+%     \newcommand{\thesubmap}{(\alph{submap})}
+%     \newcommand{\@thesubmap}{\themap\hskip\subfiglabelskip}
+%     \newcommand{\@@thesubmap}{\themap}
+%     \newcommand{\ext@submap}{\ext@map}
+%     \newcommand{\l@submap}{\@dottedxxxline{\ext@submap}{2}{3.8em}{2.5em}}
+%     \newcounter{lomdepth}
+%     \setcounter{lomdepth}{1}          
+%     \newcommand{\submap}{\subfigure}
+%     \newcommand{\@makesubmapcaption}{\@makesubfigurecaption}
+%     \ifhyperrefloaded
+%       \newcommand\theHsubmap{\themap.\arabic{submap}}
+%       \newcommand{\toclevel@submap}{1}
+%     \fi
+%   \makeatother
+% \end{verbatim}
+% \vspace{-14pt}
+% 
+% The first and last lines make the character `@' act like a letter
+% between them and therefore it may be part of a command name used there.
+% First a new counter for the \Lpack{submap} is created along with two
+% conditionals that define where the position ({\i.e.\/}, above or
+% below) of the main caption and subcaption is with respect to the
+% submap. Then the four commands that define the \Lpack{submap} label
+% are created.  The first two, |\p@submap| and |\thesubmap| define the
+% standard label returned by |\ref|.  The next, |\@thesubmap| gives the 
+% label as shown under or over the submap with the subcaption and the 
+% last, |\@@thesubmap| shows how the label is displayed on the List-of-Maps
+% and/or referenced with the |\subref| command.
+% 
+% The next four lines show where and how to print to the List-of-Maps
+% page: |\ext@submap| gives the List-of-Maps file extension; |\l@submap|
+% shows how to print the submap line on the List-of-Maps page; and the last
+% two lines show how to create and set the counter \Lcount{lomdepth}, which
+% controls how many caption levels are shown on the page when it is printed.
+% 
+% The next two lines create the |\submap| and |\@makesubmapcaption|
+% commands by making them the same as the |\subfigure| and
+% |\@makesubfigurecaption| commands.
+% 
+% The last four lines conditionally create the |\theHsubmap| and
+% |\toclevel@submap| commands which are used by the \Lpack{hyperref}
+% Package to name the item and to control the presence of the item
+% bookmark.
+%
+% Of course, this is where the \Lpack{ccaption} package \cite{Wils01}
+% comes in handy since it will do all of the above with one command:
+%
+% \vspace{-4pt}
+% \begin{verbatim}
+%   \newsubfloat{map}
+% \end{verbatim}
+% \vspace{-10pt}
+%
+% 
+% \subsection{Interaction with Other Parts of \LaTeX}
+% In the following sections, the interaction of the \Lpack{subfigure}
+% package with other parts of \LaTeX\ is documented.  These ``other
+% parts'' may be either part of the the \LaTeX\ base or contributed
+% packages or classes. 
+% 
+% \subsubsection{\TeX 's ``Mouth''}
+% The most important thing to remember when laying out your figures
+% within a \Lenv{float} environment is that spaces take room.  If you 
+% have an extra space between two figures, then they will be separated 
+% by a little bit.
+%
+% \TeX 's state varies as it reads a line of text from a file.  It
+% ignores some spaces and carriage-returns and converts others to
+% |\space|'s or |\par|'s.  You can use a `|%|' to insure that you only
+% have real spaces where you want them.  To understand which spaces
+% are significant, you should read chapters~7 and 8 of the \TeX book
+% \cite{Knut86}.  However, the main source of unexpected
+% extra spacing is carriage-returns which are turned in to |\space|'s.
+% As a general rule: if in doubt, then add a `|%|' immediately after
+% the last significant character of the line.
+%
+% \subsubsection{The Float Environment}
+% \label{sec:float_env}
+% 
+% Although the \Lpack{subfigure} package was designed to work within a
+% \Lenv{float} environment ({\it e.g.\/}, \Lenv{figure} or
+% \Lenv{table}), it can be used outside with the following two caveats:
+% \begin{enumerate}\itemsep=5pt
+%   \item You need to define |\@captype|.  This is usually either
+%     \Lenv{figure} or \Lenv{table}.  For example add the following
+%     to the preamble of your document:
+%     \begin{verbatim}
+%       \makeatletter
+%         \newcommand{\change_cap_type}[1]{%
+%           \renewcommand{\@captype}{#1}}
+%       \makeatother
+%     \end{verbatim}\vspace{-15pt}
+%     Then use the new command to switch in the middle of a given
+%     \Lenv{float} environment, say from ``figure'' to ``table'' with 
+%     the command |\change_cap_type{table}|.
+%   \item If you want to define references using |\label|, then you also
+%     need to redefine the \LaTeX\ internal |\@currentlabel|.  For
+%     example: 
+%     \begin{verbatim}
+%       \makeatletter
+%         \edef\@currentlabel{\p@subfigure\thesubfigure}
+%       \makeatother
+%     \end{verbatim}\vspace{-15pt}
+%     before using the |\label| command.  NOTE: Many other commands change 
+%     |\@currentlabel|, including all of the ``section'' commands,
+%     |\caption|, \Lenv{equation}'s, and \Lenv{theorem}'s.
+% \end{enumerate}
+% 
+% \subsubsection{Interaction with Other Packages}
+%
+% \changes{v2.1}{22 Jan 2001}{Added \Lpack{ccaption} reference.}
+%
+% \changes{v2.1}{11 Oct 1996}{Revised subsubsection on use with
+% the caption package and extended this section to talk about the
+% \Lpack{captcont} package.} 
+%
+% \noindent
+% The only packages that directly interact with the \Lpack{subfigure}
+% package are the \Lpack{caption}/\Lpack{caption2} packages by
+% H.A. Sommerfeldt \cite{Somm95a,Somm95b}, the \Lpack{ccaption} package
+% and \Lpack{tocloft} packages by Peter Wilson \cite{Wils01,Wils01B},
+% and the \Lpack{captcont} package by S.D. Cochran \cite{Coch02}.
+% 
+% \paragraph{\Lpack{caption}}
+% 
+% If you load the \Lpack{subfigure} package {\bf before} the
+% \Lpack{caption} package, then the \Lpack{caption} package will detect
+% that fact and will change the |\subcapsize| when the options
+% \Lopt{scriptsize}, \ldots, \Lopt{Large} are specified (overriding such
+% options used when loading the \Lpack{subfigure} package).  In
+% addition, it redefines |\@thesubfigure| and |\@thesubtable| to use
+% |\captionlabelfont|.  It also uses an older layout of
+% |\@thesubsubfigure| and |\@thesubtable|.
+% 
+% The best plan is to load the \Lpack{caption} package {\bf before} the
+% \Lpack{subfigure} package.  In addition, you should try to coordinate
+% the ``look and feel'' of the two packages.  This limits you a little
+% since, although the two packages have similar options, the options in
+% the \Lpack{caption} package do not combine the same way.  You can pick
+% one from each column:\par\null
+% 
+% \DeleteShortVerb{\|}
+% \noindent\hfil\begin{tabular}{*{4}{p{17mm}|}p{17mm}}
+%   \rr \Lopt{normal}, \Lopt{hang}, \Lopt{center}, \Lopt{centerlast} &
+%   \rr \Lopt{nooneline}                                             &
+%   \rr \Lopt{scriptsize}, \Lopt{footnotesize}, \Lopt{small}, 
+%       \Lopt{normalsize}, \Lopt{large}, \Lopt{Large}                &
+%   \rr \Lopt{up}, \Lopt{it}, \Lopt{sl}, \Lopt{sc}, \Lopt{md}, 
+%       \Lopt{bf}, \Lopt{rm}, \Lopt{sf}, \Lopt{tt}                   &
+%   \rr (Other options---see package.)
+% \end{tabular}
+% \MakeShortVerb{\|}
+% \vskip14pt
+% 
+% \paragraph{\Lpack{caption2}}
+% 
+% This package acts similarly to the \Lpack{caption} package.  If you
+% specify the \Lopt{subfigure} it will try to support the subfigure
+% package, if you specify \Lopt{nosubfigure} than it will not.  If
+% neither option is specified, than load order matters.  If loaded
+% {\bf before} the \Lpack{subfigure} package, than it will not try to
+% support the package and if loaded {\bf after} it will.
+% 
+% Again, the best plan is to load the \Lpack{caption2} package 
+% {\bf before} the \Lpack{subfigure} package, and specify the
+% \Lopt{nosubfigure} option.  In addition, you should try to coordinate
+% the ``look and feel'' of the two packages.  This limits you a little
+% since, although the two packages have similar options, they are not
+% exactly the same; however, most of the good looking combinations are
+% easily available.  You can pick one from each column:\par\null
+% 
+% \DeleteShortVerb{\|}
+% \noindent\hfil\begin{tabular}{*{5}{p{17mm}|}p{17mm}}
+%   \rr \Lopt{nosubfigure}, \Lopt{subfigure}          &
+%   \rr \Lopt{normal}, \Lopt{hang}, \Lopt{center}, \Lopt{centerlast}
+%       \Lopt{flushleft}, \Lopt{indent}               &
+%   \rr \Lopt{oneline}, \Lopt{nooneline}              &
+%   \rr \Lopt{scriptsize}, \Lopt{footnotesize}, \Lopt{small}, 
+%       \Lopt{normalsize}, \Lopt{large}, \Lopt{Large} &
+%   \rr \Lopt{up}, \Lopt{it}, \Lopt{sl}, \Lopt{sc}, \Lopt{md}, 
+%       \Lopt{bf}, \Lopt{rm}, \Lopt{sf}, \Lopt{tt}^,
+%^      \Lopt{UP}, \Lopt{IT}, \Lopt{SL}, \Lopt{SC}, \Lopt{MD}, 
+%^      \Lopt{BF}, \Lopt{RM}, \Lopt{SF}, \Lopt{TT}
+%                                                     &
+%   \rr (Other options---see package.)
+% \end{tabular}
+% \MakeShortVerb{\|}
+%
+% \paragraph{\Lpack{ccaption}}
+% 
+% The \Lpack{ccaption} package provides for all sorts of extensions and 
+% style options for \Lenv{float} |\captions|.  It also provides for the
+% use of the |\caption| command outside of a \Lenv{float} environment and
+% a mechanism for creating new types of \Lenv{float} environments.
+%
+% In order to use it with the \Lpack{subfigure} package, you need to 
+% pass the \Lopt{subfigure} option when loading it:
+% 
+% \begin{quote}
+%   |\usepackage|[subfigure]\{ccaption\}
+% \end{quote}
+%
+% \paragraph{\Lpack{tocloft}}
+% 
+% The \Lpack{tocloft} package gives the user the ability to easily
+% configure the ``List-of'' pages.  It takes a \Lopt{subfigure} option
+% so it doesn't matter which package is loaded first.
+%
+% \begin{quote}
+%   |\usepackage|[subfigure]\{tocloft\}
+% \end{quote}
+%
+% \paragraph{\Lpack{hyperref}}
+% \label{sec:hyperref}
+%
+% \changes{v2.1.2}{26 Mar 2002}{Improved coordination with the hyperref
+% package.}
+%
+% \changes{v2.1.1}{15 Mar 2002}{Added coordination with the hyperref
+% package. There is some interaction with the \cmd{label} command as
+% pointed out by Martin.Bernreuther@po.uni-stuttgart.de.}
+% 
+% The \Lpack{hyperref} package extends the functionality of all of the
+% \LaTeX\ cross-referencing commands to produce hypertext links.  In
+% addition, it provides new commands to allow the user to insert
+% hypertext links.  When used with the \Lpack{subfigure} package, they
+% may be loaded in any order; however, it might be better if the 
+% \Lpack{subfigure} package is loaded {\bf first}.
+% 
+% To more fully support the \Lpack{hyperref} package, the |\label|
+% \DescribeMacro{\subfloat@label}
+% command, when used within the scope of the |\subfigure| or |\subtable|
+% commands takes an optional argument (note the parentheses rather than
+% square brackets):
+% \vspace{-2pt}
+% \begin{quote}
+%   |\label|\parg{bookmark}\marg{key}
+% \end{quote}
+% \vspace{-2pt}
+%
+% \noindent
+% We would like to use the subcaption as the bookmark text, but the
+% |\label| command is often processed before the subcaption.  Therefore,
+% this optional argument may be used to supply this information if
+% desired.  By default a bookmark field of the form
+% ``Subfigure\textvisiblespace 1(a)'' will be generated.
+% \footnote{If the document class is \Lpack{report} or other class that
+% defines \cmd{\thechapter}, than the default bookmark field will be of the
+% form ``Subfigure\textvisiblespace 1 \textvisiblespace 1(a)''.}
+% 
+% 
+% \paragraph{\Lpack{captcont}}
+% 
+% This package may be used with or without the \Lpack{subfigure} package
+% \DescribeMacro{\caption}
+% \DescribeMacro{\caption*}
+% \DescribeMacro{\captcont}
+% \DescribeMacro{\captcont*}
+% to extend figure or table numbering across multiple pages.  This
+% package knows about how the \Lpack{subfigure} package interacts with
+% the List-of-Figures and List-of-Tables and does the right thing when
+% used with \Lenv{subfigure}'s and \Lenv{subtable}'s.
+% 
+% The \Lpack{captcont} package may be loaded either {\bf before} or 
+% {\bf after} the \Lpack{subfigure} and it has four options:
+% \Lopt{figbotcap} or \Lopt{figtopcap} and \Lopt{tabbotcap} or
+% \Lopt{tabtopcap}.  These are the same as the \Lpack{subfigure}
+% options.  When the \Lpack{captcont} package is used with the
+% \Lpack{subfigure} package, only the \Lpack{subfigure} options matter.
+% Any given with the \Lpack{captcont} package are ignored.
+% 
+% The thing to remember about the \Lpack{captcont} package is that if
+% you normally place the |\caption| {\bf before} your subfigures or
+% subtables ({\it i.e.\/}, \Lopt{figtopcap} or \Lopt{tabtopcap}
+% respectively), then you start a series of continued \Lenv{figure}'s
+% with the |\caption[*]| and use |\contcapt[*]| in each of the rest of
+% the figures.  If you {\bf follow} your subfigures or subtables with a
+% caption ({\it i.e.\/}, \Lopt{figbotcap} or \Lopt{tabbotcap}
+% respectively), then you start the series with the |\contcapt[*]| in
+% the first \Lenv{figure} environment and all but the last where you use
+% the |\caption[*]|.
+% 
+% \subsubsection{Creating a \Lenv{subfigure} Environment}
+%
+% \changes{v2.1.4}{24 Apr 2002}{Added \cmd{\label} command handling
+% example in the \Lenv{subfloat} environment, thanks to Lars Clausen.}
+%
+% Some people have wanted to use the \Lenv{verbatim} environment within
+% \DescribeEnv{subfloat}
+% the \cmd{\subfigure} command and run into the restriction that the
+% \Lenv{verbatim} environment cannot be nested.  To include verbatim text in
+% a subfigure, you can define a new environment, in which verbatim
+% text may be enclosed, and which calls the \cmd{\subfigure} command.
+% \vspace{-2pt}
+% \begin{verbatim}
+%   \newbox\subfigbox             % Create a box to hold the subfigure.
+%   \makeatletter
+%     \newenvironment{subfloat}%  % Create the new environment. 
+%       {\def\caption##1{\gdef\subcapsave{\relax##1}}%
+%        \let\subcapsave=\@empty  % Save the subcaption text.
+%        \let\sf@oldlabel=\label
+%        \def\label##1{\xdef\sublabsave{\noexpand\label{##1}}}%
+%        \let\sublabsave\relax    % Save the label key.
+%        \setbox\subfigbox\hbox
+%          \bgroup}%              % Open the box...
+%         {\egroup                % ... close the box and call \subfigure.
+%        \let\label=\sf@oldlabel
+%        \subfigure[\subcapsave]{\box\subfigbox}}%
+%   \makeatother
+% \end{verbatim}
+% \enlargethispage{12pt}^finalhack
+% \noindent
+% The following is an example of this \Lenv{subfloat} environment begin
+% used to produce figure~\ref{fig:verbatim}.  Note that you need to
+% supply the width of the \Lenv{verbatim}; here we use a section using a
+% \Lenv{minipage}).
+% \begingroup
+%   \newbox\subfigbox
+%   \makeatletter
+%     \newenvironment{subfloat}^
+%       {\def\caption##1{\gdef\subcapsave{\relax##1}}^
+%        \let\subcapsave=\@empty
+%        \let\sf@oldlabel=\label
+%        \def\label##1{\xdef\sublabsave{\noexpand\label{##1}}}^
+%        \let\sublabsave\relax
+%        \setbox\subfigbox\hbox
+%          \bgroup}^
+%         {\egroup
+%          \let\label=\sf@oldlabel
+%          \subfigure[\subcapsave]{\box\subfigbox\sublabsave}}^
+%   \makeatother
+%   \begin{figure}
+%     \centering
+%     \subfigtopskip=0pt^
+%     \subfigcapskip=0pt^
+%     \subfigbottomskip=0pt^
+%     \begin{subfloat}^
+%       \begin{minipage}{2.1in}
+%         \begin{verbatim}
+%      This text  should be
+%   verbatim.     And   not
+%    messed with in any way  !
+%         \end{verbatim}
+%       \end{minipage}^
+%       \caption{First subcaption.}^
+%       \label{fig:verbone}
+%     \end{subfloat}^
+%     \hspace{10pt}^
+%     \begin{subfloat}^
+%       \begin{minipage}{2.1in}
+%         \begin{verbatim}
+%     This text (also)should be
+%   verbatim.     And   not
+%    messed with in any way  !
+%         \end{verbatim}
+%       \end{minipage}^
+%       \caption{Second subcaption.}^
+%       \label{fig:verbtwo}
+%     \end{subfloat}
+%     \caption{Subfigures~\subref{fig:verbone} and \subref{fig:verbtwo} 
+%              show examples of using verbatim text in a subfigure.}
+%     \label{fig:verbatim}
+%   \end{figure}
+% \endgroup
+% \begin{quote}\
+%   |\begin{figure}| \\
+%   |  \centering|
+%   |  \begin{subfloat}%| \\
+%   |    \begin{minipage}{2.1in}| \\
+%   |      \begin{verbatim}| \\
+%   |   This text  should be| \\
+%   |verbatim.     And   not| \\
+%   | messed with in any way  !| \\
+%   |      \end{verbatim}| \\
+%   |    \end{minipage}%| \\
+%   |    \caption{First subcaption.}%| \\
+%   |    \label{fig:verbone}| \\
+%   |  \end{subfloat}%| \\
+%   |  \qquad| \\
+%   |  \begin{subfloat}%| \\
+%   |    \begin{minipage}{2.1in}| \\
+%   |      \begin{verbatim}| \\
+%   |  This text (also)should be| \\
+%   |verbatim.     And   not| \\
+%   | messed with in any way  !| \\
+%   |      \end{verbatim}| \\
+%   |    \end{minipage}%| \\
+%   |    \caption{Second subcaption.}%| \\
+%   |    \label{fig:verbtwo}| \\
+%   |  \end{subfloat}| \\
+%   |  \caption{Subfigures~\subref{fig:verbone} and \subref{fig:verbtwo}| \\
+%   |           show examples of using verbatim text in a subfigure.}| \\
+%   |  \label{fig:verbatim}| \\
+%   |\end{figure}|
+% \end{quote}
+%
+%
+% \StopEventually{^
+% \section{Acknowledgements}
+%
+% This package was originally written to automatically line up some
+% figure boxes and place labels under them for a paper that I was
+% writing.  I thought it useful and uploaded it to the internet
+% community and later to CTAN.  Many people have asked questions or
+% given comments which collectively have changed and improved the
+% usefulness of this package.
+% 
+% A few people have contributed more than most and I want to thank
+% them publicly, but in no particular order:
+% 
+% \begin{itemize}\itemsep=-2pt^finalhack
+%   \item{\bf Harald Axel Sommerfeldt} for the work that he did to adjust
+%     his \Lpack{caption} and \Lpack{caption2} packages as necessary to
+%     support the \Lpack{subfigure} package when they are loaded together.
+%   \item {\bf Peter Wilson} for the work that he did to adjust his
+%     \Lpack{ccaption} package (and other packages) as necessary to support
+%     the \Lpack{subfigure} package when they are loaded together.
+%   \item {\bf William `bil' L. Kleb} for his extensive list of errors and
+%     suggestions to this documentation.
+%   \item{\bf Axel Reichert} for his request for a `hang' caption style 
+%     since the subcaptions tend to have a short width.  And, for his 
+%     request for some way of referencing the individual subfigures in 
+%     the main caption without the figure number.
+%   \item{\bf Harald Harders} for his suggestion of the \cmd{\subref}
+%     command and modifying \cmd{\label} within the \Lpack{subfigure} 
+%     package to save local references to the subfigures that are often
+%     needed.
+%   \item{\bf Heiko Oberdiek} and {\bf James A. Bednar} for their help 
+%     with coexisting with the \Lpack{hyperref} and \Lpack{html} packages.
+%     Also, {\bf Ingele Roelens} for pointing out some further compatibility
+%     problems when using the \Lpack{hyperref} package with PDF\LaTeX.
+%   \item{\bf Frederic Darboux} for searching out and finding several
+%     incompatibilities with other packages.
+%   \item{\bf David Kastrup} for the code to check for class or packages
+%     using \cmd{\let} on \cmd{\end@float} and the like.
+% \end{itemize}
+%
+% \newpage^finalhack
+%
+% \begin{thebibliography}{6}^\itemsep=-2pt^finalhack
+% \itemsep=0.8pt
+% \bibitem{Somm95a}^
+%   Harald Axel Sommerfeldt,
+%   \emph{The \Lpack{caption} Package},
+%   Version 1.4b, 1995/04/05.
+%   (Available from CTAN as file \texttt{caption.dtx}.)
+% \bibitem{Somm95b}^
+%   Harald Axel Sommerfeldt,
+%   \emph{The \Lpack{caption} Package},
+%   Version 2.0(beta), 1995/10/09.
+%   (Available from CTAN as file \texttt{caption2.dtx}.)
+% \bibitem{Wils01}^
+%   Peter Wilson,
+%   \emph{The \Lpack{ccaption} Package},
+%   Version 1.0a, 2001/08/15.
+%   (Available from CTAN as file \texttt{ccaption.dtx}.)
+% \bibitem{Wils01B}^
+%   Peter Wilson,
+%   \emph{The \Lpack{tocloft} Package},
+%   Version 2.2, 2001/14/17.
+%   (Available from CTAN as file \texttt{ccaption.dtx}.)
+% \bibitem{Raht02}^
+%   Sebastian Rahtz,
+%   \emph{Hypertext marks in \LaTeX},
+%   2002/04/05/.
+%   (Available from CTAN as file \texttt{hyperref.dtx}.)
+% \bibitem{Coch02}^
+%   Steven Douglas Cochran,
+%   \emph{The \Lpack{captcont} Package},
+%   2002/02/14/.
+%   (Available from CTAN as file \texttt{captcont.dtx}.)
+% \bibitem{Reck97}^
+%   Keith Reckdahl,
+%   \emph{Using Imported Graphics in \LaTeXe},
+%   1997/12/15.
+%   (Available from CTAN as file \texttt{epslatex.pdf})
+% \bibitem{Lamp94}^
+%   Leslie Lamport,
+%   \emph{LaTeX User's Guide and Reference Manual}, 2nd edition,
+%   Addison-Wesley, Reading, Massachusetts,
+%   1994.
+% \bibitem{Knut86}^
+%   Donald Ervin Knuth,
+%   \emph{The \TeX book},
+%   Addison-Wesley, Reading, Massachusetts,
+%   1986.
+% \bibitem{Lamp01}^
+%   Leslie Lamport, Frank Mittelbach, and Johannes Braams,
+%   \emph{Standard Document Classes for \LaTeX\ version 2e}
+%   Version 1.4e, 2001/04/01.
+%   (Available from CTAN as file \texttt{classes.dtx}.)
+% \bibitem{Ling01}^
+%   Anselm Lingnau,
+%   \emph{An Improved Environment for Floats.}
+%   Version 1.3d, 2001/11/08.
+%   (Available from CTAN as file \texttt{float.dtx}.)
+% \end{thebibliography}}
+%
+% \newpage^finalhack
+%
+% \section{The Code}
+% \iffalse
+%<*package>
+% \fi
+% \subsection{Identification}
+%
+% \changes{v2.1}{23 Jan 2002}{Updated the release date.}
+%
+% \changes{v2.1}{11 Oct 1996}{Removed compatibility with \LaTeX2.09.}
+%
+% Announce the \Lpack{subfigure} package.
+%
+%    \begin{macrocode}
+\NeedsTeXFormat{LaTeX2e}[1994/12/01]
+\ProvidesPackage{subfigure}[2002/03/15 v2.1.5 subfigure package]
+%    \end{macrocode}
+%
+% \subsection{Check for Nasty Classes}
+% \changes{v2.1.5}{29 Apr 2005}{At the request of David Kastrup, added
+% code to check for classes that use \cmd{\let} on \cmd{\end@figure}
+% and similar; and to print a warning and fix the problem if detected.}
+%
+% \begin{macro}{\sf@floatfix}
+%
+% Some ``broken'' document classes use \cmd{\let} on \cmd{\end@figure}
+% and similar, which are used as hooks in the end-processing of, in 
+% this case, figures.  The following code, courtesy of David Kastrup
+% (dak\@gnu.org) fixes the problem and prints a warning.
+%    \begin{macrocode}
+\def\sf@floatfix#1#2{%
+  \ifx#1#2%
+    \ifx#1\@undefined\else
+      \PackageWarningNoLine{subfigure}{%
+Your document class has a bad definition^^J
+of \string#1, most likely^^J
+\string\let\string#1=\string#2^^J
+which has now been changed to^^J
+\string\def\string#1{\string#2}^^J
+because otherwise subsequent changes to \string#2^^J
+(like done by several packages changing float behaviour)^^J
+can't take effect on \string#1.^^J
+Please complain to your document class author}%
+      \def#1{#2}%
+    \fi
+  \fi}
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+\begingroup
+\def\next#1#2{%
+    \endgroup
+  \sf@floatfix\endfigure\end@float
+  \sf@floatfix\endtable\end@float
+  \sf@floatfix#1\end@dblfloat
+  \sf@floatfix#2\end@dblfloat}
+\expandafter\next\csname endfigure*\expandafter\endcsname
+  \csname endtable*\endcsname
+%    \end{macrocode}
+%
+% \end{macro}
+%
+% \subsection{Check for the \Lpack{hyperref} Package}
+%
+% \changes{v2.1.4}{02 Jul 2002}{Added the \cmd{\theHsubfigure} and 
+% \cmd{\theHsubtable} commands to avoid duplicate names in a PDF
+% file when using the \Lpack{hyperref} Package.}
+%
+% \changes{v2.1.3}{17 Apr 2002}{Changed \cmd{\newcommand} to 
+% \cmd{\providecommand} to allow other packages to set the
+% \cmd{\toclevel@subfigure} and \cmd{\toclevel@subtable}.}
+%
+% \changes{v2.1.2}{26 Mar 2002}{Changed to simplify the interaction
+% with the hyperref package and avoid loading nameref.}
+%
+% \changes{v2.1.1}{15 Mar 2002}{Added coordination with the hyperref
+% package.}
+% 
+% \begin{macro}{\toclevel@subfigure}
+% \begin{macro}{\toclevel@subtable}
+%
+% After every package is loaded, check to see if the \Lpack{hyperref}
+% package was among them, if so, then make sure that the |\ifhyperrefloaded|
+% switch is set so that the |\subfloat@label| command will write the correct
+% form of the |\newlabel| to the \Lfile{aux} file.  Also define the 
+% ``TOC level'' of the subfigure and subtable.  We fix these at one since
+% the default figure and table levels are zero.  Finally, we add definitions
+% for |\theHsubfigure| and |\theHsubtable| to avoid duplicate names in
+% the PDF file when using the \Lpack{hyperref} Package.
+% 
+%    \begin{macrocode}
+\newif\ifhyperrefloaded
+\AtBeginDocument{%
+  \@ifpackageloaded{hyperref}{%
+    \hyperrefloadedtrue
+    \providecommand\theHsubfigure{\thefigure.\arabic{subfigure}}%
+    \providecommand\theHsubtable{\thetable.\arabic{subtable}}%
+    \providecommand{\toclevel@subfigure}{1}%
+    \providecommand{\toclevel@subtable}{1}}{}}
+%    \end{macrocode}
+%
+% \end{macro}
+% \end{macro}
+%
+% \subsection{Initialization and Shared Constants}
+% \begin{macro}{\ifsubcaphang}
+% \begin{macro}{\ifsubcapcenter}
+% \begin{macro}{\ifsubcapcenterlast}
+% \begin{macro}{\ifsubcapnooneline}
+% \begin{macro}{\ifsubcapraggedright}
+%
+% \changes{v2.1}{23 Jan 2002}{Added.}
+% 
+% These five flags control how the style in which the subfloat label and
+% caption are printed.  The \Lif{subcaphang} flag is first checked and
+% if true, causes the subcaption label to be typeset separately and
+% placed to the upper left of the space available for the subcaption.
+% The \Lif{subcapcenter} flag centers each line of the subcaption.  The
+% \Lif{subcapcenterlast} centers the last line of the subcaption (this
+% is a {\sc nop} if the \Lif{subcapcenter} flag is true.  If the
+% \Lif{subcapnooneline} is false, then the label plus the text of the
+% subcaption are centered.  If it is true, than the other flags may
+% cause something different to happen.  The purpose of this flag,
+% generally, is to cause a single line to be left justified when there
+% is a very short caption.  The last flag is the \Lif{subcapraggedright}
+% which typsets its text without lining up the right side.  This is
+% useful for the subcaptions since they are usually short and prone to
+% generating hyphenated words unless allowed to be ragged.
+%
+%    \begin{macrocode}
+\newif\ifsubcaphang
+\newif\ifsubcapcenter
+\newif\ifsubcapcenterlast
+\newif\ifsubcapnooneline
+\newif\ifsubcapraggedright
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+%
+% \noindent
+% Table~\ref{tab:defaults} gives the initial (default) values of the
+% internals that are used to control the placement and printing of the
+% subfloats.
+%
+% \changes{v2.1.4}{30 Apr 2002}{Changed the label and caption defaults
+% from \cmd{\rmfamily}\cmd{\mdseries}\cmd{\upshape} to 
+% \cmd{\familydefault}\cmd{\seriesdefault} \cmd{\shapedefault}.}
+% \DeleteShortVerb{\|}
+% \MakeShortVerb{\/}
+% \begin{table}^
+%   \def\pz{\phantom{0}}^
+%   \def\M#1{\vspace*{#1}}
+%   \caption[Default values of the Subfigure constants.]%
+%           {Default values of the Subfigure constants.  These
+%           values are set during the options processing (see 
+%           section~\ref{sec:startup}).}^
+%   \label{tab:defaults}^
+%   \vspace{5pt}^
+%   \begin{minipage}{4.8in}^
+%     \setlength\tabcolsep{5pt}^
+%     \rr
+%     \begin{tabular}{|l|c|p{1.3in}|p{1.963in}|}\hline
+%       \multicolumn{1}{|c|}{\raisebox{-1.5ex}{\bf Command}}
+%                 & \multicolumn{1}{c|}{\bf \Lopt{loose}}
+%                           & \multicolumn{1}{c|}{\bf \Lopt{tight}}
+%                                     &
+%                   \multicolumn{1}{c|}{\raisebox{-1.5ex}{\bf Description}}
+%                                               \\
+%                 & \multicolumn{1}{c|}{\bf Option}
+%                           & \multicolumn{1}{c|}{\bf Option}
+%                                     &         \\ \hline
+%       \raisebox{-2.1ex}{\cmd{\subfigtopskip}}
+%                 & \raisebox{-2.1ex}{10 pt}
+%                           & \M{0.6ex}\hfil 5 pt
+%                                     & \rr Length from the top of the subfloat
+%                                       box to the beginning of the figure.
+%                                               \\ \hline 
+%       \raisebox{-1.5ex}{\cmd{\subfigcapskip}}
+%                 & \raisebox{-1.5ex}{10 pt}
+%                           & \M{0.0ex}\hfil 0 pt
+%                                    & \rr Length between the baseline of the
+%                                      subcaption and the figure.
+%                                               \\ \hline
+%       \raisebox{-2.1ex}{\cmd{\subfigcaptopadj}}
+%                 & \raisebox{-2.1ex}{\pz0 pt}
+%                           & \M{0.4ex}\hfil 3 pt
+%                                    & \rr Length added to /\subfigcapskip/
+%                                      when the caption is above the figure.
+%                                               \\ \hline
+%       \raisebox{-2.1ex}{\cmd{\subfigbottomskip}}
+%                 & \raisebox{-2.1ex}{10 pt}
+%                           & \M{0.7ex}\hfil 5 pt
+%                                     & \rr Length from the bottom of the
+%                                       subcaption to the bottom of the
+%                                       subfloat.
+%                                               \\ \hline
+%       \raisebox{-3.5ex}{\cmd{\subfigcapmargin}}
+%                 & \raisebox{-3.5ex}{10 pt}
+%                           & \M{2.0ex}\hfil 0 pt 
+%                                     & \rr Indentation of the subcaption from
+%                                       the sides of the subfloat box.  (This
+%                                       should always be positive or zero.)
+%                                               \\ \hline
+%       \raisebox{-1.5ex}{\cmd{\subfiglabelskip}}
+%                 & \raisebox{-1.5ex}{0.33 em}
+%                           & \raggedleft 0.33 em plus 0.07 em minus 0.03 em
+%                                     & \rr Space between the label and the
+%                                       text of the subcaption.
+%                                               \\ \hline
+%       \raisebox{-1.5ex}{\cmd{\subcapsize}}
+%                 & \multicolumn{2}{c|}{\raisebox{-1.5ex}{footnotesize}}
+%                                     & \rr Size for the text portion of the
+%                                       subcaption font.
+%                                               \\ \hline
+%       \raisebox{-1.5ex}{\cmd{\subcaplabelfont}}
+%                 & \multicolumn{2}{c|}{\raisebox{-1.5ex}{(Default family, series and shape)}}
+%                                     & \rr Font for the label portion of the
+%                                       subcaption.
+%                                               \\ \hline
+%       \raisebox{-1.5ex}{\cmd{\subcapfont}}
+%                 & \multicolumn{2}{c|}{\raisebox{-1.5ex}{(Default family, series and shape)}}
+%                                     & \rr Font for the text portion of the
+%                                       subcaption.
+%                                               \\ \hline
+%     \end{tabular}
+%   \end{minipage}
+% \end{table}
+% \DeleteShortVerb{\/}
+% \MakeShortVerb{\|}
+%
+% \begin{macro}{\subfigtopskip}
+% \begin{macro}{\subfigcapskip}
+% \begin{macro}{\subfigcaptopadj}
+% \begin{macro}{\subfigbottomskip}
+%
+% \changes{v2.1}{22 Jan 1997}{Reduced the space to the values separating
+% subfloat caption and figure box and its top and bottom.  Added 
+% \cmd{\subfigcaptopadj} in case it is needed in styles that with figure
+% subcaptions on the bottom and table subcaptions on the top.}
+% 
+% See figure~\ref{fig:layout} for details of where these take effect.
+% Generally the |\subfigtopskip| appears between the figure or table and
+% the edge of the box.  |\subfigbottomskip| appears between the
+% subcaption and the edge of the box.  If the subcaption follows the
+% figure or table, then |\subfigcapskip| is placed before it along with
+% ({\it i.e.\/}, in addition to) a |\baselineskip|.  If the subcaption
+% comes before the figure or table then |\subfigcapskip| is placed 
+% after it along with |\subfigcaptopadj|.  Although several of the above
+% are {\tt skip}'s they are typset at their base size and will not
+% shrink or expand.
+%
+%    \begin{macrocode}
+\newskip\subfigtopskip     \subfigtopskip    =  5\p@
+\newskip\subfigcapskip     \subfigcapskip    =  0\p@
+\newdimen\subfigcaptopadj  \subfigcaptopadj  =  3\p@
+\newskip\subfigbottomskip  \subfigbottomskip =  5\p@
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% 
+% \begin{macro}{\subfigcapmargin}
+%
+% \changes{v2.1}{22 Jan 1997}{Reduced \cmd{\subfigcapmargin} to zero.}
+% \begin{macro}{\subfiglabelskip}
+%
+% \changes{v2.1}{23 Jan 2002}{Added to replace the space between the
+% subcaption label and text.}
+%
+% These two values are used to typeset the subcaption The width of the
+% subcaption is the same as that of its associated figure or table
+% width.  |\subfigcapmargin| is placed on either side of the caption and
+% |\subfiglabelskip| is placed between the subcaption label and the
+% subcaption text.  Depending on the manner of typesetting the
+% subcaption, this may shrink or expand.  By default, the
+% |\subfigcapmargin| is zero to allow as much room of the subcaption as
+% possible.
+%
+%    \begin{macrocode}
+\newdimen\subfigcapmargin  \subfigcapmargin  =  \z@
+\newskip\subfiglabelskip   \subfiglabelskip  =  0.33em plus 0.07em minus 0.03em
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+%
+% \begin{macro}{\subcapsize}
+% 
+% |\subcapsize| is used to set the size of both the subcaption label and
+% the subcaption text.  The options allow it to be set to any of the
+% following: |\scriptsize|, |\footnotesize|, |\small|, |\normalsize|,
+% |\large|, |\Large|.  It may also be set to |\tiny|, |\LARGE|, |\huge|
+% or |\HUGE| by hand if need be for special instances.
+% 
+%    \begin{macrocode}
+\newcommand*{\subcapsize}{}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\subcaplabelfont}
+% \begin{macro}{\subcaplabelfont@f}
+%
+% \changes{v2.1.4}{30 Apr 2002}{Changed the \cmd{\subcaplabelfont@f} 
+% default value to \cmd{\familydefault}.}
+%
+% \begin{macro}{\subcaplabelfont@c}
+%
+% \changes{v2.1.4}{30 Apr 2002}{Changed the \cmd{\subcaplabelfont@c} 
+% default value to \cmd{\seriesdefault}.}
+%
+% \begin{macro}{\subcaplabelfont@s}
+%
+% \changes{v2.1.4}{30 Apr 2002}{Changed the \cmd{\subcaplabelfont@s} 
+% default value to \cmd{\shapedefault}.}
+%
+% The |\subcaplabelfont| is composed of three parts, the font family,
+% such as roman, san serif or typewriter; the font series, such as
+% medium or bold; and the font shape, such as italic, slanted, small
+% caps or upright.  These are combined along with the |\subcapsize| to
+% select the font for the subcaption label.
+%
+%    \begin{macrocode}
+\newcommand*{\subcaplabelfont}{%
+  \subcaplabelfont@f\subcaplabelfont@c\subcaplabelfont@s}
+\newcommand*{\subcaplabelfont@f}{\fontfamily{\familydefault}\selectfont}
+\newcommand*{\subcaplabelfont@c}{\fontseries{\seriesdefault}\selectfont}
+\newcommand*{\subcaplabelfont@s}{\fontshape{\shapedefault}\selectfont}
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+%
+% \begin{macro}{\subcapfont}
+%
+% \changes{v2.1}{11 Dec 1996}{Added.}
+%
+% \begin{macro}{\subcapfont@f}
+%
+% \changes{v2.1.4}{30 Apr 2002}{Changed the \cmd{\subcapfont@f} default
+% value to \cmd{\familydefault}.}
+%
+% \begin{macro}{\subcapfont@c}
+%
+% \changes{v2.1.4}{30 Apr 2002}{Changed the \cmd{\subcapfont@s} default
+% value to \cmd{\seriesdefault}.}
+%
+% \begin{macro}{\subcapfont@s}
+%
+% \changes{v2.1.4}{30 Apr 2002}{Changed the \cmd{\subcapfont@s} default
+% value to \cmd{\shapedefault}.}
+%
+% The |\subcapfont| is the same as the |\subcaplabelfont| except that it
+% is applied to the subcaption text rather than the label.
+% 
+%    \begin{macrocode}
+\newcommand*{\subcapfont}{%
+  \subcapfont@f\subcapfont@c\subcapfont@s}
+\newcommand*{\subcapfont@f}{\fontfamily{\familydefault}\selectfont}
+\newcommand*{\subcapfont@c}{\fontseries{\seriesdefault}\selectfont}
+\newcommand*{\subcapfont@s}{\fontshape{\shapedefault}\selectfont}
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+%
+% \begin{macro}{\ifsf@tight}
+% 
+% Create an `if' to control whether the check for the top-of-page is
+% performed in the |\@subfloat| command.  This is necessary to preserve
+% the look-and-feel of the older versions of this package.  The
+% \Lopt{loose} option turns this flag off (no check) and the
+% \Lopt{tight} option turns it on (do the check).
+%
+%    \begin{macrocode}
+\newif\ifsf@tight          \sf@tighttrue
+%    \end{macrocode}
+% \end{macro}
+%
+% \subsection{Subfigure Constants}
+% \label{sec:fig_constants}
+% \begin{macro}{\c@subfigure}
+%   Subfigure counter.
+%
+%    \begin{macrocode}
+\newcounter{subfigure}[figure]
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\iffiguretopcap}
+%
+% \changes{v2.1}{23 Jan 2002}{Added check for existing 
+% \cmd{\figuretopcaptrue} so that this package will work with the
+% captcont package.}
+%
+% \changes{v2.1}{22 Jan 1997}{Added to control label numbering for
+% captions at the top vs.\ at the bottom.}
+%
+% \begin{macro}{\ifsubfiguretopcap}
+%
+% \changes{v2.1}{15 Nov 1997}{Added to control placement of the
+% subcaption at the top vs.\ at the bottom.}
+% 
+% These control how the \Lpack{subfigure} \Lcount{caption} numbering is
+% obtained and where the figure caption and subcaption should appear
+% relative to the body of the \Lenv{subfigure}.  The boolean
+% |\iffiguretopcap| indicates that the \Lcount{caption} counter is
+% current and there is no need to increment it.  The boolean
+% |\ifsubfiguretopcap| indicates that the subcaption will be printed
+% above the body portion of the \Lpack{subfigure}.
+% 
+%    \begin{macrocode}
+\@ifundefined{figuretopcaptrue}{\newif\iffiguretopcap}{}
+\newif\ifsubfiguretopcap
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+%
+% \begin{macro}{\p@subfigure}
+% \begin{macro}{\thesubfigure}
+% \begin{macro}{\@thesubfigure}
+% \begin{macro}{\@@thesubfigure}
+%
+% \changes{v2.1}{23 Jan 2002}{Added.}
+% 
+% The |\thesubfigure| command defines the label for text references
+% (prefixed by |\p@subfigure|).  This is the value saved by the |\label|
+% and retrieved by the |\ref| commands.  In the case of a
+% conflict between this package and a prior one over the definition
+% of |\thesubfigure|, this package will win.  This is insured by first
+% specifying the |\providecommand| for the |\thesubfigure| and then
+% |\renewcommand|.  This is necessary because some packages incorrectly
+% insert this command.
+% 
+% The |\@thesubfigure| value defines the the caption label complete 
+% offset from the beginning of the caption text.  It is used in the
+% subfigure caption and normally takes the label portion as defined
+% by |\thesubfigure|.
+% 
+% Finally, the value defined by |\@@thesubfigure| is also saved by the
+% |\label| command and may be retrieved with the |\subref| command.  This is
+% often useful in the subcaption or caption text when referring to the
+% individual subfigures.  This value is also the one that is used in
+% the List-of-Figures.
+% 
+% These multiple ``views'' of the \Lcount{subfigure} counter allow a
+% style to define the way the label looks in the figure, for example
+% ``{\bf (a)}\textvisiblespace''.  Then references to it with |\ref|
+% have the form ``2.1a'', and with |\subref| ``(a)'' (This latter form
+% is also used to label references in the List-of-Figures section).
+% 
+%    \begin{macrocode}
+\let\p@subfigure=\thefigure
+\providecommand*{\thesubfigure}{(\alph{subfigure})}
+\renewcommand*{\thesubfigure}{(\alph{subfigure})}
+\newcommand*{\@thesubfigure}{\thesubfigure\hskip\subfiglabelskip}
+\newcommand*{\@@thesubfigure}{\thesubfigure}
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+%
+% \begin{macro}{\ext@subfigure}
+% \begin{macro}{\l@subfigure}
+%
+% \changes{v2.1}{11 Oct 1996}{Changed the indentation of the 
+% List-of-Figures line from 2.3em to 2.5em.}
+%
+% \begin{macro}{\c@lofdepth}
+% 
+% These values define how and if the subfigure caption will appear in a
+% List-of-Figures file.  |\ext@subfigure| defines the default subfigure
+% file extension (which is the same as |\ext@figure| --- the
+% List-of-Figures file, \Lcount{lof}).  |\l@subfigure|
+% shows how to print an \Lfile{lof} subfigure line and defines that line
+% at level two.  |\c@lofdepth| is an extension of the Table-of-Contents
+% depth value and controls the depth to which captions in the file are
+% printed to the actual page.  By default, the subcaptions are not.
+%
+%    \begin{macrocode}
+\let\ext@subfigure=\ext@figure
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+\newcommand*{\l@subfigure}{%
+  \@dottedxxxline{\ext@subfigure}{2}{3.8em}{2.5em}}
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+\newcounter{lofdepth}
+\setcounter{lofdepth}{1}
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+%
+% \subsection{Subtable Constants}
+% This section is symmetric to section~\ref{sec:fig_constants}.
+% \begin{macro}{\c@subtable}
+%   Subtable counter.
+%
+%    \begin{macrocode}
+\newcounter{subtable}[table]
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\iftabletopcap}
+%
+% \changes{v2.1}{23 Jan 2002}{Added check for existing 
+% \cmd{\tabeltopcaptrue} so that this package will work with the
+% captcont package.}
+%
+% \changes{v2.1}{22 Jan 1997}{Added to control label numbering for
+% captions at the top vs.\ at the bottom.}
+%
+% \begin{macro}{\ifsubtabletopcap}
+% \changes{v2.1}{15 Nov 1997}{Added to control placement of the
+% subcaption at the top vs.\ at the bottom.}
+% 
+% These define the form that the subcaption prefix is generated.  The
+% boolean |\iftabletopcap| works with the numbering of the subcaption
+% label and uses the current \Lcount{table} counter value if true and
+% the next value if false.  The boolean |\ifsubtabletopcap| sets the
+% subcaption before the main body of the subfigure, if true; and, after
+% it, if false.
+%
+%    \begin{macrocode}
+\@ifundefined{tabletopcaptrue}{\newif\iftabletopcap}{}
+\newif\ifsubtabletopcap
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+%
+% \begin{macro}{\p@subtable}
+% \begin{macro}{\thesubtable}
+% \begin{macro}{\@thesubtable}
+% \begin{macro}{\@@thesubtable}
+%
+% \changes{v2.1}{23 Jan 2002}{Added.}
+% 
+% The |\thesubtable| command defines the label for text references
+% (prefixed by |\p@subtable|), while the |\@thesubtable| command defines
+% what appears in the subcaption under or over the subtable.  The
+% |\@@thesubtable| command defines an alternative reference to the label
+% for use in the subcaption and caption of the table (see the discussion
+% above for the equivalent figure values).  The latter form is also used
+% for the List-of-Tables label.  As above, the |\thesubtable| command is
+% twice specified
+%
+%    \begin{macrocode}
+\let\p@subtable=\thetable
+\providecommand*{\thesubtable}{(\alph{subtable})}
+\renewcommand*{\thesubtable}{(\alph{subtable})}
+\newcommand*{\@thesubtable}{\thesubtable\hskip\subfiglabelskip}
+\newcommand*{\@@thesubtable}{\thesubtable}
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+%
+% \begin{macro}{\ext@subtable}
+% \begin{macro}{\l@subtable}
+%
+% \changes{v2.1}{11 Oct 1996}{Changed the indentation of the 
+% List-of-Tables line from 2.3em to 2.5em.}
+%
+% \begin{macro}{\c@lotdepth}
+% 
+% These define how and if the subtable caption will appear in a
+% List-of-Tables file.  |\ext@subtable| defines the default subtable
+% file extension (which is the same as |\ext@table| --- the
+% List-of-Tables file, \Lcount{lot}).  |\l@subtable| shows how to print
+% an \Lfile{lot} subtable line and defines that line at level two.
+% |\c@lotdepth| is an extension of the table-of-contents depth value and
+% controls the depth to which captions in the file are printed to the
+% actual page.  By default, the subcaptions are not printed.
+%
+%    \begin{macrocode}
+\let\ext@subtable=\ext@table
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+\newcommand*{\l@subtable}{%
+  \@dottedxxxline{\ext@subtable}{2}{3.8em}{2.5em}}
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+\newcounter{lotdepth}
+\setcounter{lotdepth}{1}
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+%
+% \subsection{Declaration of Options}
+% 
+% The following options allow general compatibility with the
+% \Lpack{caption} and \Lpack{caption2} packages by H.A. Sommerfeldt
+% \cite{Somm95a}.  There are six different subcaption layout options
+% supported: \Lopt{normal}, \Lopt{hang} (or \Lopt{isu}), \Lopt{center},
+% \Lopt{centerlast} (or \Lopt{anne}), \Lopt{nooneline} and
+% \Lopt{raggedright}.  The \Lopt{hang} subcaption may be combined with
+% the \Lopt{center} or \Lopt{centerlast} options. The \Lopt{nooneline}
+% may be combined with any of the other options (but it's effect is
+% negated or looks bad with either of \Lopt{center} or \Lopt{centerlast}
+% unless the \Lopt{hang} option is also used).  \Lopt{raggedright}
+% overrides the \Lopt{center} or \Lopt{centerlast} options.
+% 
+%    \begin{macrocode}
+\DeclareOption{normal}{%
+  \subcaphangfalse
+  \subcapcenterfalse
+  \subcapcenterlastfalse
+  \subcapnoonelinefalse
+  \subcapraggedrightfalse}
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+\DeclareOption{hang}{\subcaphangtrue}
+\DeclareOption{center}{\subcapcentertrue}
+\DeclareOption{centerlast}{\subcapcenterlasttrue}
+\DeclareOption{nooneline}{\subcapnoonelinetrue}
+\DeclareOption{raggedright}{\subcapraggedrighttrue}
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+\DeclareOption{isu}{\ExecuteOption{hang}}
+\DeclareOption{anne}{\ExecuteOption{centerlast}}
+%    \end{macrocode}
+%
+% \newpage^finalhack
+%
+% \noindent
+% There are options for six different font sizes available.
+%
+%    \begin{macrocode}
+\DeclareOption{scriptsize}{\renewcommand*{\subcapsize}{\scriptsize}}
+\DeclareOption{footnotesize}{\renewcommand*{\subcapsize}{\footnotesize}}
+\DeclareOption{small}{\renewcommand*{\subcapsize}{\small}}
+\DeclareOption{normalsize}{\renewcommand*{\subcapsize}{\normalsize}}
+\DeclareOption{large}{\renewcommand*{\subcapsize}{\large}}
+\DeclareOption{Large}{\renewcommand*{\subcapsize}{\Large}}
+%    \end{macrocode}
+%
+% \noindent
+% There are eighteen options available to set the font attributes of the
+% subcaptions.  The first nine affect only the subcaption label
+% The last nine affect only the subcaption text.
+%
+% \changes{v2.1}{22 Jan 1997}{Changed order of font options.}
+%
+% \changes{v2.1}{15 Nov 1997}{Added nine new options to set the format
+% of the caption text separately from the caption label.}
+%
+%    \begin{macrocode}
+\DeclareOption{rm}{\renewcommand*{\subcaplabelfont@f}{\rmfamily}}
+\DeclareOption{sf}{\renewcommand*{\subcaplabelfont@f}{\sffamily}}
+\DeclareOption{tt}{\renewcommand*{\subcaplabelfont@f}{\ttfamily}}
+\DeclareOption{md}{\renewcommand*{\subcaplabelfont@c}{\mdseries}}
+\DeclareOption{bf}{\renewcommand*{\subcaplabelfont@c}{\bfseries}}
+\DeclareOption{up}{\renewcommand*{\subcaplabelfont@s}{\upshape}}
+\DeclareOption{it}{\renewcommand*{\subcaplabelfont@s}{\itshape}}
+\DeclareOption{sl}{\renewcommand*{\subcaplabelfont@s}{\slshape}}
+\DeclareOption{sc}{\renewcommand*{\subcaplabelfont@s}{\scshape}}
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+\DeclareOption{RM}{\renewcommand*{\subcapfont@f}{\rmfamily}}
+\DeclareOption{SF}{\renewcommand*{\subcapfont@f}{\sffamily}}
+\DeclareOption{TT}{\renewcommand*{\subcapfont@f}{\ttfamily}}
+\DeclareOption{MD}{\renewcommand*{\subcapfont@c}{\mdseries}}
+\DeclareOption{BF}{\renewcommand*{\subcapfont@c}{\bfseries}}
+\DeclareOption{IT}{\renewcommand*{\subcapfont@s}{\itshape}}
+\DeclareOption{SL}{\renewcommand*{\subcapfont@s}{\slshape}}
+\DeclareOption{SC}{\renewcommand*{\subcapfont@s}{\scshape}}
+\DeclareOption{UP}{\renewcommand*{\subcapfont@s}{\upshape}}
+%    \end{macrocode}
+%
+% \noindent
+% There are eight options available to control the caption placement
+% and the proper numbering in association with the figure or table 
+% caption placement.  The first four affect only the caption numbering
+% by informing the internals that the associated figure or table
+% caption appears before or after the subfloat.  The second four do
+% this and, in addition, shift the subfloat caption to the bottom or
+% top of the subfloat.  The |\subfigure| and |\subtable| commands each
+% have a set of flags since it is often the case that a document style
+% requires that figure captions follow the figure and table captions
+% precede the table.
+%
+%    \begin{macrocode}
+\DeclareOption{figbotcap}{\figuretopcapfalse}
+\DeclareOption{figtopcap}{\figuretopcaptrue}
+\DeclareOption{tabbotcap}{\tabletopcapfalse}
+\DeclareOption{tabtopcap}{\tabletopcaptrue}
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+\DeclareOption{FIGBOTCAP}{\ExecuteOptions{figbotcap}\subfiguretopcapfalse}
+\DeclareOption{FIGTOPCAP}{\ExecuteOptions{figtopcap}\subfiguretopcaptrue}
+\DeclareOption{TABBOTCAP}{\ExecuteOptions{tabbotcap}\subtabletopcapfalse}
+\DeclareOption{TABTOPCAP}{\ExecuteOptions{tabtopcap}\subtabletopcaptrue}
+%    \end{macrocode}
+%
+% \begin{macro}{\subfigtopskip}
+% \begin{macro}{\subfigcapskip}
+% \begin{macro}{\subfigcaptopadj}
+% \begin{macro}{\subfigbottomskip}
+% \begin{macro}{\subfigcapmargin}
+% \begin{macro}{\subfiglabelskip}
+%
+% \noindent
+% The last two options control the overall ``look-and-feel'' of the
+% subfloat.  The \Lopt{loose} option is the default and makes the
+% subfloat look like it always has with lots of extra room around the
+% subfigure and subcaption.
+% 
+%    \begin{macrocode}
+\DeclareOption{loose}{%
+  \subfigtopskip    = 10\p@
+  \subfigcapskip    = 10\p@
+  \subfigcaptopadj  =  0\p@
+  \subfigbottomskip = 10\p@
+  \subfigcapmargin  = 10\p@
+  \subfiglabelskip  =  0.33em
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% 
+% \begin{macro}{\@thesubfigure}
+% \begin{macro}{\@thesubtable}
+% Next, it replaces the glue at the end of the subcaption label with a
+% |\space| like the older version of the \Lpack{subfigure} package.
+% 
+%    \begin{macrocode}
+  \renewcommand*{\@thesubfigure}{\thesubfigure\space}
+  \renewcommand*{\@thesubtable}{\thesubtable\space}
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+% 
+% \begin{macro}{\ifsf@tight}
+% 
+% Finally, set the \Lif{sf@tight} flag to make the |\@subfloat| command
+% skip its check for the top of a page or minipage and to always add
+% its topmost vertical spacing.  (For more details about the
+% |\@subfloat| command, see section~\ref{sec:mainmacros}.)
+% 
+%    \begin{macrocode}
+  \sf@tightfalse}
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \begin{macro}{\subfigtopskip}
+% \begin{macro}{\subfigcapskip}
+% \begin{macro}{\subfigcaptopadj}
+% \begin{macro}{\subfigbottomskip}
+% \begin{macro}{\subfigcapmargin}
+% \begin{macro}{\subfiglabelskip}
+%
+% The \Lopt{tight} option is the is the preferred version and has less white
+% space around the subfloat.  It also will omit the space above the subfloat
+% at the top of the page or minipage.
+%
+%    \begin{macrocode}
+\DeclareOption{tight}{%
+  \subfigtopskip    =  5\p@
+  \subfigcapskip    =  0\p@
+  \subfigcaptopadj  =  3\p@
+  \subfigbottomskip =  5\p@
+  \subfigcapmargin  =  \z@
+  \subfiglabelskip  =  0.33em plus 0.07em minus 0.03em
+%    \end{macrocode}
+%
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+%
+% \begin{macro}{\@thesubfigure}
+% \begin{macro}{\@thesubtable}
+% Next, it keeps the glue at the end of the subcaption label to allow
+% better subcaption fitting.
+%
+%    \begin{macrocode}
+  \renewcommand*{\@thesubfigure}{\thesubfigure\hskip\subfiglabelskip}
+  \renewcommand*{\@thesubtable}{\thesubtable\hskip\subfiglabelskip}
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+% 
+% \begin{macro}{\ifsf@tight}
+% 
+% Finally, set the \Lif{sf@tight} flag to make the |\@subfloat| command
+% check for the top of a page or minipage and to skip adding any vertical
+% space there.  (For more details about the |\@subfloat| command, see
+% section~\ref{sec:mainmacros}.)
+%
+%    \begin{macrocode}
+  \sf@tighttrue}
+%    \end{macrocode}
+% \end{macro}
+%
+% \newpage^finalhack
+%
+% \subsection{Execution of Options}
+% \label{sec:startup}
+%
+% \changes{v2.1}{11 Oct 1996}{Added a check for a local configuration file.}
+%
+% \changes{v2.1}{15 Nov 1997}{Added the \Lopt{FIGBOTCAP} and 
+% \Lopt{TABBOTCAP} options.}
+% 
+% \changes{v2.1.4}{30 Apr 2002}{Changed the subcaption label defaults
+% to be hard coded above and no longer in the options list.}
+% 
+% The \Lopt{normal} type of subcaption is preselected, the standard
+% subcaption size is set to \Lopt{footnotesize}, and the font for both
+% the subcaption label and text is set above to the global defaults for
+% family, series, and shape.  Also, the subcaptions for the subfigure
+% and subtable are placed after the figure box and it is assumed that
+% the figure or table caption follows all of the associated subfloats.
+% Finally, the \Lopt{loose} form is selected in order to cause minimal
+% change to existing papers using the \Lpack{subfigure} package.
+% 
+% The preferred form would be to have the \Lopt{TABTOPCAP} and
+% \Lopt{tight} be the defaults, but this would adversely affect the
+% existing papers that have used the official releases of this package.
+% 
+%    \begin{macrocode}
+\ExecuteOptions{normal,footnotesize,FIGBOTCAP,TABBOTCAP,loose}
+\InputIfFileExists{subfigure.cfg}{%
+  \typeout{****************************************^^J%
+           * Local config file subfigure.cfg used *^^J%
+           ****************************************}}{}
+\ProcessOptions
+%    \end{macrocode}
+%
+% \subsection{The Subfigure and Subtable Commands}
+% \label{sec:mainmacros}
+%
+% \changes{v2.1}{23 Jan 2002}{Added setting \cmd{\label} to 
+% \cmd{\subfloat@label}.}
+%
+% \changes{v2.1}{11 Oct 1996}{Added command lines.  The subfigure
+% command was updated to allow a second optional argument.  This 
+% causes changes all the way down to the \cmd{\@subcaption} command.}
+%
+% \begin{macro}{\subfigure}
+% \label{sec:subfigure}
+%
+% \changes{v2.1.2}{26 Mar 2002}{Added check to see if \cmd{\subfig@oldlabel}
+% is defined and if not to save the current definition.}
+%
+% \changes{v2.1}{22 Jan 1997}{Changed the counter advance to occur
+% only if the related boolean is false.  This allows \cmd{\caption}'s
+% to occur before the subfloats rather than after.}
+%
+% \changes{v2.1}{07 Mar 1997}{Moved \cmd{\leavevmode} to \cmd{\@subfloat}.}
+% 
+% The |\subfigure| command acts as cover function for the |\@subfloat|
+% command.  It locally changes the |\label| command to our special version
+% that supports the |\subref|'s (see section~\ref{sec:patches}).  It
+% insures that the proper counter is used and has the correct value.
+% Since the caption is usually generated later, we must locally
+% anticipate the future value of its counter by adding one to it within
+% a local group.  Upon leaving |\subfigure|, the old value is restored.
+%
+%    \begin{macrocode}
+\newcommand*{\subfigure}{%
+  \bgroup
+    \let\subfig@oldlabel=\label
+    \let\label=\subfloat@label
+    \@nameuse{if\@captype topcap}\else
+      \advance\@nameuse{c@\@captype}\@ne
+    \fi
+    \refstepcounter{sub\@captype}%
+    \@ifnextchar [%
+      {\@subfigure}%
+      {\@subfigure[\@empty]}}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\subtable}
+%
+% The |\subtable| command is identical to |\subfigure|.  The of names
+% at the user level is purely cosmetic (and historical). 
+%
+%    \begin{macrocode}
+\let\subtable=\subfigure
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \begin{macro}{\@subfigure}
+% \changes{v2.1.4}{07 Jun 2002}{Added curly brackets around the
+% argument when passing it on as an optional argument.}
+%
+% Here we are still setting up for the main |\@subfloat| command.  We
+% check for a second optional argument.  If one is not found, than any
+% optional argument from the last |\subfigure| or |\subtable| becomes
+% the main caption and we give |\@empty| as the default list-entry
+% caption.  If we see another optional argument, then we make that one 
+% the main caption and use any prior optional argument as the list-entry
+% caption.  See Table~\ref{tab:calling} for how this looks to the user.
+% 
+%    \begin{macrocode}
+\def\@subfigure[#1]{%
+    \@ifnextchar [%
+      {\@subfloat{sub\@captype}[{#1}]}%
+      {\@subfloat{sub\@captype}[\@empty{#1}][{#1}]}}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\@subfloat}
+%
+% \changes{v2.1.4}{24 Apr 2002}{Changed \cmd{\@subfloat} to globally
+% reset the figure/table counter if it was incremented so that any 
+% subfloat body that resets the counters globally will not cause
+% errors ({\it e.g.\/}, the \Lpack{tabularx} package}
+%
+% \changes{v2.1}{23 Jan 2002}{Now using \cmd{\@nameuse} to build names.
+% Made the \cmd{\def} a \cmd{\long}\cmd{\def}.}
+%
+% \changes{v2.1}{22 Apr 1998}{Added some percents to keep out whitespace}
+%
+% \changes{v2.1}{07 Mar 1997}{Changed the addition of the 
+%  \cmd{\subfigtopskip} to be added only if not at the top of the
+%  float and only in vertical mode.  Moved \cmd{\leavevmode} from
+%  \cmd{\subfigure} to after the topskip addition.} 
+%
+% \changes{v2.1}{17 Jan 1997}{Added swap of the top and bottom space
+%  when in TOPCAP mode.}
+% 
+% This is the common code for setting up the subfloat box and drawing
+% the subcaption under it.  The two skips are used only here to keep
+% track of what vertical space is to be placed before and after the
+% figure.
+% 
+% The first argument is the type of object being generated: that is,
+% a |subfigure| or a |subtable|.  The second and third are the
+% \texttt{subcaption} and \texttt{subfigure} arguments from the
+% calling |\subfigure| or |\subtable| command. 
+%
+%    \begin{macrocode}
+\newskip\subfig@top
+\newskip\subfig@bottom
+%    \end{macrocode}
+% 
+% If \Lif{ifsf@tight} is true, then the |\@subfloat| command checks to
+% see if it is at the top of a page or a minipage and will suppress the
+% top vertical space in that case; otherwise, it always adds the space.
+%
+%    \begin{macrocode}
+\long\def\@subfloat#1[#2][#3]#4{%
+    \@tempcnta=1
+    \ifsf@tight 
+      \if@minipage
+        \@tempcnta=\z@
+      \else\ifdim \lastskip=\z@ \else
+        \@tempcnta=2
+      \fi\fi
+    \fi
+%    \end{macrocode}
+% 
+% Based on the |\iffiguretopcap| or |\iftabletopcap| flags we
+% select which vertical space is to be placed above and below the figure
+% or table and save it in |\subfig@top| and |\subfig@bottom|.
+%
+%    \begin{macrocode}
+    \@nameuse{if\@captype topcap}%
+      \subfig@top=\subfigbottomskip
+      \subfig@bottom=\subfigtopskip
+    \else
+      \subfig@top=\subfigtopskip
+      \subfig@bottom=\subfigbottomskip
+    \fi
+%    \end{macrocode}
+% 
+% The |\leavevmode| is here to inhibit any \LaTeX\ errors that the
+% surreounding environment might generate if we stay in vertical mode.
+% Then it determines the width of the figure or table by placing it in a
+% box and testing the box.
+%
+%    \begin{macrocode}
+    \leavevmode
+    \setbox\@tempboxa \hbox{#4}%
+    \@tempdima=\wd\@tempboxa
+%    \end{macrocode}
+% 
+% Finally we put the figure together in a vertical box.  At the very top
+% goes any vertical space, but only if we are not at the top of the page
+% or minipage as determined above.
+%
+%    \begin{macrocode}
+    \vtop\bgroup
+      \vbox\bgroup
+        \ifcase\@tempcnta
+          \@minipagefalse
+        \or
+          \vspace{\subfig@top}%
+        \or
+          \ifdim \lastskip=\z@ \else
+            \@tempskipb\subfig@top\relax\@xaddvskip
+          \fi
+        \fi
+%    \end{macrocode}
+% 
+% Next, based on the `topcap' flags, we check if the subcaption or the
+% figure goes next.  If it is the subcaption, then we add some extra
+% |\subfigcaptopadj| space between the subcaption and the figure and
+% table in addtion to the regular |\subfigcapskip| space.  This finishes
+% off the top box and establishes our baseline.
+% 
+% After that we add in either the figure or subcaption (whichever we
+% have not typeset yet and follow it with the bottom vertical space.
+% (see figure~\ref{fig:layout-C} for a diagram of this layout).
+% 
+% Finally, we globally ({\bf !}) reset the \Lcount{figure} or
+% \Lcount{table} counter, if we incremented it at the beginning of the
+% |\subfigure| or |\subtable| command so that any functions used inside
+% the command body which globally sets the counters ({\it e.g.\/}, the
+% \Lpack{tabularx} package) will not cause problems.
+%
+%    \begin{macrocode}
+        \@nameuse{if#1topcap}%
+          \ifx \@empty#3\relax \else
+            \@subcaption{#1}{#2}{#3}%
+            \vskip\subfigcapskip
+            \vskip\subfigcaptopadj
+          \fi\egroup
+          \box\@tempboxa
+        \else
+          \box\@tempboxa\egroup
+          \ifx \@empty#3\relax \else
+            \vskip\subfigcapskip
+            \@subcaption{#1}{#2}{#3}%
+          \fi
+        \fi
+      \vspace{\subfig@bottom}%
+    \egroup
+    \@nameuse{if\@captype topcap}\else
+      \global\advance\@nameuse{c@\@captype}\m@ne
+    \fi
+  \egroup}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\@subfigcaptionlist}
+%
+% \begin{macro}{\@subcaption}
+%
+% \changes{v2.1}{23 Jan 2002}{Now using \cmd{\@nameuse} to build names.
+% Also use \@@thesubfigure and \@@thesubtable stored label.}
+%
+% \begin{macro}{\listsubcaptions}
+%
+% \changes{v2.1.4}{09 Jul 2002}{Changed \cmd{\@tempa} to \cmd{\sf@temp}
+% at the request of Donald Arseneau to remove the potential of problems
+% with others using the same variable.}
+% \changes{v2.1}{22 Oct 1996}{Added to allow the user to cause a dump
+% of the currently queued subcaptions to the ``List-of'' page.  This
+% is necessary when the \cmd{caption} is placed before the subfloats
+% as is often the case for subtables.}
+%
+% \changes{v2.1}{11 Oct 1996}{Fixed \cmd{\protect} related bug caused by
+% a change in \LaTeX3.}
+% \begin{macro}{\@listsubcaptions}
+%
+% \changes{v2.1}{23 Jan 2002}{Added checks for undefined \cmd{\@captype}
+% and \cmd{ext@<\@captype>} just in case the \cmd{caption} is called
+% outside the \Lenv{float} or the current float type does not support
+% subfigures.}
+%
+% \changes{v2.1}{11 Oct 1996}{Added to print the queued subcaptions.
+% This is also used by the \Lpack{captcont} package to correctly print
+% the subcaptions.}
+%
+% \changes{v2.1}{17 Jan 1997}{Changed the source of the label for the
+% ``List-of'' pages to use the \cmd{\thesubfigure} or \cmd{\thesubtable}
+% value rather than the \cmd{\@currentlabel}.  This usually will be
+% cleaner since the figure number won't be repeated.}
+%
+% \changes{v2.1}{05 Jan 1998}{Changed \cmd{\edef} to \cmd{\def} and added
+% back the \cmd{\protect} due to changes in the use of the 
+% \cmd{\@subcaption}.}
+%
+% The following series of commands control exactly how the subcaption is
+% typeset.  The |\@subcaption| command adds the subcaption to the current
+% list of subcaptions to be added to the ``List-of'' page as soon as
+% the major caption is declared (see |\@caption| below). 
+% ({\scshape Note}: only one list is kept because that seems right;
+% if there is a mix of tables and figures, they will be grouped
+% under the next |\caption|\@.)  Next |\@subcaption| calls the
+% appropriate float-type specific command to decide how to size and shape
+% the subcaption text.
+%
+%    \begin{macrocode}
+\newcommand*{\@subfigcaptionlist}{}
+%    \end{macrocode}
+%    \begin{macrocode}
+\newcommand{\@subcaption}[3]{%
+  \ifx \relax#2\relax \else
+    \bgroup
+      \let\label=\@gobble
+      \let\protect=\string
+      \def\@subcaplabel{\@nameuse{@@the#1}}%
+      \xdef\@subfigcaptionlist{%
+        \@subfigcaptionlist,%
+        {\protect\numberline{\@subcaplabel}\noexpand{\ignorespaces #2}}}%
+    \egroup
+  \fi
+  \@nameuse{@make#1caption}{\@nameuse{@the#1}}{#3}}
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+\newcommand*{\listsubcaptions}{%
+  \@ifstar
+    {\gdef\@subfigcaptionlist{}}%
+    {\@listsubcaptions{\@captype}}}
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+\newcommand*{\@listsubcaptions}[1]{%
+  \@ifundefined{@captype}{}{%
+    \@ifundefined{ext@sub#1}{}{%
+      \@for \sf@temp:=\@subfigcaptionlist \do {%
+        \ifx \@empty\sf@temp\relax \else
+          \addcontentsline
+            {\@nameuse{ext@sub#1}}%
+            {sub#1}%
+            {\sf@temp}%
+        \fi}}}%
+  \gdef\@subfigcaptionlist{}}
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+%
+% \begin{macro}{\@makesubfigurecaption}
+% \begin{macro}{\@makesubtablecaption}
+%
+% \changes{v2.1}{17 Jan 1997}{Added the new font control.}
+%
+% By default, the |\@subfigurecaption| and |\@subtablecaption|
+% commands are identical.  Unlike the standard |\@makecaption| command,
+% we assume that the first argument (the label number produced by
+% the |\@thesubfigure| or the |\@thesubtable|) contains any trailing
+% separator characters or spacing (which makes it easier to customize).
+% 
+% \newpage^finalhack
+%
+% The |\@makesubfigurecaption| command first checks the size of the
+% caption typeset as a single line.  It knocks off twice the
+% |\subfigcapmargin| (at it's regular size) to determine the with of the
+% caption and label.
+%
+%    \begin{macrocode}
+\newcommand{\@makesubfigurecaption}[2]{%
+  \setbox\@tempboxa\hbox{%
+    \subcapsize
+    {\subcaplabelfont #1}%
+    {\subcapfont\ignorespaces #2}}%
+  \@tempdimb=-\subfigcapmargin
+  \multiply\@tempdimb\tw@
+  \advance\@tempdimb\@tempdima
+%    \end{macrocode}
+%
+% Next it creates a horizontal box of that width and if the label plus
+% the text was too wide or if the \Lif{subcapnooneline} flag is true,
+% then it sends off the label and subcaption to |\subfig@caption| to
+% typset as a paragraph.  NOTE: |\subfig@caption| assumes that
+% |\@tempbdimb| has the calculated width for the paragraph.
+% 
+% If the label plus the text will fit and the \Lif{subcapnooneline} flag
+% is false, then we just return them (from box |\@tempboxa|).
+% 
+%    \begin{macrocode}
+  \hbox to\@tempdima{%
+    \hss
+    \ifdim \wd\@tempboxa >\@tempdimb
+      \subfig@caption{#1}{#2}%
+    \else\ifsubcapnooneline
+      \subfig@caption{#1}{#2}%
+    \else
+      \box\@tempboxa
+    \fi\fi
+    \hss}}
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+\let\@makesubtablecaption=\@makesubfigurecaption
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+%
+% \begin{macro}{\subfig@caption}
+%
+% \changes{v2.1}{23 Jan 2002}{Added \cmd{\subcapfont} and
+% \cmd{\ignorespaces} before the caption text. So that it does not 
+% interfere with the label font settings. This fixes a bug found by
+% Axel Sommerfeldt.}
+%
+% \begin{macro}{\subfig@captionpar}
+%
+% \changes{v2.1}{23 Jan 2002}{Simplified by removing the font settings. 
+% It is up to the caller to enforce these!  This fixes a bug found by
+% Axel Sommerfeldt.}
+%
+% \changes{v2.1}{17 Jan 1997}{Added the new font control.}
+% 
+% These commands are called to typeset a multiple-line subcaption (or a
+% single line when \Lif{subcapnooneline} is true).  Depending on the
+% \Lif{subcapcenter} and \Lif{subcapcenterlast} flags, the text will be
+% justified (both false), centered (\Lif{subcapcenter} true), or
+% justified with the last line centered (only the flag
+% \Lif{subcapcenterlast} set true).
+%
+%    \begin{macrocode}
+\newcommand{\subfig@caption}[2]{%
+  \ifsubcaphang
+    \sbox{\@tempboxa}{\subcapsize\subcaplabelfont #1}%
+    \addtolength{\@tempdimb}{-\wd\@tempboxa}%
+    \usebox{\@tempboxa}%
+    \subfig@captionpar{\@tempdimb}{%
+      {\subcapfont\ignorespaces #2}}%
+  \else
+    \subfig@captionpar{\@tempdimb}{%
+      {\subcaplabelfont #1}%
+      {\subcapfont\ignorespaces #2}}%
+  \fi}
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+\newcommand{\subfig@captionpar}[2]{%
+  \parbox[t]{#1}{%
+    \subcapsize
+    \ifsubcapraggedright
+      \setlength{\leftskip}{\z@}%
+      \setlength{\@rightskip}{\@flushglue}%
+      \setlength{\rightskip}{\@rightskip}%
+      \setlength{\parindent}{\z@}%
+    \else\ifsubcapcenter
+      \setlength{\leftskip}{\@flushglue}%
+      \setlength{\rightskip}{\@flushglue}%
+      \setlength{\parfillskip}{\z@skip}%
+    \else\ifsubcapcenterlast
+      \addtolength{\leftskip}{\z@ plus 1fil}%
+      \addtolength{\rightskip}{\z@ plus -1fil}%
+      \setlength{\parfillskip}{\z@ plus 2fil}%
+    \fi\fi\fi
+    #2}}
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+%
+% \subsection{Patches to the Standard Environment}
+% \label{sec:patches}
+% 
+% The following adjust the standard environment for the
+% \Lpack{subfigure} package.  They are designed as wrappers to the
+% current definition of the standard commands to minimize any chance of
+% conflict with other packages or to extend \LaTeX.
+%
+% \begin{macro}{\@dottedxxxline}
+% \label{sec:dl}
+%   This is a generalized wrapper for the |\@dottedtocline| command.
+%   It checks for the level based on the output file (first argument)
+%   and not using only |\@tocdepth|.  (See section~\ref{sec:listof}
+%   for a description of the arguments.)
+%
+%    \begin{macrocode}
+\newcommand*{\@dottedxxxline}[6]{%
+  \ifnum #2>\@nameuse{c@#1depth}\else
+    \@dottedtocline{0}{#3}{#4}{#5}{#6}
+  \fi}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\subfig@end@float}
+% \begin{macro}{\subfig@end@dblfloat}
+% \begin{macro}{\end@float}
+% \begin{macro}{\end@dblfloat}
+%
+% \changes{v2.1}{05 Jan 1998}{Added this section to minimize the need
+% for \cmd{\listofcaptions}.}
+%
+% These commands patch the end of the \Lenv{float} environment so that it will
+% dump out the subcaptions if any remain at this point.  This can occur
+% when using the \Lopt{TOPCAP} options.
+%    \begin{macrocode}
+\let\subfig@end@float=\end@float
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+\renewcommand*{\end@float}{%
+  \@listsubcaptions{\@captype}%
+  \subfig@end@float}
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+\let\subfig@end@dblfloat=\end@dblfloat
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+\renewcommand*{\end@dblfloat}{%
+  \@listsubcaptions{\@captype}%
+  \subfig@end@dblfloat}
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+%
+% \newpage^finalhack
+% \enlargethispage{3\baselineskip}^finalhack
+%
+% \begin{macro}{\subfig@oldcaption}
+% \begin{macro}{\@caption}
+%
+% \changes{v2.1}{23 Jan 2002}{Now using \cmd{\@nameuse} to build names.
+% Added a check for topcap flag.  If it is not defined, we assume that
+% this float type does not support subfigures.}
+%
+% \changes{v2.1}{05 Jan 1998}{Changed to print the subcaptions before
+% or after the caption, depending on the TOPCAP setting of the current
+% environment.}
+%
+% Next, we redefine the current |\@caption| command to dump any
+% subcaptions saved.  First the `old' caption command is called to
+% add the line to the ``List-of'' file and then the list of
+% subcaptions, |\@subfigcaptionlist| is written to the same file. 
+% Lastly, the |\@subfigcaptionlist| is reinitialized.
+%
+%    \begin{macrocode}
+\let\subfig@oldcaption=\@caption
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+\long\def\@caption#1[#2]#3{%
+  \@ifundefined{if#1topcap}%
+    {\subfig@oldcaption{#1}[{#2}]{#3}}%
+    {\@nameuse{if#1topcap}%
+       \@listsubcaptions{#1}%
+       \subfig@oldcaption{#1}[{#2}]{#3}%
+     \else
+       \subfig@oldcaption{#1}[{#2}]{#3}%
+       \@listsubcaptions{#1}%
+     \fi}}
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+%
+% \begin{macro}{\subfig@oldlabel}
+% 
+% To support the redefinition of the |\label| command within the body of
+% the subfloats, we will use |\subfig@oldlabel| to save the current
+% definition of |\label| and create the |\subfloat@label| command to take its
+% place during the processing of the |\subfigure| command.  Since the 
+% definition of |\label| may change as packages are loaded, we save the
+% definition each time that |\label| is replaced with |\sub@label|
+% (see \ref{sec:subfigure} above).
+% 
+%    \begin{macrocode}
+\let\subfig@oldlabel=\relax
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\subfloat@label}
+% \begin{macro}{\sub@label}
+%
+% \changes{v2.1.4}{02 Jul 2002}{Added reference to this command via
+% the name \cmd{subfloat@label} to avoid packages that replace the
+% name without the support of the optional argument.  The old name
+% is still here to decoy the other packages.  Added chapter number
+% in the automatically generated label to increase uniqueness.}
+%
+% One difference from the regular |\label| command is that there is an
+% optional argument (note with parentheses rather than square brackets)
+% that is only used with the \Lpack{hyperref} package to define the
+% {\em bookmark\/} argument to the label.  Typically, this would be a
+% copy or paraphrase of the subcaption text.  If this is not given and
+% the \Lpack{hyperref} package is being used, then the {\em bookmark\/}
+% argument is of the form ``Subfigure\textvisiblespace 1(a)''.
+% 
+%    \begin{macrocode}
+\newcommand*{\subfloat@label}{%
+  \@ifnextchar(
+    {\sf@sub@label}
+    {\sf@sub@label(Sub\@captype\space
+                   \@ifundefined{thechapter}{}{%
+                     \@nameuse{thechapter}\space}%
+                   \@nameuse{p@sub\@captype}%
+                   \@nameuse{thesub\@captype}.)}}
+%    \end{macrocode}
+%    \begin{macrocode}
+\let\sub@label\subfloat@label
+%    \end{macrocode}
+%
+% \end{macro}
+% \end{macro}
+%
+% \begin{macro}{\sf@sub@label}
+%
+% \changes{v2.1.4}{02 Jul 2002}{Moved \cmd{\relax} from the 
+% \cmd{\sf@@sub@label} to here.}
+%
+% \changes{v2.1.1}{15 Mar 2002}{Added coordination with the hyperref
+% package.}
+% 
+% The |\sf@sub@label| parses the optional argument and (if the 
+% \Lpack{hyperref} Package is loaded) saves the {\em bookmark\/} text
+% as |\@currentlabelname|.  It then calls the |\sf@@sub@label| command
+% to the real processing of the label.
+% 
+%    \begin{macrocode}
+\def\sf@sub@label(#1)#2{%
+  \ifhyperrefloaded
+    \protected@edef\@currentlabelname{%
+      \expandafter\strip@period #1\relax.\relax\@@@}%
+  \fi
+  \sf@@sub@label{#2}}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\sf@@sub@label}
+%
+% \changes{v2.1.4}{02 Jul 2002}{Moved \cmd{\relax} from here to the 
+% \cmd{\sf@sub@label}.}
+%
+% \changes{v2.1.2}{26 Mar 2002}{Changed to simplify the operation and
+% to avoid a bug in the hyperref package.}
+%
+% \changes{v2.1.1}{15 Mar 2002}{Added coordination with the hyperref
+% package.}
+% 
+% In order to support the \Lpack{hyperref} package we check if it was
+% loaded and use the proper form of the |\newlabel| command. |\sf@@sub@label|
+% operates by first calling the old |\label| definition (which adds a
+% |\newlabel| command to the \Lfile{*.aux} file) and then adds another
+% |\newlabel| command to the \Lfile{*.aux} file with a similar reference
+% name (with `sub@' prepended) and the value of |\@@thesubfigure| or
+% |\@@thesubtable|.
+% 
+% If the |\ifhyperrefloaded| flag is set, then the |\newlabel| command
+% has three extra fields, the first is the value of |\@currentlabelname|,
+% which is either of the form ``Subfigure\textvisiblespace1(a)'' or
+% was defined by the optional argument to |\label| (actually 
+% |\sub@label|). The second extra field is the hypertext anchor name
+% and the third is unused.  Otherwise, the we us the standard |\newlabel|
+% form to write the sub-reference.
+% 
+%    \begin{macrocode}
+\newcommand*{\sf@@sub@label}[1]{%
+  \@bsphack
+  \subfig@oldlabel{#1}%
+  \ifhyperrefloaded
+    \protected@write\@auxout{}{%
+        \string\newlabel{sub@#1}%
+            {{\@nameuse{@@thesub\@captype}}%
+            {\thepage}%
+            {\expandafter\strip@period\@currentlabelname\relax.\relax\@@@}%
+            {\@currentHref}%
+            {}}}%
+  \else
+    \protected@write\@auxout{}{%
+        \string\newlabel{sub@#1}%
+            {{\@nameuse{@@thesub\@captype}}%
+            {\thepage}}}%
+  \fi
+  \@esphack}
+%    \end{macrocode}
+%
+% \end{macro}
+%
+% \begin{macro}{\subref}
+%
+% The |\subref| command is the same as the |\ref| command except that
+% |\@@thesubtable| instead of |\p@subfigure\thesubfigure| or
+% |\p@subtable\thesubtable|.  This is often of use for local references
+% within the figure where the figure number may be assumed; or, for ease
+% in constructing a range of references within a figure with many
+% subfigures.
+% 
+%    \begin{macrocode}
+\newcommand\subref[1]{%
+  \ref{sub@#1}}
+%    \end{macrocode}
+%
+% \end{macro}
+%
+% \begin{macro}{\Subref}
+%
+% \changes{v2.1.2}{26 Mar 2002}{Changed \cmd{\subref*} to \cmd{\Subref} to 
+% avoid problems in writing to the \Lfile{aux} file.}
+%
+% \changes{v2.1}{23 Jan 2002}{Added \cmd{\subref*} at the request of Benoit
+% Hudson (bhudson\@cs.cmu.edu).}
+% 
+% The |\Subref| command is the same as |\subref|, except that it adds
+% |\subcaplabelfont| before the reference so that it uses the same font
+% (except that the current font size is maintained).
+% 
+%    \begin{macrocode}
+\newcommand\Subref[1]{%
+  {\subcaplabelfont 
+   \ref{sub@#1}}}
+%    \end{macrocode}
+% \end{macro}
+%
+% \iffalse
+%</package>
+% \fi
+%
+% \Finale
+%
+\endinput

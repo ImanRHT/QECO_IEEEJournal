@@ -1,0 +1,95 @@
+\documentclass{article}
+\usepackage{fullpage}
+%\usepackage[tight]{subfigure}
+%\usepackage[loose,hang]{subfigure}
+\usepackage[tight,hang]{subfigure}
+
+\makeatletter
+\def\mpt{\@minipagetrue}
+\def\mpf{\@minipagefalse}
+%\renewcommand{\@thesubfigure}{\subcaplabelfont\thesubfigure\space\itshape}
+\makeatother
+
+\fboxsep=-\fboxrule
+%\renewcommand{\subcapfont}{\itshape}
+
+\newcommand{\figbox}[1]{%
+  \fbox{%
+    \vbox to 1in{%
+    \vfil
+    \hbox to 2in{%
+      \hfil
+      #1%
+      \hfil}%
+    \vfil}}}
+
+\begin{document}
+
+Figures wrapped to show any extra spaces introduced in processing the 
+subfigures.
+
+\begin{figure}%
+  \centering
+  \fbox{%
+    \fbox{\subfigure[Subfigure One.\label{fig:A1}]{%
+      \figbox{SUBFIG ONE}}}%
+    \hspace{10pt}%
+    \fbox{\subfigure[Subfigure Two.\label{fig:A2}]{%
+      \figbox{SUBFIG TWO}}}}
+  \caption{Two side-by-side figures.}%
+  \label{fig:A}%
+\end{figure}
+
+\begin{figure}%
+  \begin{center}%
+    \fbox{\hbox to 4.13837in{\hss\vbox{%
+      \fbox{\mpt\subfigure[Subfigure Three.\label{fig:B1}]{%
+        \figbox{SUBFIG THREE}}}%
+      \hspace{10pt}%
+      \fbox{\mpt\subfigure[Subfigure Four.\label{fig:B2}]{%
+        \figbox{SUBFIG FOUR}}}\\[-1.5pt]
+      \fbox{\subfigure[Subfigure Five.\label{fig:B3}]{%
+        \figbox{SUBFIG FIVE}}}%
+      \hspace{10pt}%
+      \fbox{\subfigure[Subfigure Six.\label{fig:B4}]{%
+        \figbox{SUBFIG SIX}}}}\hss}}%
+    \end{center}
+  \caption{Four figures with specified suppression of extra padding.}%
+  \label{fig:B}%
+\end{figure}
+
+\begin{figure}
+  \centering
+  \fbox{%
+    \begin{minipage}{4.13837in}%
+%\mpf
+      \subfigure[Subfigure Seven.\label{fig:C1}]{%
+        \figbox{SUBFIG SEVEN}}%
+      \hspace{10pt}%
+      \subfigure[Subfigure Eight.\label{fig:C2}]{%
+      \figbox{SUBFIG EIGHT}}
+
+      \subfigure[Subfigure Nine.\label{fig:C3}]{%
+        \figbox{SUBFIG NINE}}%
+      \hspace{10pt}%
+      \subfigure[Subfigure Ten.\label{fig:C4}]{%
+        \figbox{SUBFIG TEN}}%
+    \end{minipage}}
+    \caption{Four figures with auto fitting in a minipage.}%
+    \label{fig:C}%
+\end{figure}
+
+\begin{figure}
+  \centering
+%
+  \subfigure[First caption.]{\fbox{Under figure/text}}\quad
+  \subfigure[Longer second caption.]{\fbox{Under figure/text}}\\
+%
+  \subfigure[Third caption.]{\figbox{Under figure/text}}\quad
+  \subfigure[Longer fourth caption. longer fourth caption.
+             longer fourth caption.]{\figbox{Under figure/text}}
+  \caption{Four figures testing caption fitting.}%
+\end{figure}
+
+\end{document}
+

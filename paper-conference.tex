@@ -1,0 +1,1110 @@
+% This template has been tested with IEEEtran of 2015.
+
+% !TeX spellcheck = en-US
+% LTeX: language=en-US
+% !TeX encoding = utf8
+% !TeX program = pdflatex
+% !BIB program = bibtex
+% -*- coding:utf-8 mod:LaTeX -*-
+
+
+
+% DO NOT DOWNLOAD IEEEtran.cls - Use the one of your LaTeX distribution
+% For the final version, replace "draftcls" by "final"
+%\documentclass[conference,a4paper]{IEEEtran}[2015/08/26]
+
+\documentclass[10pt, conference,letterpaper]{IEEEtran}
+
+% Balance the last page
+% The pbalance package (see https://ctan.org/pkg/pbalance) "just works" (in contrast to balance.sty or other solutions)
+\usepackage{pbalance}
+
+% backticks (`) are rendered as such in verbatim environments.
+% See following links for details:
+%   - https://tex.stackexchange.com/a/341057/9075
+%   - https://tex.stackexchange.com/a/47451/9075
+%   - https://tex.stackexchange.com/a/166791/9075
+\usepackage{upquote}
+
+% Set English as language and allow to write hyphenated"=words
+%
+% Even though `american`, `english` and `USenglish` are synonyms for babel package (according to https://tex.stackexchange.com/questions/12775/babel-english-american-usenglish), the llncs document class is prepared to avoid the overriding of certain names (such as "Abstract." -> "Abstract" or "Fig." -> "Figure") when using `english`, but not when using the other 2.
+% english has to go last to set it as default language
+\usepackage[ngerman,main=english]{babel}
+%
+% Hint by http://tex.stackexchange.com/a/321066/9075 -> enable "= as dashes
+\addto\extrasenglish{\languageshorthands{ngerman}\useshorthands{"}}
+
+% Links behave as they should. Enables "\url{...}" for URL typesettings.
+% Allow URL breaks also at a hyphen, even though it might be confusing: Is the "-" part of the address or just a hyphen?
+% See https://tex.stackexchange.com/a/3034/9075.
+\usepackage[hyphens]{url}
+
+% When activated, use text font as url font, not the monospaced one.
+% For all options see https://tex.stackexchange.com/a/261435/9075.
+% \urlstyle{same}
+
+% Improve wrapping of URLs - hint by http://tex.stackexchange.com/a/10419/9075
+\makeatletter
+\g@addto@macro{\UrlBreaks}{\UrlOrds}
+\makeatother
+
+% nicer // - solution by http://tex.stackexchange.com/a/98470/9075
+% DO NOT ACTIVATE -> prevents line breaks
+%\makeatletter
+%\def\Url@twoslashes{\mathchar`\/\@ifnextchar/{\kern-.2em}{}}
+%\g@addto@macro\UrlSpecials{\do\/{\Url@twoslashes}}
+%\makeatother
+
+
+% use nicer font for code
+\usepackage[zerostyle=b,scaled=.75]{newtxtt}
+
+% Has to be loaded AFTER any font packages. See https://tex.stackexchange.com/a/2869/9075.
+\usepackage[T1]{fontenc}
+
+% Character protrusion and font expansion. See http://www.ctan.org/tex-archive/macros/latex/contrib/microtype/
+
+\usepackage[
+  babel=true, % Enable language-specific kerning. Take language-settings from the languge of the current document (see Section 6 of microtype.pdf)
+  expansion=alltext,
+  protrusion=alltext-nott, % Ensure that at listings, there is no change at the margin of the listing
+  final % Always enable microtype, even if in draft mode. This helps finding bad boxes quickly.
+        % In the standard configuration, this template is always in the final mode, so this option only makes a difference if "pros" use the draft mode
+]{microtype}
+
+% \texttt{test -- test} keeps the "--" as "--" (and does not convert it to an en dash)
+\DisableLigatures{encoding = T1, family = tt* }
+
+%\DeclareMicrotypeSet*[tracking]{my}{ font = */*/*/sc/* }%
+%\SetTracking{ encoding = *, shape = sc }{ 45 }
+% Source: http://homepage.ruhr-uni-bochum.de/Georg.Verweyen/pakete.html
+% Deactiviated, because does not look good
+
+\usepackage{graphicx}
+
+% Diagonal lines in a table - http://tex.stackexchange.com/questions/17745/diagonal-lines-in-table-cell
+% Slashbox is not available in texlive (due to licensing) and also gives bad results. Thus, we use diagbox
+\usepackage{diagbox}
+
+\usepackage{xcolor}
+
+% Code Listings
+\usepackage{listings}
+
+\definecolor{eclipseStrings}{RGB}{42,0.0,255}
+\definecolor{eclipseKeywords}{RGB}{127,0,85}
+\colorlet{numb}{magenta!60!black}
+
+% JSON definition
+% Source: https://tex.stackexchange.com/a/433961/9075
+
+\lstdefinelanguage{json}{
+    basicstyle=\normalfont\ttfamily,
+    commentstyle=\color{eclipseStrings}, % style of comment
+    stringstyle=\color{eclipseKeywords}, % style of strings
+    numbers=left,
+    numberstyle=\scriptsize,
+    stepnumber=1,
+    numbersep=8pt,
+    showstringspaces=false,
+    breaklines=true,
+    frame=lines,
+    % backgroundcolor=\color{gray}, %only if you like
+    string=[s]{"}{"},
+    comment=[l]{:\ "},
+    morecomment=[l]{:"},
+    literate=
+        *{0}{{{\color{numb}0}}}{1}
+         {1}{{{\color{numb}1}}}{1}
+         {2}{{{\color{numb}2}}}{1}
+         {3}{{{\color{numb}3}}}{1}
+         {4}{{{\color{numb}4}}}{1}
+         {5}{{{\color{numb}5}}}{1}
+         {6}{{{\color{numb}6}}}{1}
+         {7}{{{\color{numb}7}}}{1}
+         {8}{{{\color{numb}8}}}{1}
+         {9}{{{\color{numb}9}}}{1}
+}
+
+\lstset{
+  % everything between (* *) is a latex command
+  escapeinside={(*}{*)},
+  %
+  language=json,
+  %
+  showstringspaces=false,
+  %
+  extendedchars=true,
+  %
+  basicstyle=\footnotesize\ttfamily,
+  %
+  commentstyle=\slshape,
+  %
+  % default: \rmfamily
+  stringstyle=\ttfamily,
+  %
+  breaklines=true,
+  %
+  breakatwhitespace=true,
+  %
+  % alternative: fixed
+  columns=flexible,
+  %
+  numbers=left,
+  %
+  numberstyle=\tiny,
+  %
+  basewidth=.5em,
+  %
+  xleftmargin=.5cm,
+  %
+  % aboveskip=0mm,
+  %
+  % belowskip=0mm,
+  %
+  captionpos=b
+}
+
+% Enable Umlauts when using \lstinputputlisting.
+% See https://stackoverflow.com/a/29260603/873282 für details.
+% listingsutf8 did not work in June 2020.
+\lstset{literate=
+  {á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1 {ú}{{\'u}}1
+  {Á}{{\'A}}1 {É}{{\'E}}1 {Í}{{\'I}}1 {Ó}{{\'O}}1 {Ú}{{\'U}}1
+  {à}{{\`a}}1 {è}{{\`e}}1 {ì}{{\`i}}1 {ò}{{\`o}}1 {ù}{{\`u}}1
+  {À}{{\`A}}1 {È}{{\'E}}1 {Ì}{{\`I}}1 {Ò}{{\`O}}1 {Ù}{{\`U}}1
+  {ä}{{\"a}}1 {ë}{{\"e}}1 {ï}{{\"i}}1 {ö}{{\"o}}1 {ü}{{\"u}}1
+  {Ä}{{\"A}}1 {Ë}{{\"E}}1 {Ï}{{\"I}}1 {Ö}{{\"O}}1 {Ü}{{\"U}}1
+  {â}{{\^a}}1 {ê}{{\^e}}1 {î}{{\^i}}1 {ô}{{\^o}}1 {û}{{\^u}}1
+  {Â}{{\^A}}1 {Ê}{{\^E}}1 {Î}{{\^I}}1 {Ô}{{\^O}}1 {Û}{{\^U}}1
+  {Ã}{{\~A}}1 {ã}{{\~a}}1 {Õ}{{\~O}}1 {õ}{{\~o}}1
+  {œ}{{\oe}}1 {Œ}{{\OE}}1 {æ}{{\ae}}1 {Æ}{{\AE}}1 {ß}{{\ss}}1
+  {ű}{{\H{u}}}1 {Ű}{{\H{U}}}1 {ő}{{\H{o}}}1 {Ő}{{\H{O}}}1
+  {ç}{{\c c}}1 {Ç}{{\c C}}1 {ø}{{\o}}1 {å}{{\r a}}1 {Å}{{\r A}}1
+}
+
+% For easy quotations: \enquote{text}
+% This package is very smart when nesting is applied, otherwise textcmds (see below) provides a shorter command
+\usepackage[autostyle=true]{csquotes}
+
+% Enable using "`quote"' - see https://tex.stackexchange.com/a/150954/9075
+\defineshorthand{"`}{\openautoquote}
+\defineshorthand{"'}{\closeautoquote}
+
+% Nicer tables (\toprule, \midrule, \bottomrule)
+\usepackage{booktabs}
+
+% Extended enumerate, such as \begin{compactenum}
+\usepackage{paralist}
+
+% Bibliopgraphy enhancements
+%  - enable \cite[prenote][]{ref}
+%  - enable \cite{ref1,ref2}
+% Alternative: \usepackage{cite}, which enables \cite{ref1, ref2} only (otherwise: Error message: "White space in argument")
+
+% Doc: http://texdoc.net/natbib
+\usepackage[%
+  square,        % for square brackets
+  comma,         % use commas as separators
+  numbers,       % for numerical citations;
+  %sort           % orders multiple citations into the sequence in which they appear in the list of references;
+  sort&compress % as sort but in addition multiple numerical citations
+                  % are compressed if possible (as 3-6, 15);
+]{natbib}
+
+% Same fontsize as without natbib
+\renewcommand{\bibfont}{\normalfont\footnotesize}
+
+% Enable hyperlinked author names in the case of \citet
+% Source: https://tex.stackexchange.com/a/76075/9075
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd{\NAT@test}{\else \NAT@nm}{\else \NAT@hyper@{\NAT@nm}}{}{}
+\makeatother
+
+% Enable nice comments
+\usepackage{pdfcomment}
+
+\newcommand{\commentontext}[2]{\colorbox{yellow!60}{#1}\pdfcomment[color={0.234 0.867 0.211},hoffset=-6pt,voffset=10pt,opacity=0.5]{#2}}
+\newcommand{\commentatside}[1]{\pdfcomment[color={0.045 0.278 0.643},icon=Note]{#1}}
+
+% Compatibality with packages todo, easy-todo, todonotes
+\newcommand{\todo}[1]{\commentatside{#1}}
+
+% Compatiblity with package fixmetodonotes
+\newcommand{\TODO}[1]{\commentatside{#1}}
+
+% Put footnotes below floats
+% Source: https://tex.stackexchange.com/a/32993/9075
+\usepackage{stfloats}
+\fnbelowfloat
+
+\usepackage[group-minimum-digits=4,per-mode=fraction]{siunitx}
+\addto\extrasgerman{\sisetup{locale = DE}}
+
+% Enable that parameters of \cref{}, \ref{}, \cite{}, ... are linked so that a reader can click on the number an jump to the target in the document
+\usepackage{hyperref}
+
+% Enable hyperref without colors and without bookmarks
+%\hypersetup{
+  %hidelinks,
+  %colorlinks=true,
+  %allcolors=black,
+  %pdfstartview=Fit,
+  %breaklinks=true
+%}
+
+% Enable correct jumping to figures when referencing
+\usepackage[all]{hypcap}
+
+\usepackage[caption=false,font=footnotesize]{subfig}
+
+\usepackage[incolumn]{mindflow}
+
+% Extensions for references inside the document (\cref{fig:sample}, ...)
+% Enable usage \cref{...} and \Cref{...} instead of \ref: Type of reference included in the link
+% That means, "Figure 5" is a full link instead of just "5".
+\usepackage[capitalise,nameinlink,noabbrev]{cleveref}
+
+\crefname{listing}{Listing}{Listings}
+\Crefname{listing}{Listing}{Listings}
+\crefname{lstlisting}{Listing}{Listings}
+\Crefname{lstlisting}{Listing}{Listings}
+
+\usepackage{lipsum}
+
+% For demonstration purposes only
+% These packages can be removed when all examples have been deleted
+\usepackage[math]{blindtext}
+\usepackage{mwe}
+\usepackage[realmainfile]{currfile}
+\usepackage{tcolorbox}
+
+
+\usepackage{Carrickc,lettrine}
+%\renewcommand\LettrineFontHook{\Carrickcfamily}
+
+
+
+\tcbuselibrary{listings}
+
+%introduce \powerset - hint by http://matheplanet.com/matheplanet/nuke/html/viewtopic.php?topic=136492&post_id=997377
+\DeclareFontFamily{U}{MnSymbolC}{}
+\DeclareSymbolFont{MnSyC}{U}{MnSymbolC}{m}{n}
+\DeclareFontShape{U}{MnSymbolC}{m}{n}{
+  <-6>    MnSymbolC5
+  <6-7>   MnSymbolC6
+  <7-8>   MnSymbolC7
+  <8-9>   MnSymbolC8
+  <9-10>  MnSymbolC9
+  <10-12> MnSymbolC10
+  <12->   MnSymbolC12%
+}{}
+\DeclareMathSymbol{\powerset}{\mathord}{MnSyC}{180}
+
+\usepackage{xspace}
+%\newcommand{\eg}{e.\,g.\xspace}
+%\newcommand{\ie}{i.\,e.\xspace}
+\newcommand{\eg}{e.\,g.,\ }
+\newcommand{\ie}{i.\,e.,\ }
+
+% Enable hyphenation at other places as the dash.
+% Example: applicaiton\hydash specific
+\makeatletter
+\newcommand{\hydash}{\penalty\@M-\hskip\z@skip}
+% Definition of "= taken from http://mirror.ctan.org/macros/latex/contrib/babel-contrib/german/ngermanb.dtx
+\makeatother
+
+% Add manual adapted hyphenation of English words
+% See https://ctan.org/pkg/hyphenex and https://tex.stackexchange.com/a/22892/9075 for details
+% Does not work on MiKTeX, therefore disabled - issue reported at https://github.com/MiKTeX/miktex-packaging/issues/271
+% \input{ushyphex}
+
+% correct bad hyphenation here
+\hyphenation{op-tical net-works semi-conduc-tor}
+
+% Enable copy and paste of text from the PDF
+% Only required for pdflatex. It "just works" in the case of lualatex.
+% Alternative: cmap or mmap package
+% mmap enables mathematical symbols, but does not work with the newtx font set
+% See: https://tex.stackexchange.com/a/64457/9075
+% Other solutions outlined at http://goemonx.blogspot.de/2012/01/pdflatex-ligaturen-und-copynpaste.html and http://tex.stackexchange.com/questions/4397/make-ligatures-in-linux-libertine-copyable-and-searchable
+% Trouble shooting outlined at https://tex.stackexchange.com/a/100618/9075
+%
+% According to https://tex.stackexchange.com/q/451235/9075 this is the way to go
+\input glyphtounicode
+\pdfgentounicode=1
+
+\usepackage{bbm}
+\usepackage{amssymb}
+
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+
+
+
+\begin{document}
+	
+
+
+% Enable following command if you need to typeset "IEEEpubid".
+% See https://bytefreaks.net/tag/ieeeoverridecommandlockouts for details.
+%\IEEEoverridecommandlockouts
+
+%\title{A Novel Resource Allocation Algorithm in Edge Computing with Deep Reinforcement Learning}
+
+\title{QOCO: A QoE-Oriented Computation Offloading Algorithm based on Deep Reinforcement Learning for Mobile Edge Computing}
+
+\author{
+		$\text{Iman Rahmati}^{\dagger}$, $\text{Hamed Shah-Mansouri}^{\ddagger}$, and $\text{Ali Movaghar}^{\dagger}$
+		\\ 
+		$^\dagger$Department of Computer Engineering, Sharif University of Technology, Tehran, Iran \\
+		$^\ddagger$Department of Electrical Engineering, Sharif University of Technology, Tehran, Iran \\
+		email: {\{iman.rahmati, hamedsh, movaghar\}}@sharif.edu
+	}
+
+
+%\author{\IEEEauthorblockN{Iman Rahmati}
+%	\IEEEauthorblockA{\textit{Computer Engineering Department, } \\
+%		\textit{Sharif University of Technology,}\\
+%		\textit{Tehran, Iran}\\
+%	}
+%	\and
+%	\IEEEauthorblockN{Hamed Shah-Mansouri}
+%	\IEEEauthorblockA{\textit{Electrical Engineering Department, } \\
+%	\textit{Sharif University of Technology,}\\
+%	\textit{Tehran, Iran}\\
+%	}
+%	\and
+%	\IEEEauthorblockN{Ali Movaghar}
+%	\IEEEauthorblockA{\textit{Computer Engineering Department, } \\
+%	\textit{Sharif University of Technology,}\\
+%	\textit{Tehran, Iran}\\
+%	}
+%}
+\maketitle
+% In case you want to add a copyright statement.
+% Works only in the compsoc conference mode.
+%
+% Source: https://tex.stackexchange.com/a/325013/9075
+%
+% All possible solutions:
+%  - https://tex.stackexchange.com/a/325013/9075
+%  - https://tex.stackexchange.com/a/279134/9075
+%  - https://tex.stackexchange.com/q/279789/9075 (TikZ)
+%  - https://tex.stackexchange.com/a/200330/9075 - for non-compsocc papers
+\iffalse
+  \IEEEoverridecommandlockouts
+  \IEEEpubid{\begin{minipage}{\textwidth}\ \\[12pt] \centering
+      1551-3203 \copyright 2015 IEEE.
+      Personal use is permitted, but republication/redistribution requires IEEE permission.
+      \\
+      See \url{https://www.ieee.org/publications_standards/publications/rights/index.html} for more information.
+    \end{minipage}}
+\fi
+
+\begin{abstract}
+In the realm of mobile edge computing (MEC), the focal point is the efficient computation task offloading problem, which plays a pivotal role in ensuring a seamless quality of experience (QoE) for users. Maintaining a high QoE is paramount in today's interconnected world, where users demand responsive and reliable services. This challenge stands as one of the most primary key factors contributing to handling dynamic load uncertainties. The decentralized determination of offloading decisions poses a challenging problem for each mobile device. In this study, we delve into computation offloading in MEC systems, where strict task processing deadlines and energy constraints can adversely affect the system performance. We formulate the computation task offloading problem as a markov decision process (MDP) to maximize the long-term user's QoE individually. We propose a QoE-oriented computation offloading (QOCO) algorithm based on deep reinforcement learning (DRL) that empowers mobile devices to make their offloading decisions without requiring knowledge of decisions made by other mobile devices. %We integrate advanced techniques, including Long Short-Term Memory (LSTM) and Dueling Double Deep Q-Network (DQN), to enhance the accuracy of QoE estimation in the algorithm. 
+Through numerical studies, we evaluate mobile devices’ QoE as well as multiple key performance metrics. When evaluating the simulation results for 50 mobile devices and 5 edge nodes, it becomes evident that the QOCO algorithm efficiently exploits the computational capacities of edge nodes. Consequently, it can bring about a significant improvement in average QoE by at least 37\%. This improvement is achieved by increasing the number of completed tasks by 14\% and reducing task delay and energy consumption by 9\% and 6\%, respectively, when compared to several benchmark methods.
+\end{abstract}
+
+\begin{IEEEkeywords}
+Mobile edge computing, computation task offloading, quality of experience, deep reinforcement learning
+\end{IEEEkeywords}
+
+% For peer review papers, you can put extra information on the cover
+% page as needed:
+% \ifCLASSOPTIONpeerreview
+% \begin{center} \bfseries EDICS Category: 3-BBND \end{center}
+% \fi
+%
+% For peerreview papers, this IEEEtran command inserts a page break and
+% creates the second title. It will be ignored for other modes.
+\IEEEpeerreviewmaketitle
+
+\section{Introduction} 
+
+
+\lettrine{M}{ \,EC} \cite{mao2017survey} has emerged as a promising technological solution to overcome the challenges faced by mobile devices (MDs) when performing high computational tasks, such as real-time data processing and artificial intelligence applications \cite{zhou2019edge} \cite{yousefpour2019all}. In spite of the technological advancements in MDs, their limitations in computing capacity and battery life, may lead to task drops, processing delays, and an overall poor user experience. By offloading intensive tasks to nearby edge nodes (ENs), MEC effectively empowers computation capability and reduces the delay and energy consumption. This improvement enhances the users' QoE, especially for time-sensitive computation tasks \cite{shah2018hierarchical}. Efficient task offloading in MEC is a complex optimization challenge due to the dynamic nature of the network and the variety of MDs and servers involved \cite{jiang2019toward}. In particular, determining the optimal offloading strategy, scheduling the tasks, and selecting the most suitable EN are main challenges that demand careful consideration.
+
+Researchers have recently proposed several task offloading algorithms to tackle the aforementioned issues. Mao \textit{et al.} in \cite{mao2016dynamic} introduced a computation offloading algorithm for MEC systems.This scheme aims to reduce the MD's energy consumption while still meeting its computation delay constraints. In \cite{zhang2016energy}, Zhang \textit{et al.} proposed an offloading scheme for MEC in heterogeneous cellular networks, taking into account the energy-constrained MEC scenario and the heterogeneity of MDs when optimizing the offloading decisions. Bi \textit{et al.} in \cite{bi2018computation} proposed an algorithm to optimize decision-making about computation offloading and power transferring in a wireless-powered MEC. Ning \textit{et al.}, in \cite{ning2018cooperative}, introduced a heuristic algorithm designed to enhance the efficiency of the partial computation offloading model. This algorithm effectively adapts offloading decisions dynamically. The works in \cite{mao2016dynamic}-\cite{ning2018cooperative} primarily focus on quasi-static systems and seldom account for time-varying conditions and are not well-suited for dynamic systems. Furthermore, the uncertain requirements and sensitive latency properties of computation tasks in MEC systems with limited resources pose nontrivial challenges that can significantly impact computation offloading performance.
+ 
+
+%In \cite{mao2016dynamic,zhang2016energy,bi2018computation,ning2018cooperative}, the processing capacity assigned to each MD by an EN remained unaffected by the number of offloaded tasks, resulting in a heavy load on the EN when a significant number of MDs offload their tasks to it. This heavy load can cause significant processing delays and even lead to missed deadlines and dropped tasks. To mitigate this issue, some existing works have proposed task offloading algorithms that consider the workloads at the ENs. In \cite{chen2018task}, Chen \textit{et al.} proposed an algorithm for task offloading in a software-defined ultra-dense network. The goal of this algorithm is to minimize task delay by formulating the task offloading scheme as a mixed integer non-linear program problem. Shah-Mansouri \textit{et al.} in \cite{shah2018hierarchical} proposed a QoE maximization slotwork for offloading decisions based on computation energy and delay reduction. They formulated a potential game to model competition among IoT users and achieved a close-to-optimal social cost.
+
+To cope with the dynamic nature of the network, recent research has proposed several DRL-based algorithms.  DRL combines reinforcement learning principles with deep neural networks to determine optimal decision-making policies \cite{arulkumaran2017deep}. By capturing the dynamics of environments and learning strategies for accomplishing long-term objectives through repeated interactions, DRL can effectively tackle the challenges arising from the ever-changing nature of networks, MDs, and servers' heterogeneity. This ultimately improves the MD users' QoE. In \cite{huang2019deep}, Huang \textit{et al.} focus on a wireless-powered MEC network. They propose a DRL-based online approach, capable of attaining near-optimal decisions. This is achieved by selectively considering a compact subset of candidate actions in each iteration. Liao \textit{et al.} in \cite{liao2023online} introduced a double reinforcement learning algorithm for performing online computation offloading in MEC. This algorithm optimizes transmission power and scheduling of CPU frequency to minimize both task computation delay and energy consumption. In \cite{zhao2019deep}, Zhao \textit{et al.} proposed a computation offloading algorithm based on DRL, which addresses the competition for wireless channels to optimize long-term downlink utility. In this approach, each MD requires quality-of-service information from other MDs. Tang \textit{et al.}, in \cite{9253665}, investigated the task offloading problem for indivisible and deadline-constrained computational tasks in MEC systems. The authors proposed a distributed DRL-based offloading algorithm designed to handle uncertain workload dynamics at the ENs. In \cite{chen2019energy}, Chen \textit{et al.} introduced an online algorithm with polynomial time complexity for offloading in MEC. This algorithm achieves a close-to-optimal energy consumption while ensuring that the delay is bounded. In \cite{dai2020edge}, Dai \textit{et al.} introduced the integration of action refinement into DRL and designed an algorithm to concurrently optimize resource allocation and computation offloading. Zhou \textit{et al.}, in \cite{zhou2021deep}, used an MDP to study MEC and model the interactions between the policy-system environment. They proposed a Q-learning approach to achieve optimal resource allocation strategies and computation offloading. In their work \cite{gao2022large}, Gao \textit{et al.} introduced an attention-based multi-agent algorithm designed for decentralized computation offloading. This algorithm effectively tackles the challenges of dynamic resource allocation in large-scale heterogeneous networks.
+
+Although DRL-based methods have demonstrated their effectiveness in handling network dynamics, task offloading still encounters several challenges that require further attention. QoE is a time-varying performance measure that reflects user satisfaction and is not affectedonly by delay as assumed in  \cite{zhao2019deep}-\cite{9253665}, but also by energy consumption. A more comprehensive approach is required to address the dynamic requirements of individual users in real-time scenarios with multiple MDs and ENs. Nevertheless, prior research in \cite{huang2019deep}-\cite{gao2022large} has failed to tackle some or all of these challenges. 
+
+In this study, we delve into the computation task offloading problem in MEC systems, where strict task processing deadlines and energy constraints can adversely affect the system performance. We propose the distributed QOCO algorithm that leverages DRL to efficiently handle task offloading in uncertain loads at ENs. This algorithm empowers MDs to make offloading decisions utilizing only locally observed information, such as task size, queue details, battery status, and historical workloads at the ENs. By adopting the appropriate policy based on each MD’s specific requirements at any given time, the QOCO algorithm significantly improves the QoE for individual users.
+
+
+
+%Inspired by existing studies, we delve into the challenge of computation task offloading in MEC systems, where the presence of strict task processing deadlines and energy constraints can adversely affect system performance and cause task delays. We proposes a decentralized offloading algorithm that empowers MDs to make intelligent decisions about offloading. The primary focus of our research is on the partial STO problem, where tasks can be fragmented into smaller sub-tasks, and the workloads at ENs can fluctuate dynamically and unpredictably. Our primary objective is to enhance the users' QoE individually. To define the problem, we have formulated the energy constraint MEC system as a Markov decision process (MDP) problem. To solve the MDP problems, Reinforcement Learning provides a range of solution methods such as dynamic programming, Monte Carlo methods, and temporal-difference learning. To deal with the Curse of Dimensions, modern Reinforcement Learning methods apply nonlinear function approximation, such as deep Q-network (DQN), to solve the problem with large state and action spaces. In our proposed approach, we leverage deep Q-learning \cite{mnih2015human}, a model-free DRL technique that enables agents to make informed decisions based on local observations without explicit knowledge of the system's dynamics and modeling. Compared to other researches, our approach provides a more realistic MEC scenario and a promising solution to the challenging problem of task offloading with strict deadline constraints. The proposed algorithm, by only utilizing locally observed information, allows each MD to determine the offloading decision in a decentralized manner. 
+
+Our main contributions are summarized as follows:
+
+\begin{itemize}
+	\item \textit{Task Offloading problem in the MEC System:} We formulate the task offloading problem as an MDP for time-sensitive tasks. This approach takes into account the dynamic nature of workloads at the ENs and concentrates on providing high performance in the MEC system while maximizing the long-term QoE.
+	
+	\item \textit{DRL-based offloading Algorithm:} To address the problem of long-term QoE maximization, we focus on task completion, task delay, and energy consumption as QoE factors, to quantify the MDs' QoE. We propose QOCO algorithm based on DRL that empowers each MD to make offloading decisions independently, without prior knowledge of the other MDs' tasks and offloading models. With a focus on the MD's battery level, our approach leverages DQN \cite{mnih2015human} and LSTM \cite{hochreiter1997long} to prioritize and strike an appropriate balance between QoE factors.
+	 
+	\item \textit{Performance Evaluation:} We conducted comprehensive experiments to evaluate QOCO's performance. The simulation results confirm that our algorithm effectively utilizes the processing capabilities of MDs and ENs, resulting in a substantial improvement in the average QoE of the system.
+\end{itemize}
+
+The structure of this paper is as follows. Section II presents the system model, followed by the problem formulation in Section III. In Section IV, we present the algorithm, while Section V provides an evaluation of its performance. Finally, we conclude in Section VI.
+
+\section{System Model} 
+\label{sec:latexhints}
+% Required for proper example rendering in the compiled PDF
+\newcount\LTGbeginlineexample
+\newcount\LTGendlineexample
+\newenvironment{ltgexample}%
+{\LTGbeginlineexample=\numexpr\inputlineno+1\relax}%
+{\LTGendlineexample=\numexpr\inputlineno-1\relax%
+	%
+	\tcbinputlisting{%
+		listing only,
+		listing file=\currfilepath,
+		colback=green!5!white,
+		colslot=green!25,
+		coltitle=black!90,
+		coltext=black!90,
+		left=8mm,
+		title=Corresponding \LaTeX{} code of \texttt{\currfilepath},
+		listing options={%
+			slot=none,
+			language={[LaTeX]TeX},
+			escapeinside={},
+			firstline=\the\LTGbeginlineexample,
+			lastline=\the\LTGendlineexample,
+			firstnumber=\the\LTGbeginlineexample,
+			basewidth=.5em,
+			aboveskip=0mm,
+			belowskip=0mm,
+			numbers=left,
+			xleftmargin=0mm,
+			numberstyle=\tiny,
+			numbersep=8pt%
+		}
+	}
+}%
+We investigate an MEC system consisting of a set of MDs denoted by $\mathcal{I} = \{1, 2, ..., I\}$, along with a set of ENs denoted by $\mathcal{J} = \{1, 2, ..., J\}$, where $I$ represents the number of MDs and $J$ represents the number of ENs. We regard time as a specific episode containing a series of time slots denoted by $\mathcal{T} = \{1, 2, \ldots, T\}$, with $T$ time slots, which represents a duration of $\tau$ seconds. As shown in Fig.~\ref{fig1}, we consider two separate queues for each MD to organize tasks for local processing or dispatching to ENs, operating in a first-in-first-out (FIFO) manner. The MD's scheduler is responsible for assigning newly arrived tasks to each of the queues at the beginning of the time slot. On the other hand, we assume that each EN $j \in \mathcal{J}$ consists of $i$ FIFO queues, where each queue corresponds to an MD $i \in \mathcal{I}$. When each task arrives at the ENs, it is enqueued in the corresponding MD's queue. %We assume that if a task is completed in a certain time slot, the next task in the queue will start its operation at the beginning of the next time slot.
+
+We define $z_i(t)$ as the index assigned to the computation task arriving at MD $i \in \mathcal{I}$ in time slot $t \in \mathcal{T}$. Let $\lambda_i(t)$ denote the size of this task in bits. The size of task $z_i(t)$ is selected from a discrete set $\Lambda = \{\lambda_1, \lambda_2, \ldots, \lambda_{\theta}\}$, where $\theta$ represents the number of available values. Hence, $\lambda_i(t) \in \Lambda \cup \{0\}$. We also denote the task's processing density $z_i(t)$ as $\rho_i(t)$ indicates the number of CPU frequency required to complete the execution of a unit of the task. Furthermore, we denote the deadline of this task by $\Delta_i(t)$ which is the number of time slots that the task must be completed to not be dropped.
+%At the beginning of time slot $t \in \mathcal{T}$, if MD $i \in \mathcal{I}$ has a newly arrived task, we define $z_i(t)$ as the unique index assigned to that task. Let $\lambda_i(t)$ be the number of newly arrived bits at the beginning of time slot $t \in \mathcal{T}$. If a new task $z_i(t)$ exists at the start of time slot $t$, then $\lambda_i(t)$ is equal to the size of task $z_i(t)$. Otherwise, $\lambda_i(t) = 0$. We consider $\rho_i(t)$ to represent the processing density of task $z_i(t)$, indicating the number of CPU cycles required to process a unit of the task.
+
+We define two binary variables, $x_i(t)$ and $y_{i,j}(t),$ to determine the offloading decision and offloading target, respectively. Specifically, $x_i(t)$ indicates whether task $z_i(t)$ is assigned to the execution queue ($x_i(t) = 0$) or to the dispatch queue ($x_i(t) = 1$), and $y_{i,j}(t)$ indicates whether task $z_i(t)$ is offloaded to EN $j \in \mathcal{J}$. If the task is dispatched to EN $j$, we set $y_{i,j}(t) = 1$; otherwise, $y_{i,j}(t) = 0$.
+
+
+
+\begin{figure}
+	\captionsetup{name=Fig.}
+	\centering
+	\includegraphics[width=1\linewidth]{queue}
+	\vspace*{-5mm}
+	\caption{An illustration MD $i \in \mathcal{I}$ and EN $j \in \mathcal{J}$ in the MEC system.}
+	\vspace*{-3mm}
+	\label{fig1}
+\end{figure}
+
+
+\subsection{Communication Model}
+ We consider that the tasks in the dispatch queues are dispatched to the appropriate ENs via the MD wireless interface. We denote the transmission rate of MD $i$'s interface when communicating with EN $j \in \mathcal{J}$ at time $t$ as $r_{i,j}(t)$. At time slot $t \in \mathcal{T}$, if task $z_i(t)$ is assigned to the dispatch queue for computation offloading, we define $l_i^{\text{T}}(t) \in \mathcal{T}$ to represent the time slot when the task is either dispatched to the EN or dropped. We also define $\delta_i^{\text{T}}(t)$ as the number of time slots that task $z_i(t)$ should wait in the queue before transmission. It should be noted that MD $i$ computes the value of $\delta_i^{\text{T}}(t)$ before making a decision. The value of $\delta_i^{\text{T}}(t)$ is computed as follows:
+\begin{alignat}{2}
+	\delta_i^{\text{T}}(t) =\textcolor{white}{i} \left[ \textcolor{white}{i}\max\limits_{t^{'}\textcolor{white}{i} \in \textcolor{white}{i} \{0,1,\ldots,t-1\}} l_i^{\text{T}}\textcolor{white}{i}(t^{'})-t+1\textcolor{white}{i}\right]^+\textcolor{white}{i},
+	\label{1}  
+\end{alignat}
+where $[\cdot]^+ =$ max$(0, \cdot)$ and $l_i^{\text{T}}(0)=0$ for the simplicity of presentation. Note that the value of $\delta_i^{\text{T}}(t)$ only depends on $l_i^{\text{T}}(t)$ for $t' < t$. If MD $i \in \mathcal{I}$ assigns task $z_i(t)$ for dispatching at time slot $t \in \mathcal{T}$, then it will either be dispatched or dropped at time slot $l_i^{\text{T}}(t)$, which is
+\begin{alignat}{2}
+	l_i^{\text{T}}(t) = \min \Big\{t + \delta_i^{\text{T}}(t) + \lceil{D_i^{\text{T}}(t)}\rceil - 1, t + \Delta_i(t) - 1\Big\},
+	\label{2}  
+\end{alignat}
+where $D_i^{\text{T}}(t)$ refers to the number of time slots required for the transmission of task $z_i(t)$ from MD $i \in \mathcal{I}$ to EN $j \in \mathcal{J}$. We have
+\begin{alignat}{2}
+	D_i^{\text{T}}(t) =  \sum_{\mathcal{J}} y_{i,j}(t) {\lambda_i(t) \over r_{i,j}(t)\tau}.
+	\label{3}  
+\end{alignat}
+Let $E_i^{\text{T}}(t)$ denote the energy consumption of the transmission from MD $i \in \mathcal{I}$ to EN $j \in \mathcal{J}$. We have
+\begin{alignat}{2}
+	E_i^{\text{T}}(t) = D_i^{\text{T}}(t)p_i^{\text{T}}(t)\tau,
+	\label{4}  
+\end{alignat}
+where $p_i^{\text{T}}(t)$ represents the power consumption of the communication link of MD $i \in \mathcal{I}$ in time slot $t$.
+\subsection{Computation Model}
+The computation tasks can be executed either locally on the MD or on the EN. In this subsection, we provide a detailed explanation of these two cases.
+\subsubsection{Local Execution}
+We model the local execution by a queuing system consisting the execution queue and the MD processor. Let $f_i$ denote the MD $i$'s processing power (in cycle per second). When task $z_i(t)$ is assigned to the execution queue at the beginning of time slot $t \in \mathcal{T}$, we define $l_i^{\text{C}}(t) \in \mathcal{T}$ as the time slot during which task $z_i(t)$ will either be processed or dropped. If the execution queue is empty, $l_i^{\text{C}}(t) = 0$. We also define $\delta_i^{\text{C}}(t)$ denote the number of remaining time slots before processing task $z_i(t)$ in the execution queue. The value of $\delta_i^{\text{C}}(t)$ is calculated  as follows:
+\begin{alignat}{2}
+	\delta_i^{\text{C}}(t) = \left[ \max \limits_{t' \in \{0,1,\ldots,t-1\}} l_i^{\text{C}}(t')-t+1 \right]^+.
+	\label{5}  
+\end{alignat}
+%In the above relation, the operator $[z]^+ = \max{0, z}$ is defined, and the variable $l_i^{\text{C}}(0) = 0$. Specifically, the expression $\max_{t' \in {0,1,2,\ldots,t-1}} l_i^{\text{C}}(t')$ determines the time slot until which all tasks placed in the local execution queue have been completed before time slot $t$. Therefore, $\delta_i^{\text{C}}(t)$ represents the number of time slots that task $z_i(t)$ needs to wait for processing. For example, suppose task $z_i(1)$ is in the execution queue, and its processing will be completed in time slot 5. Hence, $l_i^{\text{C}}(1) = 5$, meaning that the task should remain in the queue for $\Delta^{comp}(3) = [\max{5,0}-3+1]^+ = 3$ time slots until the process is finished.
+In the equation above, the term $\max_{t' \in \{0, 1, \ldots, t-1\}} l_i^{\text{C}}(t')$ denotes the time slot at which each existing task in the execution queue, which arrived before time slot $t$, is either processed or dropped. Consequently, $\delta_i^{\text{C}}(t)$ denotes the number of time slots that task $z_i(t)$ should wait before being processed. We denote the time slot in which task $z_i(t)$ will be completely processed by $l_i^{\text{C}}(t)$ if it has been assigned to the execution queue for local processing in time slot $t$. We have
+\begin{alignat}{2}
+	l_i^{\text{C}}(t) = \min \Big\{t + \delta_i^{\text{C}}(t) + \lceil D_i^{\text{C}}(t) \rceil - 1, t + \Delta_i(t) - 1\Big\}.
+	\label{6}  
+\end{alignat}
+The task $z_i(t)$ will be immediately dropped if its processing is not completed by the end of the time slot $t + \Delta_i(t) - 1$. In addition, we introduce $D_i^{\text{C}}(t)$ as the number of time slots required to complete the processing of task $z_i(t)$ on MD $i \in \mathcal{I}$. It is given by:
+\begin{alignat}{2}
+	D_i^{\text{C}}(t) = { \lambda_i(t)  \over  f_i  \tau /  \rho_i(t)}.
+	\label{7}  
+\end{alignat}
+
+
+%In particular, the processing of task $z_i(t)$ will commence at time $t + \delta_i^{\text{C}}(t)$. Therefore, the first component of the minimum operator is equal to the duration of time in which task $z_i(t)$ is completed without exceeding its deadline, denoted by $\delta_i^{\text{C}}(t)$. The second component refers to the duration of time in which task $z_i(t)$ becomes expired and discarded. As a result, $l_i^{\text{C}}(t)$ represents the time slot in which task $z_i(t)$ will be completed.
+To compute the MD's energy consumption in the time slot $t \in \mathcal{T}$, we define $E_i^{\text{L}}(t)$ as:
+\begin{alignat}{2}
+	E_i^{\text{L}}(t) =  D_i^{\text{C}}(t) p_i^{\text{C}}  \tau, %=  { \lambda_i(t) \rho_i(t)  \over  f_i} p_i^{\text{C}},
+	\label{8}  
+\end{alignat}
+where $p_i^{\text{C}} = 10^{-27}(f_i)^3$ represents the energy consumption of MD $i$'s CPU frequency \cite{mao2016dynamic}.
+\subsubsection{Edge Execution}
+We model the edge execution by the queues associated with MDs deployed at ENs. If computation task $z_i(t')$ is dispatched to EN $j$ where $t' < t$, we let $z_{i,j}^{\text{E}}(t)$ and $\lambda_{i,j}^{\text{E}}(t)$ (in bits) denote the unique index of the task and the size of the task in the $m^{\text{th}}$ queue at EN $j$. We define $\eta_{i,j}^{\text{E}}(t)$ (in bits) as the length of this queue at the end of time slot $t \in \mathcal{T}$. We refer to a queue as an active queue in a certain time slot if it is not empty. That being said, if at least one task is already in the queue from previous time slots or there is a task arriving at the queue, that queue is active. We define $\mathcal{B}_j(t)$ to denote the active queue set at EN $j$ in time slot $t$, given by:
+\begin{alignat}{2}
+	\mathcal{B}_j(t) = \textcolor{white}{i}\Big\{i \textcolor{white}{i}\big| i \in \mathcal{I}, \lambda_{i,j}^{\text{E}}(t)>0\,\, \textcolor{white}{i}\text{or}\textcolor{white}{i} \,\, \eta_{i,j}^{\text{E}}(t-1)>0\textcolor{white}{i}\Big\}.\textcolor{white}{i}
+	\label{9}  
+\end{alignat}
+We introduce $B_j(t) \triangleq |\mathcal{B}_j(t)|$ that represents the number of active queues in EN $j \in \mathcal{J}$ at time slot $t \in \mathcal{T}$. In each time slot $t \in \mathcal{T}$, the EN's processing power is divided among its active queues using a generalized processor sharing method~\cite{parekh1993generalized}. Let variable $f_j^{\text{E}}$ (in cycle per second) represent the computational capacity of EN $j$. Therefore, EN $j$ can allocate computational capacity of $f_j^{\text{E}}/(\rho_i(t) B_j(t))$ to each MD $i \in \mathcal{B}_j(t)$ during time slot $t$. To calculate the length of the execution queue for MD $i \in \mathcal{I}$ in EN $j \in \mathcal{J}$, we define $\omega_{i,j}(t)$ (in bits) to represent the number of bits from dropped tasks in that queue at the end of time slot $t \in \mathcal{T}$. The backlog of the queue, referred to as $\eta_{i,j}^{\text{E}}(t)$ is given by:
+\begin{alignat}{2}
+	\eta_{i,j}^{\text{E}}(t)\hspace{-0.8mm}=\hspace{-0.9mm}\left[\eta_{i,j}^{\text{E}}(t-1)\hspace{-0.5mm}+\hspace{-0.5mm}\lambda_{i,j}^{\text{E}}(t)-{f_j^{\text{E}}\over \rho_i(t)B_j(t)} -\omega_{i,j}(t)\right]^+\hspace{-1.7mm}.
+	\label{10}  
+\end{alignat}
+We also define $l_{i,j}^{\text{E}}(t) \in \mathcal{T}$ as the time slot during which the offloaded task $z_{i,j}^{\text{\text{E}}}(t)$ is either processed or dropped by EN $j$. Given the uncertain workload ahead at EN $j$, neither MD $i$ nor EN $j$ has information about $l_{i,j}^{\text{E}}(t)$ until the corresponding task $z_{i,j}^{\text{E}}(t)$ is either processed or dropped. Let $\hat{l}_{i,j}^{\text{E}}(t)$ represent the time slot at which the execution of task $z_{i,j}^{\text{E}}(t)$ starts. In mathematical terms, for $i \in \mathcal{I}$, $j \in \mathcal{J}$, and $t \in \mathcal{T}$, we have:
+\begin{alignat}{2}
+	\hat{l}_{i,j}^{\text{E}}(t) = \max \{t, \max \limits_{t^{'} \in \{0,1,\ldots,t-1\}} l_{i,j}^{\text{E}}(t^{'})+1\},
+	\label{11}  
+\end{alignat}
+where $l_{i,j}^{\text{E}}(0) = 0$. Indeed, the initial processing time slot of task $z_{i,j}^{\text{E}}(t)$ at EN should not precede the time slot when the task was enqueued or when the previously arrived tasks were processed or dropped. Therefore, $l_{i,j}^{\text{E}}(t)$ is the time slot that satisfies the following constraints. %For $i \in \mathcal{I}$, $j \in \mathcal{J}$, and $t \in \mathcal{T}$,
+\begin{alignat}{2}
+	\sum_{t^{'}=\hat{l}_{i,j}^{\text{E}}(t)}^{l_{i,j}^{\text{E}}(t)}{f_j^{\text{E}} \over \rho_i(t)B_j(t^{'})}\mathbbm{1}(m \in \mathcal{B}_j(t^{'}))  \geq   \lambda_{i,j}^{\text{E}}(t),
+	\label{12}  \\
+	\sum_{t^{'}=\hat{l}_{i,j}^{\text{E}}(t)}^{l_{i,j}^{\text{E}}(t)-1}{f_j^{\text{E}} \over \rho_i(t)B_j(t^{'})}\mathbbm{1}(m \in \mathcal{B}_j(t^{'})) < \lambda_{i,j}^{\text{E}}(t),
+	\label{13}  
+\end{alignat}
+where $\mathbbm{1} (z \in \mathbb{Z})$ is the indicator function. In particular, the total processing capacity that EN $j$ allocates to MD $i$ from the time slot $\hat{l}_{i,j}^{\text{E}}(t)$ to the time slot $l_{i,j}^{\text{E}}(t)$ should exceed the size of task $z_{i,j}^{\text{E}}(t)$. Conversely, the total allocated processing capacity from the time slot $l_{i,j}^{\text{E}}(t)$ to the time slot $l_{i,j}^{\text{E}}(t)-1$ should be less than the task's size.
+
+Additionally, we define $D_{i,j}^{\text{E}}(t)$ to represent the quantity of processing time slots allocated to task $z_{i,j}^{\text{E}}(t)$ when executed at EN $j$. This value is given by:
+\begin{alignat}{2}
+	D_{i,j}^{\text{E}}(t) = { \lambda_{i,j}^{\text{E}}(t) \rho_i(t) \over f_j^{\text{E}} \tau /  B_j(t)}.
+	\label{14}  
+\end{alignat}
+We define $E_{i,j}^{\text{E}}(t)$ as the energy consumption of processing at EN $j$ in time slot $t$ by MD $i$. This can be calculated as:
+\begin{alignat}{2}
+	E_{i,j}^{\text{E}}(t) = {D_{i,j}^{\text{E}}(t)  p_j^{\text{E}} \tau \over B_j(t)},  % = { \lambda_{i,j}^{\text{E}}(t) \rho_i(t) \over  f_j^{\text{E}}}p_j^{\text{E}} ,
+	\label{15}  
+\end{alignat}
+where $p_j^{\text{E}}$ is a constant value which denotes the energy consumption of the EN $j$'s processor when operating at full capacity. 
+
+In addition to the energy consumed by the EN $j$ for task processing, we also take into account the energy consumed by the MD $i$'s user interface in the standby state while waiting for task completion at the EN $j$. We define $E_{i,j}^{\text{I}}(t)$ as the energy consumption associated with the user interface of MD $i \in \mathcal{I}$, which is given by
+\begin{alignat}{2}
+	E_i^{\text{I}}(t) = D_{i,j}^{\text{E}}(t) p_i^{\text{I}} \tau, %= {\lambda_{i,j}^{\text{E}}(t) \rho_i(t) \over \mathcal{B}_j(t) f_j^{\text{E}}} p_i^{\text{I}},
+	\label{16}
+\end{alignat}
+where $p_i^{\text{I}}$ is the energy consumption of MD $i \in \mathcal{I}$ in the standby state. Accordingly, by combining \eqref{4}, \eqref{15} and \eqref{16}, the overall energy consumption associated with offloading task $z_i(t)$ is formulated as
+\begin{alignat}{2}
+	E_i^{\text{O}}(t) = E_i^{\text{T}}(t) + \sum_{\mathcal{J}} E_{i,j}^{\text{E}}(t) + E_i^{\text{I}}(t).
+	\label{17}
+\end{alignat}
+
+
+
+\section{Task Offloading problem Formulation}
+
+Based on the introduced system model, we present the computation task offloading problem in this section. Our primary goal is to enhance each MD's QoE individually by taking the dynamic demands of MDs into account. To achieve this, we approach the optimization problem as an MDP, aiming to maximize the MD's QoE by striking a balance among key QoE factors, including task completion, task delay, and energy consumption. To prioritize QoE factors, we utilize the MD's battery level, which plays a crucial role in decision-making. Specifically, when an MD observes its state (e.g. task size, queue details, and battery level) and encounters a newly arrived task, it is required to select an appropriate action for that task. The selected action, based on the observed state, will result in enhanced QoE for the MD. Each MD strives to maximize its long-term QoE by optimizing the policy mapping from states to actions. In what follows, we will initially present the state space, action space, and QoE function, respectively. Then, we will formulate the QoE maximization problem for each MD.
+
+
+
+
+\subsection{State Space}
+A state in our MDP represents a conceptual space that comprehensively describes the state of an MD facing the environment. We represent the MD $i$'s state at time slot $t$ as vector $\boldsymbol{s}_i(t)$ that includes the newly arrived task size, the queues information, the MD's battery level, and the workload history at the ENs. The MD observers this vector at the beginning of each time slot. The vector $\boldsymbol{s}_i(t)$ is defined as follows:
+\begin{alignat}{2}
+\boldsymbol{s}_i(t) = \Big(\lambda_i(t), \delta_i^{\text{C}}(t), \delta_i^{\text{T}}(t), \boldsymbol{\eta}_i^{\text{E}}\hspace{-0.4mm}(\hspace{-0.4mm}t\hspace{-0.4mm}-\hspace{-0.4mm}1\hspace{-0.5mm}),\phi_i(t), \mathcal{H}(t) \Big),
+	\label{18}
+\end{alignat}
+where the vector $\boldsymbol{\eta}_i^{\text{E}}(t-1) = (\eta_{i,j}^{\text{E}}(t-1), j \in \mathcal{J})$ represents the queue length of MD $i$ in ENs at the previous time slot, which the MD can compute this vector according to \eqref{10}. Let $\phi_i(t)$ denote the battery level of MD $i$ at time slot $t$. Considering the power modes of Android MDs, $\phi_i(t)$ is derived from the discrete set $\Phi=\{\phi_1,\phi_2,\phi_3\}$, corresponding to ultra power-saving, power-saving, and performance modes, respectively.
+
+In addition, to predicting future EN workloads, we define the matrix $\mathcal{H}(t)$ as historical data, indicating the number of active queues for each EN. This data is recorded over $T^{\text{s}}$ time slots, ranging from $t-T^{\text{s}}$ to $t-1$, in a matrix with a size of $T^{\text{s}} \times J$. For EN $j$ workload history at $i^{th}$ time slot from $T^{\text{s}}-t$, define $h_{i,j}(t)$ as:
+\begin{alignat}{2}
+	h_{i,j}(t) = B_j(t - T^{\text{s}} + i - 1),
+	\label{19}
+\end{alignat}
+%where $B_j(t - T^{\text{s}} + i - 1)$ is the number of active queues of EN $j$ in time slot $t - T^{\text{s}} + i - 1$. 
+Where EN $j \in \mathcal{J}$ broadcasted $B_j(t)$ at the end of each time slot. Given $B_j(t) \leq I$, can be represented using only a few bits, the broadcast incurs minimal signaling overhead.
+
+We define vector $\mathcal{S}$ as the discrete and finite state space for each MD. The size of the set $\mathcal{S}$ is given by $\Lambda \times T^2 \times \mathcal{U} \times 3 \times I^{T^{\text{s}} \times J}$, where $\mathcal{U}$ is the set of available queue length values at an EN over $T$ time slots. 
+
+
+
+%A MD $i \in \mathcal{I}$ can obtain state information $\lambda_i(t)$, $\delta_i^{\text{C}}(t)$, $\delta_i^{\text{T}}(t)$, and $\phi_i(t)$ through local observation at the beginning of time slot $t$.
+
+
+%For state information  $\boldsymbol{\eta}_i^{\text{E}}(t-1)$, MD $i$ can compute this vector according to the number of transmitted bits to each EN in each time slot and the number of bits of MD $i$ processed or being dropped by each EN in each time slot according to \eqref{10}. 
+
+
+%For matrix $\mathcal{H}(t)$, we assume that each EN will broadcast its number of active queues at the end of each time slot. Since the number of active queues is always a small number, which can be represented by several bits, the broadcasting will only incur a small signaling overhead.
+
+\subsection{Action Space}
+The action space represents the agent's behavior and the decisions made by the agent. In this context, we define $\boldsymbol{a}_i(t)$ to denote the action taken by MD $i \in \mathcal{I}$ at time slot $t \in \mathcal{T}$. These actions involve two decision, (a) Offloading decision to determine whether to offload the task, and (b) Offloading target to determine the EN to send the offloaded tasks. Thus, the action of MD $i$ in time slot $t$ can be concisely expressed as the following action tuple:
+\begin{alignat}{2}
+	\boldsymbol{a}_i(t) = (x_i(t), \boldsymbol{y}_i(t)),
+	\label{20}
+\end{alignat}
+where $\boldsymbol{y}_i(t) = (y_{i,j}(t), j \in \mathcal{J})$ is the selected EN for offloading this task. %Hence, the decision space of each MD is thus equal to $\mathcal{A} = \{0,1\}^{1+N}$, with $j$ representing the number of available ENs.
+
+\subsection{QoE Function}
+The QoE function evaluates the influence of an agent's actions by taking into account several key performance factors. Given the selected action $\boldsymbol{a}_i(t)$ in the observed state $\boldsymbol{s}_i(t)$, we represent $\mathcal{D}_i(\boldsymbol{s}_i(t), \boldsymbol{a}_i(t))$ as the delay of task $z_i(t),$ which indicates the number of time slots from time slot $t$ to the time slot in which task $z_i(t)$ is processed. It is calculated by:\\\\
+$\mathcal{D}_i(\boldsymbol{s}_i(t),\boldsymbol{a}_i(t)) = (1-x_i(t))\Big(l_i^{\text{C}}(t) - t + 1\Big)  +$
+\begin{alignat}{2}
+	\;\;\;\; x_i(t)\bigg( \sum\limits_{\mathcal{J}} \sum\limits_{t'=t}^{T}\mathbbm{1}\big(z_{i,j}^{\text{E}}(t')=z_i(t)\big) l_{i,j}^{\text{E}}(t') - t +1\bigg),
+	\label{21}  
+\end{alignat} 
+where $\mathcal{D}_i(\boldsymbol{s}_i(t),\boldsymbol{a}_i(t))= 0$ when task $z_i(t)$ is dropped. Correspondingly, we denote the energy consumption of task $z_i(t)$ with concerning the selected action $\boldsymbol{a}_i(t)$ in the observed state $\boldsymbol{s}_i(t)$ as $\mathcal{E}_i(\boldsymbol{s}_i(t),\boldsymbol{a}_i(t))$, which is:\\\\
+$\mathcal{E}_i(\boldsymbol{s}_i(t),\boldsymbol{a}_i(t)) = (1-x_i(t)) E_i^{\text{L}}(t)+$
+\begin{alignat}{2}
+\hspace{1.8cm} x_i(t)\bigg( \sum\limits_{\mathcal{J}} \sum\limits_{t^{'}=t}^{T}\mathbbm{1}\big(z_{i,j}^{\text{E}}(t') = z_i(t)\big) E_i^{\text{O}}(t)  \bigg).
+	\label{22}  
+\end{alignat}
+Given the delay and energy consumtion of task $z_i(t)$, we also define $\mathcal{C}_i(\boldsymbol{s}_i(t),\boldsymbol{a}_i(t))$ denote the assosiate cost of task $z_i(t)$ given the action $\boldsymbol{a}_i(t)$ in the state $\boldsymbol{s}_i(t)$ as follows: \\\\
+$\mathcal{C}_i(\boldsymbol{s}_i(t),\boldsymbol{a}_i(t)) =$
+\begin{alignat}{2}
+\phi_i(t) \, \mathcal{D}_i(\boldsymbol{s}_i(t),\boldsymbol{a}_i(t)) +(1-\phi_i(t)) \, \mathcal{E}_i(\boldsymbol{s}_i(t),\boldsymbol{a}_i(t)),
+	\label{23}  
+\end{alignat}
+where $\phi_i(t)$ represents the MD $i$'s battery level. When the MD is operating in performance mode, the primary focus is on minimizing task delays, which results in an increase in delay costs. On the other hand, when the MD switches to ultra power-saving mode, the main attention is directed toward reducing power consumption, leading to an increase in energy consumption cost.
+
+Finally, we define $\boldsymbol{q}_i(\boldsymbol{s}_i(t),\boldsymbol{a}_i(t))$ as the QoE associated with task $z_i(t)$ given the selected action $\boldsymbol{a}_i(t)$ and the observed state $\boldsymbol{s}_i(t)$. The QoE function is defined as follows:\\\\
+$\boldsymbol{q}_i(\boldsymbol{s}_i(t),\boldsymbol{a}_i(t)) =$
+\begin{alignat}{2}
+ \hspace*{8mm}
+	\begin{cases} 
+		\mathcal{R} - \mathcal{C}_i(\boldsymbol{s}_i(t),\boldsymbol{a}_i(t)) & \hspace*{-2mm} \text{if task $z_i(t)$ processed,} \\
+		- \hspace*{0.8mm} \mathcal{E}_i(\boldsymbol{s}_i(t),\boldsymbol{a}_i(t)) &	\hspace*{-2mm} \text{if task $z_i(t)$ dropped,}
+	\end{cases}
+	\label{26}  
+\end{alignat}
+where $\mathcal{R} > 0$ represents a constant reward for task completion. If task $z_i(t) = 0$, then $\boldsymbol{q}_i(\boldsymbol{s}_i(t), \boldsymbol{a}_i(t)) = 0$. Throughout the rest of this paper, we adopt the shortened notation $\boldsymbol{q}_i(t)$ to represent $\boldsymbol{q}_i(\boldsymbol{s}_i(t), \boldsymbol{a}_i(t))$.
+%When $\phi_i(t)$ is closer to 1, the cost function prioritizes reducing delay and drop, which could be advantageous in situations where tasks need to be completed quickly, and responsiveness is crucial. Conversely, when $\phi_i(t)$ is closer to 0, the cost function prioritizes reducing energy consumption, which is beneficial when the MD's battery level is low, and conserving power is necessary to prolong operation.
+
+\subsection{Problem Formulation}
+The task offloading policy for MD $i \in \mathcal{I}$ can be defined as a mapping from its state to its corresponding action, i.e., $\pi_i : \mathcal{S} \rightarrow \mathcal{A}$. Especially, the MD $i$ determines an action $\boldsymbol{a}_i(t) \in \mathcal{A}$, according to policy $\pi_i$ given the observed environment state $\boldsymbol{s}_i(t) \in \mathcal{S}$. The MD $i$ aims to find its optimal policy $\pi_i^*$ which maximizes the long-term QoE,
+\begin{alignat}{2}
+	\pi_i^* = \text{arg}\,\,  \max\limits_{\pi_i}  \mathbbm{E} \Bigg[ \sum\limits_{t \in \mathcal{T}}  \gamma^{t-1}\boldsymbol{q}_i(t) \Bigg| \pi_i \Bigg],
+	\label{24}  
+\end{alignat}
+where $\gamma \in (0,1]$ is a discount factor and determines the balance between instant QoE and long-term QoE considerations. As $\gamma$ approaches 0, the MD prioritizes QoE within the current time slot exclusively. Conversely, as $\gamma$ approaches 1, the MD increasingly factors in the cumulative long-term QoE. The expectation $\mathbb{E}[\cdot]$ is taken into consideration of the time-varying system environments. Solving the optimization problem in \eqref{24} is particularly challenging due to the dynamic nature of the network. To address this challenge, we introduce an DRL- based offloading algorithm to learn the mapping between each state-action pair and their long-term QoE.
+\section{DRL-Based Offloading Algorithm} 
+We present QOCO algorithm so as to address the distributed offloading decision-making of MDs in this section. The aim is to empower MDs to identify the most efficient action that maximizes their long-term QoE. In the following, we introduce a neural network of an MD that characterizes its state-action Q-values mapping, followed by a description of the communication interchange between the MDs and ENs.
+
+\begin{figure}
+	\centering
+	\includegraphics[width=1\linewidth]{DQN}
+	\captionsetup{name=Fig.}
+	\vspace*{-6mm}
+	\caption{The neural network of MD $i \in \mathcal{I}$, which characterize the Q-value of each action $\boldsymbol{a} \in \mathcal{A}$ under state $\boldsymbol{s}_i(t) \in \mathcal{S}$.}
+	\vspace*{-3mm}
+	\label{DQN}
+\end{figure}
+
+\subsection{DQN-based solution}
+We utilize the DQN technique to address the formulated MDP to find the mapping between each state-action pair to Q-values. As shown in Fig.~\ref{DQN}, each MD $i \in \mathcal{I}$ is equipped with a neural network comprising six layers. These layers include an input layer, an LSTM layer, two dense layers, an advantage-value (A\&V) layer, and an output layer. The parameter vector $\theta_i$ of MD $i$'s neural network is defined to maintain the connection weights and neuron biases across all layers. For MD $i \in \mathcal{I}$, we utilize the state information as the input of neural network. The state information $\lambda_i(t)$, $\delta_i^{\text{C}}(t)$, $\delta_i^{\text{T}}(t)$, $\phi_i(t)$, and $\boldsymbol{\eta}_i^{\text{E}}(t-1)$ are directly passed to the dense layer, while the state information $\mathcal{H}(t)$ is first directed to the LSTM layer and then the resulting output is sent to the dense layer. The role and responsibilities of each layer are detailed as follows.
+
+
+\subsubsection{Predicting Workloads at ENs}
+In order to capture the dynamic behavior of workloads at the ENs, we employ the LSTM network \cite{hochreiter1997long}. This network maintains a memory state $\mathcal{H}(t)$ that evolves over time, enabling neural network to predict future workloads at the ENs based on historical data. By taking the matrix $\mathcal{H}(t)$ as an input, the LSTM network learns the patterns of workload dynamics. The architecture of the LSTM consists of $T^{\text{s}}$ units, each equipped with a set of hidden neurons, and it processes individual rows of the matrix $\mathcal{H}(t)$ sequentially. Through this interconnected design, they track the variations in sequences from $\boldsymbol{h}_1(t)$ to $\boldsymbol{h}_{T^{\text{s}}}(t)$, where $\boldsymbol{h}_i(t) = (h_{i,j}(t), j \in \mathcal{J})$, thereby revealing workload fluctuations at the ENs across different time slots. The final LSTM unit produces output that encapsulates the anticipated workload dynamics, and this output is then connected to the subsequent layer neurons for further learning.
+
+
+
+
+%\subsubsection{workload Prediction}
+%To learning the dynamics of the workloads at the ENs, we use the LSTM network [26], [27], which can keep track of the state $\mathcal{H}(t)$ over time. It can provide the neural network the ability of estimating the workloads at the ENs in the future using the history. The LSTM network takes the matrix $\mathcal{H}(t)$ as input so as to learn the workload dynamics. coresponding the matrix $\mathcal{H}(t)$,  The LSTM network contains $T^{\text{s}}$ LSTM units, each of which contains a set of hidden neurons and takes one row of the matrix $\mathcal{H}(t)$ as input. These LSTM units are connected in sequence so as to keep track of the variations of the sequences from $\{\mathcal{H}(t)\}_1$ to $\{\mathcal{H}(t)\}_{T^{\text{s}}}$, which can reveal the variations of the workloads at the ENs among time slots. The LSTM network will output the information that indicates the dynamics of the workloads in the future in the last LSTM unit, where the output will be connected to the neurons in the next layer for further learning.
+%
+%---------------------
+
+%This layer is responsible for learning the dynamics of the workloads at the ENs. This is achieved by including an LSTM network [26], [27]. We use the LSTM network because it can keep track of the state $\textbf{H}(t)$ over time. It can provide the neural network the ability of estimating the workloads at the ENs in the future using the history. 
+%
+%Specifically, the LSTM network takes the matrix $\textbf{H}(t)$ as input so as to learn the workload dynamics. Fig. 3 shows the structure of an LSTM network. The LSTM network contains Tstep LSTM units, each of which contains a set of hidden neurons. Each LSTM unit takes one row of the matrix $\textbf{H}(t)$ as input, we let $\{\textbf{H}(t)\}_1$  denote the $i^{th}$ row of matrix $\textbf{H}(t)$ in Fig. 3. These LSTM units are connected in sequence so as to keep track of the variations of the sequences from $\{\textbf{H}(t)\}_1$ to $\{\textbf{H}(t)\}_{T^{step}}$, which can reveal the variations of the workloads at the ENs among time slots. The LSTM network will output the information that indicates the dynamics of the workloads in the future in the last LSTM unit, where the output will be connected to the neurons in the next layer for further learning.
+
+\subsubsection{State-Action Q-Value Mapping}
+The pair of dual dense layers plays a crucial role in learning the mapping of Q-values from the current state and the learned workload dynamics to the corresponding actions. The dense layers consist of a cluster of neurons that employ rectified linear units (ReLUs) as their activation functions. In the initial dense layer, connections are established from the neurons in the input layer and the LSTM layer to each neuron in the dense layer. The resulting output of a neuron in the dense layer is connected to each neuron in the subsequent dense layer. In the second layer, the outputs from each neuron establish connections with all neurons in the A\&V layers.
+
+\subsubsection{Dueling-DQN Approach for Q-Value Estimation}
+In the neural network architecture, the A\&V layer and the output layer incorporate the principles of the dueling-DQN \cite{wang2016dueling} to compute action Q-values. The fundamental concept of dueling-DQN involves two separate learning components: one for action-advantage values and another for state-value. This approach enhances Q-value estimation by separately evaluating the long-term QoE attributed to states and actions.
+
+The A\&V layer consists of two distinct dense networks referred to as network A and network V. Network A's role is to learning the action-advantage value  for each action, while network V focuses on learning the state-value. For an MD $i \in \mathcal{I}$, we define $V_i(\boldsymbol{s}_i(t); \theta_i)$ and $A_i(\boldsymbol{s}_i(t), \boldsymbol{a}; \theta_i)$ to denote the state-value and the action-advantage value of action $\boldsymbol{a} \in \mathcal{A}$ under state $\boldsymbol{s}_i(t) \in \mathcal{S}$, respectively. The parameter vector $\theta_i$ is responsible for determining these values, and it can be adjusted and subjected to training in the QOCO algorithm.
+
+For an MD $i \in \mathcal{I}$, the A\&V layer and the output layer collectively determine $Q_i(\boldsymbol{s}_i(t), \boldsymbol{a}; \theta_i)$, representing the resulting Q-value under action $\boldsymbol{a} \in \mathcal{A}$ and state $\boldsymbol{s}_i(t) \in \mathcal{S}$, as follows: \vspace{0.4cm} \\%. The Q-value is computed by adding the state-value corresponding to a specific state to the difference between the action-advantage value for that action and the mean action-advantage value across all available actions.\\\\
+$Q_i(\boldsymbol{s}_i(t), \boldsymbol{a}; \theta_i) = V_i(\boldsymbol{s}_i(t);\theta_i) +$
+\vspace{-1mm}
+\begin{alignat}{2}
+	\hspace{0.94cm} \Bigg( A_i(\boldsymbol{s}_i(t),\boldsymbol{a};\theta_i) - {1 \over |\mathcal{A}|} \sum\limits_{\boldsymbol{a}' \in \mathcal{A}}(A_i(\boldsymbol{s}_i(t),\boldsymbol{a}';\theta_i) \Bigg),
+	\label{25}  
+\end{alignat}
+where $\theta_i$ establishes a functional relationship that maps Q-values to pairs of state-action.
+
+%, which characterizes the long-term QoE under any observed state $\boldsymbol{s}_i(t) \in \mathcal{S}$ and action $\mathcal{A} \in \mathcal{A}$. 
+
+
+
+
+\subsection{QoE-Oriented DRL-Based Algorithm}
+
+%Our proposed QoE-Driven DRL-Based Algorithm is designed to efficiently distribute computational loads for training neural networks on MDs while leveraging the support of ENs. The primary objective of this algorithm is to utilize the experience of each MD to train its neural network, allowing the MD to make informed decisions that maximize its long-term QoE. To achieve efficient training, each MD $i \in \mathcal{I}$ is paired with a dedicated EN $n_i \in \mathcal{J}$ that assists in the training process. The selection of EN $n_i$ is based on its maximum transmission capacity with MD $i$. We define the set $\mathcal{I}_j \subset \mathcal{I}$ as the group of MDs whose training is facilitated by EN $j \in \mathcal{J}$.
+
+The QOCO algorithm has been meticulously designed to optimize the allocation of computational tasks between MDs and ENs. Since the training of neural networks imposes an extensive computational workload on MDs, we enable MDs to utilize ENs for training their neural networks, effectively reducing their computational workload. For each MD $i \in \mathcal{I}$, there is an associated EN, denoted as $j_i \in \mathcal{J}$, which assists in the training process. This EN possesses the highest transmission capacity among all ENs. We define $\mathcal{I}_j \subset \mathcal{I}$ as the set of MDs for which training is executed by EN $j \in \mathcal{J}$, i.e. $\mathcal{I}_j = \{i \in \mathcal{I} | j_i = j\}$. This approach is feasible due to the minimal information exchange and processing requirements for training compared to MD's tasks. The QOCO algorithm to be executed at MD $i \in \mathcal{I}$ and EN $j \in \mathcal{J}$ are given in Algorithms ~\ref{alg:cap} and ~\ref{alg:cap2}, respectively. The core concept involves training neural networks with MD experiences (i.e., state, action, QoE, next state) to map Q-values to each state-action pairs. This mapping allows MD to identify the action in the observed state with the highest Q-value and maximize its long-term QoE.
+
+
+
+In detail, the EN $j \in \mathcal{J}$ maintains a replay buffer $\mathcal{M}_i$ with two neural networks for MD $i$: $\textit{Net}_i^{\text{E}}$, denoting the evaluation network, and $\textit{Net}_i^{\text{T}}$, denoting the target network, which have the same neural network architecture. However, they possess distinct parameter vectors $\theta^{\text{E}}_i$ and $\theta^{\text{T}}_i$, respectively. Their Q-values are represented by $Q_i^{\text{E}}(\boldsymbol{s}_i(t), \boldsymbol{a}; \theta^{\text{E}}_i)$ and $Q_i^{\text{T}}(\boldsymbol{s}_i(t), \boldsymbol{a}; \theta^{\text{T}}_i)$ for the MD $i \in \mathcal{I}_j$, associating the action $\boldsymbol{a} \in \mathcal{A}$ under the state $\boldsymbol{s}_i(t) \in \mathcal{S}$, respectively. The replay buffer records the observed experience $(\boldsymbol{s}_i(t), \boldsymbol{a}_i(t), \boldsymbol{q}_i(t), \boldsymbol{s}_i(t+1))$ of the MD $i$ for some $t \in \mathcal{T}$. The $\textit{Net}_i^{\text{E}}$ is responsible for action selection, while the $\textit{Net}_i^{\text{T}}$ characterizes the target Q-values, which represent the estimated long-term QoE resulting from an action in the observed state. The target Q-value serves as the reference for updating the network parameter vector $\theta^{\text{E}}_i$. This update occurs through the minimization of disparities between the Q-values under $\textit{Net}_i^{\text{E}}$ and $\textit{Net}_i^{\text{T}}$. In the following, we introduce the offloading decision algorithm in MD $i \in \mathcal{I}$ and the training process algorithm in EN $j \in \mathcal{J}$, respectively.
+
+% i.e., $\textbf{\textit{s}}_i(1) = \big(\lambda_i(1), \delta_i^{\text{C}}(1), \delta_i^{\text{T}}(1), \boldsymbol{\eta}_i^{\text{E}}(0),\phi_i(1), \mathcal{H}(1) \big)$, where we set $\boldsymbol{\eta}_i^{\text{E}}(0)=0$ for all $j \in \mathcal{J}$, and $ \mathcal{H}(1)$ is a zero matrix with size $T^s \times N$. 
+
+
+\subsubsection{Offloading Decision Algorithm at MD $i \in \mathcal{I}$}
+ We analyze a series of episodes, where $\textit{Ep.}$ denote the number of them. At the start of each episode, if MD $i \in \mathcal{I}$ receives a new task arrival $z_i(t)$, it initializes the state $\mathcal{S}_i(1)$ and sends a $\textit{UpdateRequest}$ to EN $n_i$. After receiving the requested parameter vector $\theta_i^{\text{E}}$ of $\textit{Net}_i^{\text{E}}$ from EN $j_i$, MD $i$ selects its action for task $z_i(t)$ in the following manner:
+\begin{alignat}{2}
+	\hspace*{-2mm}\boldsymbol{a}_i(t) \hspace*{-0.5mm} = \hspace*{-0.5mm}
+	\begin{cases} 
+		\text{arg $\max_{\boldsymbol{a}\in \mathcal{A}}Q_i^{\text{E}}(\boldsymbol{s}_i(t), \boldsymbol{a}; \theta^{\text{E}}_i)$,} &	\hspace*{-3mm} \text{with $\boldsymbol{\text{p}}(1 -\boldsymbol{\epsilon})$,} \\
+ 	\text{pick an random action from $\mathcal{A}$,} & \hspace*{-3mm} \text{with $\boldsymbol{\text{p}}(\boldsymbol{\epsilon})$,}
+	\end{cases}
+	\label{26}  
+\end{alignat}
+where $\boldsymbol{\text{p}}(\cdot)$ is probability, and $\boldsymbol{\epsilon}$ represents the random exploration probability. The value of $Q_i^{\text{E}}(\boldsymbol{s}_i(t), \boldsymbol{a}; \theta^{\text{E}}_i)$ indicates the Q-value under the parameter $\theta^{\text{E}}_i$ of the neural network $\textit{Net}_i^{\text{E}}$. Specifically, the MD with a probability of $1 - \boldsymbol{\epsilon}$ selects the action associated with the highest Q-value under $\textit{Net}_i^{\text{E}}$ in the observed state $\boldsymbol{s}_i(t)$.
+\begin{algorithm} [tbp]
+	\caption{QOCO Algorithm (Offloading Decision)}\label{alg:cap}
+	\begin{algorithmic}[1]
+		\renewcommand{\algorithmicrequire}{\textbf{Input:}} 
+		\renewcommand{\algorithmicensure}{\textbf{Output:}}
+		\Require state space $\mathcal{S}$, action space $\mathcal{A}$
+		\Ensure MD $i \in \mathcal{I}$ experience 
+		\For {episode from 1 to \textit{Ep.}}
+		\State Initialize $\boldsymbol{s}_i(1)$
+		\For {time slot $t \in \mathcal{T}$}
+		\If{MD $i$ receives a new task $z_i(t)$}
+		\State Send a \textit{UpdateRequest} to EN $j_i$;
+		\State Receive network parameter vector $\theta_i^{\text{E}}$;
+		\State Select action $\boldsymbol{a}_i(t)$ based on the equation \eqref{26};
+		\EndIf
+		\State Observe a set of QoEs $\{\boldsymbol{q}_i(t'), t' \in \mathcal{F}_i^t\}$;
+		\State Observe\textcolor{white}{i}the next\textcolor{white}{i}state $\textbf{\textit{s}}_i(t+1)$;\textcolor{white}{i}
+		\For {each task $z_i(t')$ where $t' \in \mathcal{F}_i^t$} 
+		\State Send \hspace{-1mm} $(\boldsymbol{s}_i(t'), \boldsymbol{a}_i(t'), \boldsymbol{q}_i(t'), \boldsymbol{s}_i(t'\hspace{-1mm}+1))$ to $j_i$;
+		\EndFor
+		\EndFor
+		\EndFor
+	\end{algorithmic}
+\end{algorithm}
+
+
+In the next time slot $t+1$, MD $i$ observes the state $\mathcal{S}_i(t+1)$. However, due to the potential for tasks to extend across multiple time slots, the QoE $\boldsymbol{q}_i(t)$ associated with task $z_i(t)$ may not be observable in time slot $t+1$. On the other hand, MD $i$ may observe a group of QoEs associated with some tasks $z_i(t')$ in time slots $t' \leq t$. For each MD $i$, we define the set $\mathcal{F}_i^t \subset \mathcal{T}$ to denote the time slots during which each arrival task $z_i(t')$ is either processed or dropped at time slot $t$, as given by:\\
+
+$\mathcal{F}_i^t =\bigg \{ t' \bigg|\; t' \leq t,\; \lambda_i(t')>0, \; (1 - x_i(t')) \; l_i^{\text{C}}(t') \; + $ \vspace{-2mm}
+\begin{equation}
+	\hspace{20mm} x_i(t')\sum\limits_{\mathcal{J}} \sum\limits_{n= t'}^{t}\mathbbm{1}(z_{i,j}^{\text{E}}(n)=z_i(t'))  \; l_{i,j}^{\text{E}}(n) = t \bigg\}.
+	\label{27}  
+\end{equation}
+Therefore, MD $i$ observes a set of QoEs $\{\boldsymbol{q}_i(t') \mid t' \in \mathcal{F}_i^t\}$ at the beginning of time slot $t+1$, where the set $\mathcal{F}_i^t$ for some $i \in \mathcal{I}$ can be empty. Subsequently, MD $i$ sends its experience $(\boldsymbol{s}_i(t), \boldsymbol{a}_i(t), \boldsymbol{q}_i(t), \boldsymbol{s}_i(t+1))$ to EN $j_i$ for each task $z_i(t')$ in $t' \in \mathcal{F}_i^t$.
+
+
+\begin{algorithm}[tbp]
+	\caption{QOCO Algorithm (Training Process)}\label{alg:cap2}
+	\begin{algorithmic}[1]
+		\State Initialize replay buffer $\mathcal{M}_i$ for each MD $i \in \mathcal{I}_j$;
+		\State Initialize $\textit{Net}_i^{\text{E}}$ and $\textit{Net}_i^{\text{T}}$ with random parameters $\theta_i^{\text{E}}$ and $\theta_i^{\text{T}}$ respectively, for each MD $i \in \mathcal{I}_j$;
+		\State Set Count := 0
+		\While{True} \Comment{\textit{infinite loop}}
+		\If{receive a \textit{UpdateRequest} from MD $i \in \mathcal{I}_j$}
+		\State Send  $\theta_i^{\text{E}}$ to MD $i \in \mathcal{I}$;
+		\EndIf
+		\If {receive an experience \hspace{-0.2mm} $(\hspace{-0.2mm}\boldsymbol{s}_i(\hspace{-0.2mm}t\hspace{-0.2mm}), \boldsymbol{a}_i(\hspace{-0.2mm}t\hspace{-0.2mm}), \boldsymbol{q}_i(\hspace{-0.2mm}t\hspace{-0.2mm}), \boldsymbol{s}_i(\hspace{-0.2mm}t\hspace{-0.3mm}+\hspace{-0.3mm}\hspace{-0.2mm}1\hspace{-0.2mm}\hspace{-0.2mm})\hspace{-0.2mm})$ \\ \;\;\;\; from MD $i \in \mathcal{I}_j$}
+		\State Store $(\boldsymbol{s}_i(t'), \boldsymbol{a}_i(t'), \boldsymbol{q}_i(t'), \boldsymbol{s}_i(t'\hspace{-1mm}+1))$ in $\mathcal{M}_i$;
+		\State Get a collection of experiences  $\mathcal{I}$ from $\mathcal{M}_i$; 
+		\For{each experience $i \in \mathcal{I}$} 
+		\State Get experience $(\boldsymbol{s}_i(\hspace{-0.2mm}i\hspace{-0.2mm}), \boldsymbol{a}_i(\hspace{-0.2mm}i\hspace{-0.2mm}), \boldsymbol{q}_i(\hspace{-0.2mm}i\hspace{-0.2mm}), \boldsymbol{s}_i(\hspace{-0.2mm}i\hspace{-0.5mm}+1\hspace{-0.2mm}))$; 
+		\State Create $\hat{Q}_{i,i}^{\text{T}}$ according to   \eqref{28};
+		\EndFor
+		\State Set vector  $\hat{\mathbf{Q}}_i^{\text{T}} := (\hat{Q}^{\text{T}}_{i,i}, i \in \mathcal{I})$;
+		\State Update $\theta_i^{\text{E}}$ to minimize $L(\theta_i^{\text{E}}$, $\hat{\mathbf{Q}}_i^{\text{T}})$ in   \eqref{30};
+		\State Count := Count + 1;
+		\If {mod(Count, \textit{ReplaceThreshold}) = 0}
+		\State $\theta_i^{\text{T}}$ := $\theta_i^{\text{E}}$;
+		\EndIf
+		\EndIf
+		\EndWhile
+		
+	\end{algorithmic}
+\end{algorithm}
+
+
+\subsubsection{Training Process Algorithm at EN $j \in \mathcal{J}$}
+Upon initializing the replay buffer $\mathcal{M}_i$ with the neural networks $\textit{Net}_i^{\text{E}}$ and $\textit{Net}_i^{\text{T}}$ for each MD $i \in \mathcal{I}_j$, the EN $j \in \mathcal{J}$ waits for messages from the MDs in the set $\mathcal{I}_j$. When EN $j$ receives a $\textit{UpdateRequest}$ signal from a MD $i \in \mathcal{I}_j$, it responds by transmitting the updated parameter vector $\theta^{\text{E}}_i$, obtained from $\textit{Net}_i^{\text{E}}$, back to MD $i$. On the other side, if EN $j$ receives an experience $(\boldsymbol{s}_i(t), \boldsymbol{a}_i(t), \boldsymbol{q}_i(t), \boldsymbol{s}_i(t+1))$ from MD $i \in \mathcal{I}_j$, the EN stores this experience in the replay buffer $\mathcal{M}_i$ associated with that MD. The replay buffer operates at maximum capacity and FIFO principle.
+
+The EN randomly selects a sample collection of experiences from the replay buffer, denoted as $\mathcal{N}$. For each experience $n \in \mathcal{N}$, it calculates the value of $	\hat{Q}^{\text{T}}_{i,n}$. This value represents the QoE in experience $n$ and includes a discounted Q-value of the action anticipated to be taken in the subsequent state of experience $n$, according to the network $\textit{Net}^\text{T}_i$, given by
+\begin{alignat}{2}
+	\hat{Q}_{i,n}^{\text{T}} = \boldsymbol{q}_i(n) + \gamma Q_i^{\text{T}}(\boldsymbol{s}_i(n+1)), \tilde{\boldsymbol{a}}_n; \theta_i^{\text{T}}),
+	\label{28}  
+\end{alignat}  
+where $\tilde{\boldsymbol{a}}_n$ denotes the optimal action for the state $\boldsymbol{s}_i(n+1)$ based on its highest Q-value under $\textit{Net}_i^{\text{E}}$, as given by:
+\begin{alignat}{2}
+	\tilde{\boldsymbol{a}}_n = \text{arg} \; \max_{\boldsymbol{a} \in \mathcal{A}} \; Q_i^{\text{E}}(\boldsymbol{s}_i(n+1), \boldsymbol{a}; \theta_i^{\text{E}}).
+	\label{29}  
+\end{alignat} 
+In particular, regarding the experience $n$, the target-Q value $\hat{Q}_{i,n}^{\text{T}}$ represents the long-term QoE for the action $\boldsymbol{a}_i(n)$ under state $\boldsymbol{s}_i(n)$. This value corresponds to the QoE observed in experience $n$, as well as the approximate expected upcoming QoE. %based on $\textit{Net}_i^{\text{T}}_i$, i.e., $\gamma Q_i^{\text{T}}(\mathcal{S}_i(i+1)), \mathcal{A}_i^{\text{N}}; \theta_i^{\text{T}})$
+Based on the set $\mathcal{N}$, the EN trains the MD's neural network using previous sample experiences. Simultaneously, it updates $\theta^{\text{E}}_i$ in $\textit{Net}_i^{\text{E}}$ and computes $\hat{\mathbf{Q}}_i^{\text{T}} = (\hat{Q}^{\text{T}}_{i,n}, n \in \mathcal{N})$. The key idea of updating $\textit{Net}_i^{\text{E}}$ is minimizing the disparity in Q-values between $\textit{Net}_i^{\text{E}}$ and $\textit{Net}_i^{\text{T}}$, as indicated by the following loss function:
+\begin{alignat}{2}
+	\hspace{-2mm}L(\theta_i^{\text{E}},\hat{\mathbf{Q}}_i^{\text{T}}) = {1 \over |\mathcal{N}| }\hspace{-1mm} \sum\limits_{n \in \mathcal{N}} \bigg(Q_i^{\text{E}}(\boldsymbol{s}_i(n) , \boldsymbol{a}_i(n); \theta_i^{\text{E}} ) -   \hat{Q}^{\text{T}}_{i,n}  \bigg)^2.
+	\label{30}  
+\end{alignat}  
+Every \textit{ReplaceThreshold} iterations, the update of $\textit{Net}_i^{\text{T}}$ will involve duplicating the parameters from $\textit{Net}_i^{\text{E}}$ ($\theta_i^{T} = \theta_i^{E}$). The objective is to consistently update the network parameter $\theta_i^{T}$ in $\textit{Net}_i^{\text{T}}$, which enhances the approximation of the long-term QoE when computing the target Q-values in \eqref{28}.
+
+
+
+\section{Performance Evaluation}
+We begin by presenting the simulation setting and training configuration, followed by the evaluation of QOCO algorithm under multiple key performance metrics in comparison to benchmark methods.
+\subsection{Simulation Settings}
+As shown in the basic simulation parameter settings in Table~\ref{table}, we consider a computation task offloading scenario involving 50 MDs and 5 ENs in the MEC environment. To train the MDs' neural networks, we adopt a scenario comprising 1000 episodes. Each episode contains 100 time slots, equivalent to 0.1 seconds. QOCO algorithm performs online training, incorporating real-time experience to continually improve the offloading strategy. Specifically, we employ a batch size of 16, maintain a fixed learning rate of 0.001, and set the discount factor $\gamma$ to 0.9. The probability of random exploration gradually decreases from an initial value of 1, progressively approaching 0.01, all of which is facilitated by an RMSProp optimizer. %The convergence of the proposed algorithm is evaluated across a spectrum of neural network hyperparameters and algorithm configurations.
+
+\begin{table}
+	\renewcommand{\arraystretch}{1.2}
+	\captionsetup{name=TABLE}
+	\caption{Simulation Parameters}
+	\scalebox{1}{%
+		\begin{tabular}{ l|l } 
+			\toprule
+			\textbf{Parameter} & \textbf{Value}  \\ 
+			\midrule
+			%Number of MDs $i$  & 50  \\ 
+			%Number of EN $j$  & 5  \\ 
+			%Number of episodes $\textit{Ep.}$  & 1000  \\ 
+			%Number of time slots $T$  & 100 (with $\tau = 0.1$ second) \\ 
+			Computation capacity of MD $f_i$  & 2.6 GHz \\ 
+			Computation capacity of EN $f_j^{\text{E}}$ & 42.8 GHz  \\ 
+			Transmission capacity of MD $r_{i,j}(t)$ & 14 Mbps  \\ 
+			Task arrival rate & 250 Task/Sec  \\ 
+			Size of task $\lambda_i(t)$  & $\{\text{1.0, 1.1, \ldots , 7.0}\}$ Mbits \\ 
+			Required CPU cycles of task $\rho_i(t)$  & $\{\text{0.197,0.297,0.397}\}$G/Mbits \\ 
+			Deadline of task $ \Delta_i$  & 10 time slots (1 Sec)\\ 
+			Battery level of MD $\phi_i(t)$  & $\{\text{25, 50, 75}\}$ Percent \\ 
+			Computation power of MD $p_i^{\text{C}}$ & \text{$10^{-27}(f_i)^3$}  \\ 
+			Computation power of EN $p_j^{\text{E}}$ & 5 w  \\ 
+			Transmission power of MD $p_i^{\text{T}}$ & 2.3 w  \\ 
+			Standby power of MD $p_i^{\text{I}}$& 0.1 w  \\ 
+	\end{tabular}}
+	\label{table}
+\end{table}
+
+
+
+In these simulations, we first evaluate the QOCO algorithm for each of the influencing QoE factors, including the number of completed tasks, overall energy consumption, and average delay. Subsequently, we demonstrate the overall improvement of QOCO in terms of average QoE by comparing it against the following benchmark methods across multiple challenging scenarios.
+\begin{enumerate}
+
+\item \textbf{Local Computing (LC):} In this mode, the MDs execute all of their computation tasks using their own computing capacity to meet their deadlines.
+
+\item \textbf{Full Offloading (FO):} In the FO method, each MD dispatches all of their computation tasks to ENs and selects their offloading target randomly. It leverages their complete communication capacity and the computation resources allocated to them by the EN.
+
+\item \textbf{Random Decision (RD):} In this approach, when an MD receives a new task, it randomly makes offloading decisions and selects the offloading target (if it decides to dispatch the task). This method leverages the MD's complete computational and communication capabilities, and the computational resources allocated to it by the EN.
+
+\item \textbf{PGOA:} This method is a distributed optimization algorithm designed for delay-sensitive tasks in an environment where MDs interact strategically with multiple ENs. We selected PGOA as a benchmark method due to its similarity to our work, as described in~\cite{kwok1996dynamic}.
+
+\end{enumerate}
+
+It is worth noting that although improvements in each of the QoE factors can contribute to enhancing system performance, it is essential to consider the user's demands in each time slot. Therefore, the key difference between QOCO and other methods is that it prioritizes users' demands, enabling it to strike an appropriate balance among them, ultimately leading to a higher QoE for MDs.
+
+In the following, we will compare the performance of the QOCO algorithm with benchmark methods under two different computation workloads. This comparison will involve increasing the task arrival rate and the number of MDs.
+
+
+
+
+\subsection{Performance Comparison}
+%In this part, we first investigate the performance of the proposed DRL-based algorithm under different computation workloads in comparison to benchmark methods across several key performance metrics, including the number of completed tasks, average delay, and energy consumption in the entire system. Then, we evaluate the average QoE of users, which is a balance among these metrics with meticulous attention to users' demands.
+
+
+
+
+%Fig.~\ref{chart1} illustrates the performance comparison of methods in terms of the number of completed tasks as the task arrival rate and the number of MDs increase. In both scenarios, the DRL-based algorithm consistently outperforms the benchmark methods in terms of the number of completed tasks. 
+
+In Fig.~\ref{chart1} (a), the QOCO algorithm consistently outperforms the benchmark methods in terms of the number of completed tasks. At a lower task arrival rate (i.e., 50), most of the methods demonstrate equal proficiency in completing tasks. However, as the task arrival rate increases, the efficiency of QOCO becomes evident. Specifically, when the task arrival rate increases to 250, it achieves approximately 1900 completed tasks, whereas the other methods achieve at most about 1300 completed tasks. This demonstrates that our algorithm can increase the number of completed tasks by 73\% and 47\% compared to RD and PGOA, respectively.
+
+Similarly, in Fig.~\ref{chart1} (b), as the number of MDs increases, QOCO shows significant improvements in the number of completed tasks compared to other methods, especially when faced with a large number of MDs. When the number of MDs reaches 110, our proposed algorithm can effectively increase the number of completed tasks by at least 34\% more than other methods. This achievement is attributed to the QOCO's ability to effectively handle unknown workloads and prevent congestion at the ENs.
+ 
+ \begin{figure}[tbp]
+ 	\captionsetup{name=Fig.}
+ 	\begin{minipage}[b]{0.5\linewidth}
+ 		\centering
+ 		\includegraphics[width=\textwidth]{11} 
+ 		\textcolor{white}{i}\hspace{0.6cm}(a)
+ 	\end{minipage}
+ 	\hspace{-0.2cm}
+ 	\begin{minipage}[b]{0.5\linewidth}
+ 		\centering
+ 		\includegraphics[width=\textwidth]{12}
+ 		\textcolor{white}{i}\hspace{0.6cm}(b)
+ 	\end{minipage}
+ 	\vspace{-0.65cm}
+ 	\caption{The number of completed tasks under different computation workloads: (a) task arrival rate; (b) the number of MDs.}
+ 	\label{chart1}
+ \end{figure}
+
+\begin{figure}[tbp]
+	\captionsetup{name=Fig.}
+	\begin{minipage}[b]{0.50\linewidth}
+		\centering
+		\includegraphics[width=\textwidth]{22} 		
+		\textcolor{white}{i}\hspace{0.6cm}(a)
+	\end{minipage}
+	\hspace{-0.2cm}
+	\begin{minipage}[b]{0.50\linewidth}
+		\centering
+		\includegraphics[width=\textwidth]{23}
+		\textcolor{white}{i}\hspace{0.6cm}(b)
+	\end{minipage}
+	\vspace{-0.7cm}
+	\caption{The overall energy consumption under different computation workloads: (a) task arrival rate; (b) the number of MDs.}
+	\label{chart2}
+\end{figure}
+ 
+
+ 
+
+
+Fig.~\ref{chart2} (a) illustrates the overall energy consumption when the task arrival rate increases. At the lower task arrival rate, the total energy consumption of all methods is close to each other, and when the task arrival rate increases, the total energy consumption of each method increases differently. It can be found that the production of more computational tasks leads to a continuous increase in energy consumption until the capacity is saturated, and the energy consumption remains constant at its maximum. The QOCO algorithm takes into account the battery level of the MD in its decision-making process. At a task arrival rate of 450, QOCO effectively reduces overall energy consumption by 18\% and 15\% compared to RD and PGOA, respectively. However, it consumes more energy compared to LC and FC because they do not utilize the full capacity (LC uses the MD's computational resources, while FC utilizes the transmission link and allocated capacity from EN to MD).
+
+
+ \begin{figure}[tbp]
+	\captionsetup{name=Fig.}
+	\begin{minipage}[b]{0.50\linewidth}
+		\centering
+		\includegraphics[width=\textwidth]{33} 		
+		\textcolor{white}{i}\hspace{0.6cm}(a)
+	\end{minipage}
+	\hspace{-0.2cm}
+	\begin{minipage}[b]{0.50\linewidth}
+		\centering
+		\includegraphics[width=\textwidth]{34}
+		\textcolor{white}{i}\hspace{0.6cm}(b)
+	\end{minipage}
+	\vspace{-0.7cm}
+	\caption{The average delay under different computation workloads: (a) task arrival rate; (b) the number of MDs.}
+	\label{chart3}
+\end{figure} 
+
+
+
+In Fig.~\ref{chart2} (b), an increasing trend in overall energy consumption is observed as the number of MDs increases. With the increase in MDs, the number of resources available in the system increases, which leads to higher energy consumption in the system. The QOCO algorithm consistently outperforms the benchmark methods in overall energy consumption, especially when the number of MDs is large. Specifically, QOCO demonstrates a 27\% and 16\% reduction in overall energy consumption compared to RD and PGOA, respectively, when the number of MDs increases to 110.
+
+As shown in Fig.~\ref{chart3} (a), the QOCO algorithm maintains a lower average delay compared to other methods as the task arrival rate increases from 50 to 350. Specifically, when the task arrival rate is 200, it reduces the average delay by at least 12\% compared to other methods. However, for task arrival rates exceeding 350, QOCO may experience a higher average delay compared to some of the other methods. This can be attributed to the fact that our algorithm processes a larger number of completed tasks in the same time slot, potentially leading to an increase in average delay. In Fig.~\ref{chart3} (b), as the number of MDs increases, we observe a rising trend in the average delay. It can be inferred that an increase in computational load in the system can lead to higher queuing delays and computations at ENs. Considering QOCO's ability to schedule workloads, when the number of MDs increases from 30 to 110, it consistently maintains an average delay at least 8\% lower than the other methods.
+
+%Fig. 6 illustrates a performance comparison of methods in terms of energy consumption in the entire system, considering an increase in the task arrival rate and the number of MDs. With efficient decision-making, the DRL-based algorithm achieves lower energy consumption in both cases compared to RD and PGOA. However, it consumes more energy compared to LC and FC. This is because LC only utilizes the MD's computational resources, and FC solely utilizes the transmission link. In Fig. 6(a), when the task arrival rate is low, the energy consumption of all methods is close to each other, and as the task arrival rate increases, the energy consumption of each method also increases. It can be observed that the generation of more computational tasks leads to a continuous increase in energy consumption. When the task arrival rate increases from 0.1 to 0.9, the DRL-based algorithm increases by 20\%, while RD and PGOA increase by at least 30\%. Similarly, in Fig. 6(b), the DRL-based algorithm effectively reduces energy consumption, especially when the number of MDs is large.The DRL-based algorithm demonstrates a 15\% reduction in energy consumption compared to RD and a 30\% reduction compared to PGOA as the number of MDs increases to 110.
+
+In the following, we delve into the investigation of the overall improvement achieved by the QOCO algorithm in comparison to other methods in terms of the average QoE as the task arrival rate and the number of MDs increase. This metric signifies the average advantage created by each method for MDs, including a combination of the values of the previously evaluated metrics (task completion, delay, energy consumption) according to the demands of MDs.
+
+The average QoE comparison in Fig.~\ref{chart4} (a) indicates the superiority of the QOCO algorithm in providing MDs with a better experience. By taking into account the specific demands of MDs for each key performance metric, it consistently achieves a higher average QoE across various values of arrival task rates when compared to other methods. Specifically, when the task arrival rate is moderate (i.e., 250), QOCO increases the average QoE by 57\% and 33\% compared to RD and PGOA, respectively. In Fig.~\ref{chart4} (b), As the number of MDs increases, the potential workload on the ENs also rises, leading to a decrease in the average QoE for each method (excluding LC). It can be observed that an increase in the ENs' workload leads to a reduction in the allocated computing capacity for MDs, resulting in a decrease in the average QoE. However, QOCO effectively manages the uncertain load at the ENs. When the number of MDs increases to 90, it increases the average QoE by at least 29\% more than the other methods.
+
+ \begin{figure}[tbp]
+	\captionsetup{name=Fig.}
+	\begin{minipage}[b]{0.50\linewidth}
+		\centering
+		\includegraphics[width=\textwidth]{44} 		
+		\textcolor{white}{i}\hspace{0.6cm}(a)
+	\end{minipage}
+	\hspace{-0.2cm}
+	\begin{minipage}[b]{0.50\linewidth}
+		\centering
+		\includegraphics[width=\textwidth]{45}
+		\textcolor{white}{i}\hspace{0.6cm}(b)
+	\end{minipage}
+	\vspace{-0.7cm}
+	\caption{The average QoE under different computation workloads: (a) task arrival rate; (b) the number of MDs.}
+	\label{chart4}
+\end{figure} 
+
+
+
+\section{Conclusion}
+In this study, our focus was directed towards addressing the challenge of offloading in MEC systems, where strict task processing deadlines and energy constraints adversely impact system performance. To address this challenge, we propose the QOCO algorithm specifically designed to empower MDs to make offloading decisions without relying on knowledge about task models or other MDs' offloading decisions. The QOCO algorithm not only adapts to the uncertain dynamics of load levels at ENs but also effectively manages the ever-changing system environment. Through extensive simulations, we demonstrate that QOCO outperforms several established benchmark techniques. Specifically, it can significantly increase the average user's QoE. This advantage can lead to improvements in key performance metrics, including task completion rate, task delay, and energy consumption, according to the user's demands under different system conditions. 
+
+There are multiple directions for extend this research. A complementary approach involves extending the simplified task model by considering dependent divisible tasks that correspond to actual computational tasks. This can be achieved by incorporating a call graph~\cite{kwok1996dynamic} representation to develop relationships among task partitions. Furthermore, in order to accelerate the learning of optimal offloading policies, it is beneficial to enable MDs to take advantage of federated learning~\cite{li2020federated} techniques in the training process. This allows MDs to collectively contribute to improving the offloading model and enables continuous learning when new MDs join the network.
+
+
+
+
+
+
+
+
+%
+%
+%$\mathcal{D}^{\text{L}}_i(\boldsymbol{s}_i(t),\boldsymbol{a}_i(t)) = l_i^{\text{C}}(t) - t + 1 \,\,\, \text{or} \,\,\, \Omega$  \\
+%
+%$\mathcal{D}^{\text{O}}_i(\boldsymbol{s}_i(t),\boldsymbol{a}_i(t)) =$
+%	 $$\sum\limits_{j \in \mathcal{J}} \sum\limits_{t^{'}=t}^{T}\mathbbm{1}\big(z_{i,j}^{\text{E}}(t^{'})=z_i(t)\big) l_{i,j}^{\text{E}}(t^{'}) - t +1  \,\,\, \text{or} \,\,\, \Omega$$ 
+%
+%
+%----------------------------------\\
+%
+%$\mathcal{E}^{\text{L}}_i(\boldsymbol{s}_i(t),\boldsymbol{a}_i(t)) = E_i^{\text{L}}(t) $\\
+%
+%$\mathcal{E}^{\text{O}}_i(\boldsymbol{s}_i(t),\boldsymbol{a}_i(t)) =  \sum\limits_{t^{'}=t}^{T}\mathbbm{1}\big(z_{i,j}^{\text{E}}(t^{'}) = z_i(t)\big) E_i^{\text{O}}(t) $ \\
+%
+%----------------------------------\\
+%
+%$\mathcal{Q}_i(\boldsymbol{s}_i(t),\boldsymbol{a}_i(t)) =$\\
+%
+% $\phi_i(t) \Big(\mathcal{D}^{\text{L}}_i(t) - \mathcal{D}^{\text{O}}_i(t)\Big) + (1-\phi_i(t)) \Big(\mathcal{E}^{\text{L}}_i(t) - \mathcal{E}^{\text{O}}_i(t)\Big)$\\ 
+% 
+%----------------------------------\\ \\
+%$\mathcal{Q}_i(\boldsymbol{s}_i(t),\boldsymbol{a}_i(t)) = \mathcal{F}_i(\boldsymbol{s}_i(t),\boldsymbol{a}_i(t))  \mathcal{R}  \,\,\,- $
+%\begin{alignat}{2}
+%	 \Big(\phi_i(t) \, \mathcal{D}_i(\boldsymbol{s}_i(t),\boldsymbol{a}_i(t)) +(1-\phi_i(t)) \, \mathcal{E}_i(\boldsymbol{s}_i(t),\boldsymbol{a}_i(t))\Big).
+%	\label{57}  
+%\end{alignat}
+%
+%
+%----------------------------------\\ \\
+%
+%
+%$$ f_j^{\text{E}}$$
+%$$ f_i \over \rho_i(t)$$
+%$$\lambda_{i,j}^{\text{E}}(t)$$
+%$$\rho_i(t)$$
+%$$z_{i,j}^{\text{E}}(t)$$
+%$$z_i(t)$$
+%$$\delta_i^{\text{T}}(t)$$
+%$$ \mathcal{B}_j(t)$$
+%$$\lambda_i(t)$$
+%$$r_{i,j}(t)$$
+%
+
+
+
+
+%%% ===============================================================================
+%%% Bibliography
+%%% ===============================================================================
+
+
+
+% trigger a \newpage just before the given reference
+% number - used to balance the columns on the last page
+% adjust value as needed - may need to be readjusted if
+% the document is modified later
+%\IEEEtriggeratref{8}
+% The "triggered" command can be changed if desired:
+%\IEEEtriggercmd{\enlargethispage{-5in}}
+
+% Enable to reduce spacing between bibitems (source: https://tex.stackexchange.com/a/25774)
+% \def\IEEEbibitemsep{0pt plus .5pt}
+
+\bibliographystyle{IEEEtranN} % IEEEtranN is the natbib compatible bst file
+% argument is your BibTeX string definitions and bibliography database(s)
+\bibliography{paper}
+
+% Enfore empty line after bibliography
+\ \\
+%
+
+
+
+\end{document}

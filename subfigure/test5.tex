@@ -1,0 +1,72 @@
+\documentclass{article}
+
+\makeatletter
+%% We pretend that we are a naughty class and are \let'ting our
+%% \endfigure to the \end@float, etc.
+
+\def\thefigure{\@arabic\c@figure}
+\def\fps@figure{tbp}
+\def\ftype@figure{1}
+\def\ext@figure{lof}
+\def\fnum@figure{Fig.~\thefigure}
+\def\figure{\@float{figure}}
+\let\endfigure\end@float
+\@namedef{figure*}{\@dblfloat{figure}}
+\@namedef{endfigure*}{\end@dblfloat}
+
+\def\thetable{\@Roman\c@table}
+\def\fps@table{tbp}
+\def\ftype@table{2}
+\def\ext@table{lot}
+\def\fnum@table{TABLE~\thetable}
+\def\table{%
+  \def\@floatboxreset{\reset@font\footnotesize\@setminipage}%
+  \@float{table}}
+\let\endtable\end@float
+\@namedef{table*}{%
+  \def\@floatboxreset{\reset@font\footnotesize\@setminipage}%
+  \@dblfloat{table}}
+\@namedef{endtable*}{\end@dblfloat}
+\makeatother
+
+% Next we load the subfigure package and see if it finds the problem.
+% To check this test result, you need to see the TTY listing or check
+% the test5.log (which we save as test5B.ps).
+\usepackage[FIGTOPCAP]{subfigure}
+\setcounter{lofdepth}{2}
+
+\newcommand{\figbox}[1]{%
+  \fbox{%
+    \vbox to 1in{%
+    \vfil
+    \hbox to 2in{%
+      \hfil
+      #1%
+      \hfil}%
+    \vfil}}}
+
+\newcommand{\goodgap}{%
+  \hspace{\subfigcapskip}}
+
+\begin{document}
+\listoffigures
+\newpage
+\section{Fifth Test}
+This test checks to see if the subfigure package reacts correctly to
+the known sort of problem class.  We check that the list-of-figures
+page has the two subcaptions in addition to the main caption.  If not,
+than the nasty class has zapped us.  
+
+(We also need to check the test5.log file to insure that the problem
+was identified by the subfigure package and a warning was issued.)
+
+\begin{figure}%
+  \centering
+  \caption{Figure One.}%
+  \label{fig:first}%
+  \subfigure[One subone.\label{fig:first:A}]{\figbox{One subone}}%
+  \goodgap
+  \subfigure[One subtwo.\label{fig:first:B}]{\figbox{One subtwo}}%
+\end{figure}
+
+\end{document}
