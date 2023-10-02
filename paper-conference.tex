@@ -406,7 +406,7 @@
 
 \begin{abstract}
 In the realm of mobile edge computing (MEC), the focal point is the efficient computation task offloading problem, which plays a pivotal role in ensuring a seamless quality of experience (QoE) for users. Maintaining a high QoE is paramount in today's interconnected world, where users demand responsive and reliable services. This challenge stands as one of the most primary key factors contributing to handling dynamic load uncertainties. The decentralized determination of offloading decisions poses a challenging problem for each mobile device. In this study, we delve into computation offloading in MEC systems, where strict task processing deadlines and energy constraints can adversely affect the system performance. We formulate the computation task offloading problem as a markov decision process (MDP) to maximize the long-term user's QoE individually. We propose a QoE-oriented computation offloading (QOCO) algorithm based on deep reinforcement learning (DRL) that empowers mobile devices to make their offloading decisions without requiring knowledge of decisions made by other mobile devices. %We integrate advanced techniques, including Long Short-Term Memory (LSTM) and Dueling Double Deep Q-Network (DQN), to enhance the accuracy of QoE estimation in the algorithm. 
-Through numerical studies, we evaluate mobile devices’ QoE as well as multiple key performance metrics. When evaluating the simulation results for 50 mobile devices and 5 edge nodes, it becomes evident that the QOCO algorithm efficiently exploits the computational capacities of edge nodes. Consequently, it can bring about a significant improvement in average QoE by at least 37\%. This improvement is achieved by increasing the number of completed tasks by 14\% and reducing task delay and energy consumption by 9\% and 6\%, respectively, when compared to several benchmark methods.
+Through numerical studies, we evaluate mobile devices’ QoE as well as multiple key performance metrics. When evaluating the simulation results for 50 mobile devices and 5 edge nodes, it becomes evident that the QOCO algorithm efficiently exploits the computational capacities of edge nodes. Consequently, it can bring about a significant improvement in average QoE by at least 37\%. This improvement is achieved by increasing the number of completed tasks by 14\% and reducing task delay and energy consumption by 9\% and 6\%, respectively, when compared to an existing algorithm.
 \end{abstract}
 
 \begin{IEEEkeywords}
@@ -450,7 +450,7 @@ Our main contributions are summarized as follows:
 	
 	\item \textit{DRL-based offloading Algorithm:} To address the problem of long-term QoE maximization, we focus on task completion, task delay, and energy consumption as QoE factors, to quantify the MDs' QoE. We propose QOCO algorithm based on DRL that empowers each MD to make offloading decisions independently, without prior knowledge of the other MDs' tasks and offloading models. With a focus on the MD's battery level, our approach leverages DQN \cite{mnih2015human} and LSTM \cite{hochreiter1997long} to prioritize and strike an appropriate balance between QoE factors.
 	 
-	\item \textit{Performance Evaluation:} We conducted comprehensive experiments to evaluate QOCO's performance. The simulation results confirm that our algorithm effectively utilizes the processing capabilities of MDs and ENs, resulting in a substantial improvement in the average QoE of the system.
+	\item \textit{Performance Evaluation:} We conducted comprehensive experiments to evaluate QOCO's performance. The simulation results confirm that when compared with the potential game-based offloading algorithm (PGOA) in \cite{yang2018distributed} and several benchmark methods, our algorithm effectively utilizes the processing capabilities of MDs and ENs, resulting in a substantial improvement in the average QoE of the system.
 \end{itemize}
 
 The structure of this paper is as follows. Section II presents the system model, followed by the problem formulation in Section III. In Section IV, we present the algorithm, while Section V provides an evaluation of its performance. Finally, we conclude in Section VI.
@@ -906,7 +906,7 @@ In these simulations, we first evaluate the QOCO algorithm for each of the influ
 
 \item \textbf{Random Decision (RD):} In this approach, when an MD receives a new task, it randomly makes offloading decisions and selects the offloading target (if it decides to dispatch the task). This method leverages the MD's complete computational and communication capabilities, and the computational resources allocated to it by the EN.
 
-\item \textbf{PGOA:} This method is a distributed optimization algorithm designed for delay-sensitive tasks in an environment where MDs interact strategically with multiple ENs. We selected PGOA as a benchmark method due to its similarity to our work, as described in~\cite{kwok1996dynamic}.
+\item \textbf{PGOA:} This method is a distributed optimization algorithm designed for delay-sensitive tasks in an environment where MDs interact strategically with multiple ENs. We selected PGOA as a benchmark method due to its similarity to our work, as described in~\cite{yang2018distributed}.
 
 \end{enumerate}
 
@@ -933,13 +933,13 @@ Similarly, in Fig.~\ref{chart1} (b), as the number of MDs increases, QOCO shows 
  	\captionsetup{name=Fig.}
  	\begin{minipage}[b]{0.5\linewidth}
  		\centering
- 		\includegraphics[width=\textwidth]{11} 
+ 		\includegraphics[width=\textwidth]{111} 
  		\textcolor{white}{i}\hspace{0.6cm}(a)
  	\end{minipage}
  	\hspace{-0.2cm}
  	\begin{minipage}[b]{0.5\linewidth}
  		\centering
- 		\includegraphics[width=\textwidth]{12}
+ 		\includegraphics[width=\textwidth]{112}
  		\textcolor{white}{i}\hspace{0.6cm}(b)
  	\end{minipage}
  	\vspace{-0.65cm}
@@ -951,13 +951,13 @@ Similarly, in Fig.~\ref{chart1} (b), as the number of MDs increases, QOCO shows 
 	\captionsetup{name=Fig.}
 	\begin{minipage}[b]{0.50\linewidth}
 		\centering
-		\includegraphics[width=\textwidth]{22} 		
+		\includegraphics[width=\textwidth]{222} 		
 		\textcolor{white}{i}\hspace{0.6cm}(a)
 	\end{minipage}
 	\hspace{-0.2cm}
 	\begin{minipage}[b]{0.50\linewidth}
 		\centering
-		\includegraphics[width=\textwidth]{23}
+		\includegraphics[width=\textwidth]{223}
 		\textcolor{white}{i}\hspace{0.6cm}(b)
 	\end{minipage}
 	\vspace{-0.7cm}
@@ -969,20 +969,20 @@ Similarly, in Fig.~\ref{chart1} (b), as the number of MDs increases, QOCO shows 
  
 
 
-Fig.~\ref{chart2} (a) illustrates the overall energy consumption when the task arrival rate increases. At the lower task arrival rate, the total energy consumption of all methods is close to each other, and when the task arrival rate increases, the total energy consumption of each method increases differently. It can be found that the production of more computational tasks leads to a continuous increase in energy consumption until the capacity is saturated, and the energy consumption remains constant at its maximum. The QOCO algorithm takes into account the battery level of the MD in its decision-making process. At a task arrival rate of 450, QOCO effectively reduces overall energy consumption by 18\% and 15\% compared to RD and PGOA, respectively. However, it consumes more energy compared to LC and FC because they do not utilize the full capacity (LC uses the MD's computational resources, while FC utilizes the transmission link and allocated capacity from EN to MD).
+Fig.~\ref{chart2} (a) illustrates the overall energy consumption when the task arrival rate increases. At the lower task arrival rate, the total energy consumption of all methods is close to each other, and when the task arrival rate increases, the total energy consumption of each method increases differently. It can be found that the production of more computational tasks leads to a continuous increase in energy consumption until the capacity is saturated, and the energy consumption remains constant at its maximum. The QOCO algorithm takes into account the battery level of the MD in its decision-making process. At task arrival rate 450, QOCO effectively reduces overall energy consumption by 18\% and 15\% compared to RD and PGOA, respectively. However, it consumes more energy compared to LC and FC because they do not utilize the full capacity (LC uses the MD's computational resources, while FC utilizes the transmission link and allocated capacity from EN to MD).
 
 
  \begin{figure}[tbp]
 	\captionsetup{name=Fig.}
 	\begin{minipage}[b]{0.50\linewidth}
 		\centering
-		\includegraphics[width=\textwidth]{33} 		
+		\includegraphics[width=\textwidth]{333} 		
 		\textcolor{white}{i}\hspace{0.6cm}(a)
 	\end{minipage}
 	\hspace{-0.2cm}
 	\begin{minipage}[b]{0.50\linewidth}
 		\centering
-		\includegraphics[width=\textwidth]{34}
+		\includegraphics[width=\textwidth]{334}
 		\textcolor{white}{i}\hspace{0.6cm}(b)
 	\end{minipage}
 	\vspace{-0.7cm}
@@ -1006,13 +1006,13 @@ The average QoE comparison in Fig.~\ref{chart4} (a) indicates the superiority of
 	\captionsetup{name=Fig.}
 	\begin{minipage}[b]{0.50\linewidth}
 		\centering
-		\includegraphics[width=\textwidth]{44} 		
+		\includegraphics[width=\textwidth]{444} 		
 		\textcolor{white}{i}\hspace{0.6cm}(a)
 	\end{minipage}
 	\hspace{-0.2cm}
 	\begin{minipage}[b]{0.50\linewidth}
 		\centering
-		\includegraphics[width=\textwidth]{45}
+		\includegraphics[width=\textwidth]{445}
 		\textcolor{white}{i}\hspace{0.6cm}(b)
 	\end{minipage}
 	\vspace{-0.7cm}

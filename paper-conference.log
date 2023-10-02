@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2021) (preloaded format=pdflatex 2021.11.28)  15 SEP 2023 15:49
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2021) (preloaded format=pdflatex 2021.11.28)  2 OCT 2023 21:57
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1445,7 +1445,7 @@ Package lettrine.sty Info: Targeted height = 17.14496pt
 
 pdfTeX warning: /Library/TeX/texbin/pdflatex (file ./queue.pdf): PDF inclusion:
  found PDF version <1.7>, but at most version <1.5> allowed
-<queue.pdf, id=148, 782.925pt x 277.9986pt>
+<queue.pdf, id=149, 782.925pt x 277.9986pt>
 File: queue.pdf Graphic file (type pdf)
 <use queue.pdf>
 Package pdftex.def Info: queue.pdf  used on input line 505.
@@ -1502,7 +1502,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 677--679
 
 pdfTeX warning: /Library/TeX/texbin/pdflatex (file ./DQN.pdf): PDF inclusion: f
 ound PDF version <1.7>, but at most version <1.5> allowed
-<DQN.pdf, id=238, 902.41138pt x 529.01637pt>
+<DQN.pdf, id=240, 902.41138pt x 529.01637pt>
 File: DQN.pdf Graphic file (type pdf)
 <use DQN.pdf>
 Package pdftex.def Info: DQN.pdf  used on input line 702.
@@ -1550,36 +1550,36 @@ Package hyperref Warning: Token not allowed in a PDF string (Unicode):
                                                   
 l.931 
       ]
-<11.pdf, id=326, 455.7025pt x 436.63126pt>
-File: 11.pdf Graphic file (type pdf)
-<use 11.pdf>
-Package pdftex.def Info: 11.pdf  used on input line 936.
-(pdftex.def)             Requested size: 126.0pt x 120.72356pt.
-<12.pdf, id=327, 454.69875pt x 436.63126pt>
-File: 12.pdf Graphic file (type pdf)
-<use 12.pdf>
-Package pdftex.def Info: 12.pdf  used on input line 942.
-(pdftex.def)             Requested size: 126.0pt x 120.99005pt.
-<22.pdf, id=328, 454.69875pt x 437.635pt>
-File: 22.pdf Graphic file (type pdf)
-<use 22.pdf>
-Package pdftex.def Info: 22.pdf  used on input line 954.
-(pdftex.def)             Requested size: 126.0pt x 121.26819pt.
-<23.pdf, id=329, 454.69875pt x 437.635pt>
-File: 23.pdf Graphic file (type pdf)
-<use 23.pdf>
-Package pdftex.def Info: 23.pdf  used on input line 960.
-(pdftex.def)             Requested size: 126.0pt x 121.26819pt.
-<33.pdf, id=331, 455.7025pt x 436.63126pt>
-File: 33.pdf Graphic file (type pdf)
-<use 33.pdf>
-Package pdftex.def Info: 33.pdf  used on input line 979.
-(pdftex.def)             Requested size: 126.0pt x 120.72356pt.
-<34.pdf, id=332, 455.7025pt x 437.635pt>
-File: 34.pdf Graphic file (type pdf)
-<use 34.pdf>
-Package pdftex.def Info: 34.pdf  used on input line 985.
-(pdftex.def)             Requested size: 126.0pt x 121.00107pt.
+<111.pdf, id=327, 457.71pt x 426.59375pt>
+File: 111.pdf Graphic file (type pdf)
+<use 111.pdf>
+Package pdftex.def Info: 111.pdf  used on input line 936.
+(pdftex.def)             Requested size: 126.0pt x 117.43405pt.
+<112.pdf, id=328, 457.71pt x 426.59375pt>
+File: 112.pdf Graphic file (type pdf)
+<use 112.pdf>
+Package pdftex.def Info: 112.pdf  used on input line 942.
+(pdftex.def)             Requested size: 126.0pt x 117.43405pt.
+<222.pdf, id=329, 456.70625pt x 426.59375pt>
+File: 222.pdf Graphic file (type pdf)
+<use 222.pdf>
+Package pdftex.def Info: 222.pdf  used on input line 954.
+(pdftex.def)             Requested size: 126.0pt x 117.68791pt.
+<223.pdf, id=330, 457.71pt x 427.5975pt>
+File: 223.pdf Graphic file (type pdf)
+<use 223.pdf>
+Package pdftex.def Info: 223.pdf  used on input line 960.
+(pdftex.def)             Requested size: 126.0pt x 117.71037pt.
+<333.pdf, id=332, 457.71pt x 427.5975pt>
+File: 333.pdf Graphic file (type pdf)
+<use 333.pdf>
+Package pdftex.def Info: 333.pdf  used on input line 979.
+(pdftex.def)             Requested size: 126.0pt x 117.71037pt.
+<334.png, id=333, 457.2282pt x 426.393pt>
+File: 334.png Graphic file (type png)
+<use 334.png>
+Package pdftex.def Info: 334.png  used on input line 985.
+(pdftex.def)             Requested size: 126.0pt x 117.50241pt.
  [9pdfTeX warning (ext4): destination with the same identifier (name{figure.3})
  has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
@@ -1595,19 +1595,19 @@ l.1004
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   
 l.1004 
-        <./11.pdf> <./12.pdf> <./22.pdf> <./23.pdf> <./33.pdf> <./34.pdf>]
-<44.pdf, id=459, 454.69875pt x 437.635pt>
-File: 44.pdf Graphic file (type pdf)
-<use 44.pdf>
-Package pdftex.def Info: 44.pdf  used on input line 1009.
-(pdftex.def)             Requested size: 126.0pt x 121.26819pt.
-<45.pdf, id=460, 454.69875pt x 437.635pt>
-File: 45.pdf Graphic file (type pdf)
-<use 45.pdf>
-Package pdftex.def Info: 45.pdf  used on input line 1015.
-(pdftex.def)             Requested size: 126.0pt x 121.26819pt.
-
-(./paper-conference.bbl
+        <./111.pdf> <./112.pdf> <./222.pdf> <./223.pdf> <./333.pdf> <./334.png>
+]
+<444.pdf, id=443, 456.70625pt x 426.59375pt>
+File: 444.pdf Graphic file (type pdf)
+<use 444.pdf>
+Package pdftex.def Info: 444.pdf  used on input line 1009.
+(pdftex.def)             Requested size: 126.0pt x 117.68791pt.
+<445.pdf, id=444, 457.71pt x 426.59375pt>
+File: 445.pdf Graphic file (type pdf)
+<use 445.pdf>
+Package pdftex.def Info: 445.pdf  used on input line 1015.
+(pdftex.def)             Requested size: 126.0pt x 117.43405pt.
+ (./paper-conference.bbl
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [10pdfTeX warning (ext4): destination with the same identifier (name{figure.6}
@@ -1615,7 +1615,7 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   
 l.160 
-       <./44.pdf> <./45.pdf>])
+       <./444.pdf> <./445.pdf>])
 Underfull \hbox (badness 10000) in paragraph at lines 1105--1107
 
  []
@@ -1646,11 +1646,11 @@ Package rerunfilecheck Info: File `paper-conference.out' has not changed.
 (rerunfilecheck)             Checksum: 0D785EE36BA39D21BBE812928FA7B6FD;1754.
  ) 
 Here is how much of TeX's memory you used:
- 38291 strings out of 478994
- 734216 string characters out of 5858183
- 1198327 words of memory out of 5000000
- 54370 multiletter control sequences out of 15000+600000
- 568063 words of font info for 536 fonts, out of 8000000 for 9000
+ 38304 strings out of 478994
+ 734421 string characters out of 5858183
+ 1198428 words of memory out of 5000000
+ 54374 multiletter control sequences out of 15000+600000
+ 568320 words of font info for 540 fonts, out of 8000000 for 9000
  1144 hyphenation exceptions out of 8191
  95i,24n,117p,2703b,987s stack positions out of 5000i,500n,10000p,200000b,80000s
  </Users/iman/Library/texlive/2021/texmf-var/fonts/pk/ljfour/public/bbm/bbm10
@@ -1680,10 +1680,10 @@ xmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/local/texlive/202
 st/fonts/type1/urw/times/utmbi8a.pfb></usr/local/texlive/2021/texmf-dist/fonts/
 type1/urw/times/utmr8a.pfb></usr/local/texlive/2021/texmf-dist/fonts/type1/urw/
 times/utmri8a.pfb>
-Output written on paper-conference.pdf (11 pages, 846935 bytes).
+Output written on paper-conference.pdf (11 pages, 873691 bytes).
 PDF statistics:
- 646 PDF objects out of 1000 (max. 8388607)
- 495 compressed objects within 5 object streams
- 104 named destinations out of 1000 (max. 500000)
+ 631 PDF objects out of 1000 (max. 8388607)
+ 484 compressed objects within 5 object streams
+ 105 named destinations out of 1000 (max. 500000)
  141559 words of extra memory for PDF output out of 154059 (max. 10000000)
 
