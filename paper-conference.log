@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2021) (preloaded format=pdflatex 2021.11.28)  15 OCT 2023 23:03
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2021) (preloaded format=pdflatex 2021.11.28)  16 OCT 2023 23:55
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1540,70 +1540,75 @@ Package hyperref Warning: Token not allowed in a PDF string (Unicode):
                                                   
 l.867 \end{alignat}
                    ]
-<111.pdf, id=313, 457.71pt x 426.59375pt>
+<111.pdf, id=314, 457.71pt x 426.59375pt>
 File: 111.pdf Graphic file (type pdf)
 <use 111.pdf>
-Package pdftex.def Info: 111.pdf  used on input line 942.
+Package pdftex.def Info: 111.pdf  used on input line 943.
 (pdftex.def)             Requested size: 126.0pt x 117.43405pt.
-<112.pdf, id=314, 457.71pt x 426.59375pt>
+<112.pdf, id=315, 457.71pt x 426.59375pt>
 File: 112.pdf Graphic file (type pdf)
 <use 112.pdf>
-Package pdftex.def Info: 112.pdf  used on input line 948.
+Package pdftex.def Info: 112.pdf  used on input line 949.
 (pdftex.def)             Requested size: 126.0pt x 117.43405pt.
-<222.pdf, id=315, 456.70625pt x 426.59375pt>
+<222.pdf, id=316, 456.70625pt x 426.59375pt>
 File: 222.pdf Graphic file (type pdf)
 <use 222.pdf>
-Package pdftex.def Info: 222.pdf  used on input line 960.
+Package pdftex.def Info: 222.pdf  used on input line 961.
 (pdftex.def)             Requested size: 126.0pt x 117.68791pt.
-<223.pdf, id=316, 457.71pt x 427.5975pt>
+<223.pdf, id=317, 457.71pt x 427.5975pt>
 File: 223.pdf Graphic file (type pdf)
 <use 223.pdf>
-Package pdftex.def Info: 223.pdf  used on input line 966.
+Package pdftex.def Info: 223.pdf  used on input line 967.
 (pdftex.def)             Requested size: 126.0pt x 117.71037pt.
  [8pdfTeX warning (ext4): destination with the same identifier (name{table.1}) 
 has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   
-l.979 
-      ]
-<333.pdf, id=332, 457.71pt x 427.5975pt>
+l.980 
+      pdfTeX warning (ext4): destination with the same identifier (name{figure.
+3}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  
+l.980 
+       <./111.pdf> <./112.pdf>]
+<333.pdf, id=371, 457.71pt x 427.5975pt>
 File: 333.pdf Graphic file (type pdf)
 <use 333.pdf>
-Package pdftex.def Info: 333.pdf  used on input line 985.
+Package pdftex.def Info: 333.pdf  used on input line 986.
 (pdftex.def)             Requested size: 126.0pt x 117.71037pt.
-<334.png, id=333, 457.2282pt x 426.393pt>
+<334.png, id=372, 457.2282pt x 426.393pt>
 File: 334.png Graphic file (type png)
 <use 334.png>
-Package pdftex.def Info: 334.png  used on input line 991.
+Package pdftex.def Info: 334.png  used on input line 992.
 (pdftex.def)             Requested size: 126.0pt x 117.50241pt.
-<444.pdf, id=340, 456.70625pt x 426.59375pt>
+<444.pdf, id=379, 456.70625pt x 426.59375pt>
 File: 444.pdf Graphic file (type pdf)
 <use 444.pdf>
-Package pdftex.def Info: 444.pdf  used on input line 1015.
+Package pdftex.def Info: 444.pdf  used on input line 1019.
 (pdftex.def)             Requested size: 126.0pt x 117.68791pt.
-<445.pdf, id=341, 457.71pt x 426.59375pt>
+<445.pdf, id=380, 457.71pt x 426.59375pt>
 File: 445.pdf Graphic file (type pdf)
 <use 445.pdf>
-Package pdftex.def Info: 445.pdf  used on input line 1021.
+Package pdftex.def Info: 445.pdf  used on input line 1025.
 (pdftex.def)             Requested size: 126.0pt x 117.43405pt.
- [9pdfTeX warning (ext4): destination with the same identifier (name{figure.3})
+ [9pdfTeX warning (ext4): destination with the same identifier (name{figure.4})
  has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   
-l.1033 
-       pdfTeX warning (ext4): destination with the same identifier (name{figure
-.4}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  
-l.1033 
+l.1041 
        pdfTeX warning (ext4): destination with the same identifier (name{figure
 .5}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   
-l.1033 
-        <./111.pdf> <./112.pdf> <./222.pdf> <./223.pdf> <./333.pdf> <./334.png>
+l.1041 
+       pdfTeX warning (ext4): destination with the same identifier (name{figure
+.6}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  
+l.1041 
+        <./222.pdf> <./223.pdf> <./333.pdf> <./334.png> <./444.pdf> <./445.pdf>
 ] (./paper-conference.bbl)
-Underfull \hbox (badness 10000) in paragraph at lines 1111--1113
+Underfull \hbox (badness 10000) in paragraph at lines 1117--1119
 
  []
 
@@ -1618,14 +1623,7 @@ Before submitting the final camera ready copy, remember to:
  uses only Type 1 fonts and that every step in the generation
  process uses the appropriate paper size.
 
-[10pdfTeX warning (ext4): destination with the same identifier (name{figure.6})
- has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  
-l.1116 \end{document}
-                      <./444.pdf> <./445.pdf>] [11
-
-] (./paper-conference.aux
+[10] (./paper-conference.aux
 * soulpos - computing points - it may take a few seconds *
 \openout3 = `paper-conference.upb'.
 
@@ -1635,16 +1633,16 @@ l.1116 \end{document}
 LaTeX Warning: There were multiply-defined labels.
 
 Package rerunfilecheck Info: File `paper-conference.out' has not changed.
-(rerunfilecheck)             Checksum: 0D785EE36BA39D21BBE812928FA7B6FD;1754.
+(rerunfilecheck)             Checksum: 96F9064451FA5C02D5D70DD1BE5D110E;1751.
  ) 
 Here is how much of TeX's memory you used:
- 38207 strings out of 478994
- 732765 string characters out of 5858183
- 1197380 words of memory out of 5000000
+ 38203 strings out of 478994
+ 732722 string characters out of 5858183
+ 1192864 words of memory out of 5000000
  54307 multiletter control sequences out of 15000+600000
- 559026 words of font info for 502 fonts, out of 8000000 for 9000
+ 558987 words of font info for 501 fonts, out of 8000000 for 9000
  1144 hyphenation exceptions out of 8191
- 95i,24n,117p,2692b,824s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 95i,23n,117p,2692b,824s stack positions out of 5000i,500n,10000p,200000b,80000s
  </Users/iman/Library/texlive/2021/texmf-var/fonts/pk/ljfour/public/bbm/bbm10
 .600pk>{/usr/local/texlive/2021/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/lo
 cal/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/loc
@@ -1663,19 +1661,18 @@ ive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/texlive
 /2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive/20
 21/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/202
 1/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy5.pfb></usr/local/texlive/2021/
-texmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb></usr/local/texlive/2021/te
-xmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/texlive/2021/texm
-f-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/texlive/2021/texmf-
-dist/fonts/type1/public/amsfonts/symbols/msam10.pfb></usr/local/texlive/2021/te
-xmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/local/texlive/202
-1/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/local/texlive/2021/texmf-di
-st/fonts/type1/urw/times/utmbi8a.pfb></usr/local/texlive/2021/texmf-dist/fonts/
-type1/urw/times/utmr8a.pfb></usr/local/texlive/2021/texmf-dist/fonts/type1/urw/
-times/utmri8a.pfb>
-Output written on paper-conference.pdf (11 pages, 871420 bytes).
+texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/texlive/2021/te
+xmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/texlive/2021/texm
+f-dist/fonts/type1/public/amsfonts/symbols/msam10.pfb></usr/local/texlive/2021/
+texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/local/texlive/2
+021/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/local/texlive/2021/texmf-
+dist/fonts/type1/urw/times/utmbi8a.pfb></usr/local/texlive/2021/texmf-dist/font
+s/type1/urw/times/utmr8a.pfb></usr/local/texlive/2021/texmf-dist/fonts/type1/ur
+w/times/utmri8a.pfb>
+Output written on paper-conference.pdf (10 pages, 862868 bytes).
 PDF statistics:
- 630 PDF objects out of 1000 (max. 8388607)
- 483 compressed objects within 5 object streams
- 104 named destinations out of 1000 (max. 500000)
+ 621 PDF objects out of 1000 (max. 8388607)
+ 477 compressed objects within 5 object streams
+ 103 named destinations out of 1000 (max. 500000)
  125175 words of extra memory for PDF output out of 128383 (max. 10000000)
 
