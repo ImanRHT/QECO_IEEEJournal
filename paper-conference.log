@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2021) (preloaded format=pdflatex 2021.11.28)  16 OCT 2023 23:55
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2021) (preloaded format=pdflatex 2021.11.28)  20 OCT 2023 23:12
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1465,26 +1465,6 @@ LaTeX Font Info:    Trying to load font information for U+bbm on input line 592
 (/usr/local/texlive/2021/texmf-dist/tex/latex/bbm-macros/ubbm.fd
 File: ubbm.fd 1999/03/15 V 1.2 Font definition for bbm font - TH
 ) [4]
-Underfull \hbox (badness 10000) in paragraph at lines 664--666
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 669--672
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 675--678
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 684--686
-
- []
-
-
 
 pdfTeX warning: /Library/TeX/texbin/pdflatex (file ./DQN.pdf): PDF inclusion: f
 ound PDF version <1.7>, but at most version <1.5> allowed
@@ -1511,13 +1491,9 @@ Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 (hyperref)                removing `math shift' on input line 772.
 
-
-Underfull \vbox (badness 1158) has occurred while \output is active []
-
- [6]
 Package hyperref Info: bookmark level for unknown algorithm defaults to 0 on in
 put line 783.
-
+[6]
 Underfull \hbox (badness 10000) in paragraph at lines 808--809
 
  []
@@ -1538,8 +1514,8 @@ Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 28}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   
-l.867 \end{alignat}
-                   ]
+l.875 \subsection
+                 {Simulation Setup}]
 <111.pdf, id=314, 457.71pt x 426.59375pt>
 File: 111.pdf Graphic file (type pdf)
 <use 111.pdf>
@@ -1570,44 +1546,44 @@ l.980
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   
 l.980 
-       <./111.pdf> <./112.pdf>]
-<333.pdf, id=371, 457.71pt x 427.5975pt>
+      pdfTeX warning (ext4): destination with the same identifier (name{figure.
+4}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  
+l.980 
+       <./111.pdf> <./112.pdf> <./222.pdf> <./223.pdf>]
+<333.pdf, id=409, 457.71pt x 427.5975pt>
 File: 333.pdf Graphic file (type pdf)
 <use 333.pdf>
 Package pdftex.def Info: 333.pdf  used on input line 986.
 (pdftex.def)             Requested size: 126.0pt x 117.71037pt.
-<334.png, id=372, 457.2282pt x 426.393pt>
+<334.png, id=410, 457.2282pt x 426.393pt>
 File: 334.png Graphic file (type png)
 <use 334.png>
 Package pdftex.def Info: 334.png  used on input line 992.
 (pdftex.def)             Requested size: 126.0pt x 117.50241pt.
-<444.pdf, id=379, 456.70625pt x 426.59375pt>
+<444.pdf, id=417, 456.70625pt x 426.59375pt>
 File: 444.pdf Graphic file (type pdf)
 <use 444.pdf>
 Package pdftex.def Info: 444.pdf  used on input line 1019.
 (pdftex.def)             Requested size: 126.0pt x 117.68791pt.
-<445.pdf, id=380, 457.71pt x 426.59375pt>
+<445.pdf, id=418, 457.71pt x 426.59375pt>
 File: 445.pdf Graphic file (type pdf)
 <use 445.pdf>
 Package pdftex.def Info: 445.pdf  used on input line 1025.
 (pdftex.def)             Requested size: 126.0pt x 117.43405pt.
- [9pdfTeX warning (ext4): destination with the same identifier (name{figure.4})
+ [9pdfTeX warning (ext4): destination with the same identifier (name{figure.5})
  has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   
-l.1041 
-       pdfTeX warning (ext4): destination with the same identifier (name{figure
-.5}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  
-l.1041 
+l.1043 
        pdfTeX warning (ext4): destination with the same identifier (name{figure
 .6}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   
-l.1041 
-        <./222.pdf> <./223.pdf> <./333.pdf> <./334.png> <./444.pdf> <./445.pdf>
-] (./paper-conference.bbl)
+l.1043 
+        <./333.pdf> <./334.png> <./444.pdf> <./445.pdf>]
+(./paper-conference.bbl)
 Underfull \hbox (badness 10000) in paragraph at lines 1117--1119
 
  []
@@ -1636,11 +1612,11 @@ Package rerunfilecheck Info: File `paper-conference.out' has not changed.
 (rerunfilecheck)             Checksum: 96F9064451FA5C02D5D70DD1BE5D110E;1751.
  ) 
 Here is how much of TeX's memory you used:
- 38203 strings out of 478994
- 732722 string characters out of 5858183
- 1192864 words of memory out of 5000000
- 54307 multiletter control sequences out of 15000+600000
- 558987 words of font info for 501 fonts, out of 8000000 for 9000
+ 38186 strings out of 478994
+ 732463 string characters out of 5858183
+ 1193752 words of memory out of 5000000
+ 54301 multiletter control sequences out of 15000+600000
+ 558312 words of font info for 495 fonts, out of 8000000 for 9000
  1144 hyphenation exceptions out of 8191
  95i,23n,117p,2692b,824s stack positions out of 5000i,500n,10000p,200000b,80000s
  </Users/iman/Library/texlive/2021/texmf-var/fonts/pk/ljfour/public/bbm/bbm10
@@ -1669,10 +1645,10 @@ texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/local/texlive/2
 dist/fonts/type1/urw/times/utmbi8a.pfb></usr/local/texlive/2021/texmf-dist/font
 s/type1/urw/times/utmr8a.pfb></usr/local/texlive/2021/texmf-dist/fonts/type1/ur
 w/times/utmri8a.pfb>
-Output written on paper-conference.pdf (10 pages, 862868 bytes).
+Output written on paper-conference.pdf (10 pages, 860688 bytes).
 PDF statistics:
- 621 PDF objects out of 1000 (max. 8388607)
- 477 compressed objects within 5 object streams
- 103 named destinations out of 1000 (max. 500000)
+ 618 PDF objects out of 1000 (max. 8388607)
+ 474 compressed objects within 5 object streams
+ 101 named destinations out of 1000 (max. 500000)
  125175 words of extra memory for PDF output out of 128383 (max. 10000000)
 
