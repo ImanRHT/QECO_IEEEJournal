@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2021) (preloaded format=pdflatex 2021.11.28)  21 OCT 2023 20:35
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2021) (preloaded format=pdflatex 2021.11.28)  21 OCT 2023 21:04
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1534,12 +1534,12 @@ File: 223.pdf Graphic file (type pdf)
 <use 223.pdf>
 Package pdftex.def Info: 223.pdf  used on input line 980.
 (pdftex.def)             Requested size: 126.0pt x 117.71037pt.
-<333.pdf, id=322, 457.71pt x 427.5975pt>
+<333.pdf, id=323, 457.71pt x 427.5975pt>
 File: 333.pdf Graphic file (type pdf)
 <use 333.pdf>
 Package pdftex.def Info: 333.pdf  used on input line 992.
 (pdftex.def)             Requested size: 126.0pt x 117.71037pt.
-<334.png, id=323, 457.2282pt x 426.393pt>
+<334.png, id=324, 457.2282pt x 426.393pt>
 File: 334.png Graphic file (type png)
 <use 334.png>
 Package pdftex.def Info: 334.png  used on input line 998.
@@ -1548,40 +1548,40 @@ Package pdftex.def Info: 334.png  used on input line 998.
 has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   
-l.1005 
+l.1006 
        pdfTeX warning (ext4): destination with the same identifier (name{figure
 .3}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   
-l.1005 
+l.1006 
        pdfTeX warning (ext4): destination with the same identifier (name{figure
 .4}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   
-l.1005 
+l.1006 
         <./111.pdf> <./112.pdf> <./222.pdf> <./223.pdf>]
-<444.pdf, id=419, 456.70625pt x 426.59375pt>
+<444.pdf, id=420, 456.70625pt x 426.59375pt>
 File: 444.pdf Graphic file (type pdf)
 <use 444.pdf>
-Package pdftex.def Info: 444.pdf  used on input line 1024.
+Package pdftex.def Info: 444.pdf  used on input line 1023.
 (pdftex.def)             Requested size: 126.0pt x 117.68791pt.
-<445.pdf, id=420, 457.71pt x 426.59375pt>
+<445.pdf, id=421, 457.71pt x 426.59375pt>
 File: 445.pdf Graphic file (type pdf)
 <use 445.pdf>
-Package pdftex.def Info: 445.pdf  used on input line 1030.
+Package pdftex.def Info: 445.pdf  used on input line 1029.
 (pdftex.def)             Requested size: 126.0pt x 117.43405pt.
  [9pdfTeX warning (ext4): destination with the same identifier (name{figure.5})
  has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   
-l.1048 
+l.1047 
        pdfTeX warning (ext4): destination with the same identifier (name{figure
 .6}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   
-l.1048 
+l.1047 
         <./333.pdf> <./334.png> <./444.pdf> <./445.pdf>] (./paper.bbl)
-Underfull \hbox (badness 10000) in paragraph at lines 1122--1124
+Underfull \hbox (badness 10000) in paragraph at lines 1121--1123
 
  []
 
@@ -1641,10 +1641,10 @@ texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/local/texlive/2
 dist/fonts/type1/urw/times/utmbi8a.pfb></usr/local/texlive/2021/texmf-dist/font
 s/type1/urw/times/utmr8a.pfb></usr/local/texlive/2021/texmf-dist/fonts/type1/ur
 w/times/utmri8a.pfb>
-Output written on paper.pdf (10 pages, 861388 bytes).
+Output written on paper.pdf (10 pages, 861410 bytes).
 PDF statistics:
- 620 PDF objects out of 1000 (max. 8388607)
- 476 compressed objects within 5 object streams
+ 621 PDF objects out of 1000 (max. 8388607)
+ 477 compressed objects within 5 object streams
  101 named destinations out of 1000 (max. 500000)
  125175 words of extra memory for PDF output out of 128383 (max. 10000000)
 
