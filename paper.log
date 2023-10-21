@@ -1,9 +1,9 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2021) (preloaded format=pdflatex 2021.11.28)  21 OCT 2023 18:22
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2021) (preloaded format=pdflatex 2021.11.28)  21 OCT 2023 20:35
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
-**paper-conference.tex
-(./paper-conference.tex
+**paper.tex
+(./paper.tex
 LaTeX2e <2020-10-01> patch level 4
 L3 programming layer <2021-02-18>
 (/usr/local/texlive/2021/texmf-dist/tex/latex/IEEEtran/IEEEtran.cls
@@ -1273,7 +1273,7 @@ Document Style - pseudocode environments for use with the `algorithmicx' style
 )
 Package csquotes Info: Checking for multilingual support...
 Package csquotes Info: ... found 'babel' package.
- (./paper-conference.aux
+ (./paper.aux
 
 LaTeX Warning: Label `26' multiply defined.
 
@@ -1281,7 +1281,7 @@ LaTeX Warning: Label `26' multiply defined.
 LaTeX Warning: Label `26@cref' multiply defined.
 
 )
-\openout1 = `paper-conference.aux'.
+\openout1 = `paper.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 347.
 LaTeX Font Info:    ... okay on input line 347.
@@ -1372,9 +1372,9 @@ Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
 LaTeX Info: Redefining \ref on input line 347.
 LaTeX Info: Redefining \pageref on input line 347.
 LaTeX Info: Redefining \nameref on input line 347.
- (./paper-conference.out) (./paper-conference.out)
+ (./paper.out) (./paper.out)
 \@outlinefile=\write7
-\openout7 = `paper-conference.out'.
+\openout7 = `paper.out'.
 
 
 (/usr/local/texlive/2021/texmf-dist/tex/latex/siunitx/siunitx-abbreviations.cfg
@@ -1427,7 +1427,7 @@ Package lettrine.sty Info: Targeted height = 17.14496pt
 
 [1{/usr/local/texlive/2021/texmf-var/fonts/map/pdftex/updmap/pdftex.map}
 
-\openout3 = `paper-conference.upa'.
+\openout3 = `paper.upa'.
 
 
 ]
@@ -1471,75 +1471,78 @@ ound PDF version <1.7>, but at most version <1.5> allowed
 <DQN.pdf, id=254, 902.41138pt x 529.01637pt>
 File: DQN.pdf Graphic file (type pdf)
 <use DQN.pdf>
-Package pdftex.def Info: DQN.pdf  used on input line 762.
+Package pdftex.def Info: DQN.pdf  used on input line 763.
 (pdftex.def)             Requested size: 252.0pt x 147.72803pt.
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 784.
+(hyperref)                removing `math shift' on input line 785.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\in' on input line 784.
+(hyperref)                removing `\in' on input line 785.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 784.
+(hyperref)                removing `math shift' on input line 785.
 
 Package hyperref Info: bookmark level for unknown algorithm defaults to 0 on in
-put line 795.
-[6pdfTeX warning (ext4): destination with the same identifier (name{figure.2}) 
-has been already used, duplicate ignored
+put line 796.
+
+Underfull \vbox (badness 1178) has occurred while \output is active []
+
+ [6pdfTeX warning (ext4): destination with the same identifier (name{figure.2})
+ has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   
-l.818 
+l.819 
        <./DQN.pdf>]
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 862.
+(hyperref)                removing `math shift' on input line 863.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\in' on input line 862.
+(hyperref)                removing `\in' on input line 863.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 862.
+(hyperref)                removing `math shift' on input line 863.
 
 [7pdfTeX warning (ext4): destination with the same identifier (name{equation.4.
 28}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   
-l.887 \subsection
+l.888 \subsection
                  {Simulation Setup}]
 <111.pdf, id=316, 457.71pt x 426.59375pt>
 File: 111.pdf Graphic file (type pdf)
 <use 111.pdf>
-Package pdftex.def Info: 111.pdf  used on input line 955.
+Package pdftex.def Info: 111.pdf  used on input line 956.
 (pdftex.def)             Requested size: 126.0pt x 117.43405pt.
 <112.pdf, id=317, 457.71pt x 426.59375pt>
 File: 112.pdf Graphic file (type pdf)
 <use 112.pdf>
-Package pdftex.def Info: 112.pdf  used on input line 961.
+Package pdftex.def Info: 112.pdf  used on input line 962.
 (pdftex.def)             Requested size: 126.0pt x 117.43405pt.
 <222.pdf, id=318, 456.70625pt x 426.59375pt>
 File: 222.pdf Graphic file (type pdf)
 <use 222.pdf>
-Package pdftex.def Info: 222.pdf  used on input line 973.
+Package pdftex.def Info: 222.pdf  used on input line 974.
 (pdftex.def)             Requested size: 126.0pt x 117.68791pt.
 <223.pdf, id=319, 457.71pt x 427.5975pt>
 File: 223.pdf Graphic file (type pdf)
 <use 223.pdf>
-Package pdftex.def Info: 223.pdf  used on input line 979.
+Package pdftex.def Info: 223.pdf  used on input line 980.
 (pdftex.def)             Requested size: 126.0pt x 117.71037pt.
 <333.pdf, id=322, 457.71pt x 427.5975pt>
 File: 333.pdf Graphic file (type pdf)
 <use 333.pdf>
-Package pdftex.def Info: 333.pdf  used on input line 991.
+Package pdftex.def Info: 333.pdf  used on input line 992.
 (pdftex.def)             Requested size: 126.0pt x 117.71037pt.
 <334.png, id=323, 457.2282pt x 426.393pt>
 File: 334.png Graphic file (type png)
 <use 334.png>
-Package pdftex.def Info: 334.png  used on input line 997.
+Package pdftex.def Info: 334.png  used on input line 998.
 (pdftex.def)             Requested size: 126.0pt x 117.50241pt.
  [8pdfTeX warning (ext4): destination with the same identifier (name{table.1}) 
 has been already used, duplicate ignored
@@ -1560,26 +1563,25 @@ l.1005
 <444.pdf, id=419, 456.70625pt x 426.59375pt>
 File: 444.pdf Graphic file (type pdf)
 <use 444.pdf>
-Package pdftex.def Info: 444.pdf  used on input line 1022.
+Package pdftex.def Info: 444.pdf  used on input line 1024.
 (pdftex.def)             Requested size: 126.0pt x 117.68791pt.
 <445.pdf, id=420, 457.71pt x 426.59375pt>
 File: 445.pdf Graphic file (type pdf)
 <use 445.pdf>
-Package pdftex.def Info: 445.pdf  used on input line 1028.
+Package pdftex.def Info: 445.pdf  used on input line 1030.
 (pdftex.def)             Requested size: 126.0pt x 117.43405pt.
  [9pdfTeX warning (ext4): destination with the same identifier (name{figure.5})
  has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   
-l.1046 
+l.1048 
        pdfTeX warning (ext4): destination with the same identifier (name{figure
 .6}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   
-l.1046 
-        <./333.pdf> <./334.png> <./444.pdf> <./445.pdf>]
-(./paper-conference.bbl)
-Underfull \hbox (badness 10000) in paragraph at lines 1120--1122
+l.1048 
+        <./333.pdf> <./334.png> <./444.pdf> <./445.pdf>] (./paper.bbl)
+Underfull \hbox (badness 10000) in paragraph at lines 1122--1124
 
  []
 
@@ -1594,26 +1596,25 @@ Before submitting the final camera ready copy, remember to:
  uses only Type 1 fonts and that every step in the generation
  process uses the appropriate paper size.
 
-[10] (./paper-conference.aux
-* soulpos - computing points - it may take a few seconds *
-\openout3 = `paper-conference.upb'.
+[10] (./paper.aux * soulpos - computing points - it may take a few seconds *
+\openout3 = `paper.upb'.
 
 
-(./paper-conference.upa))
+(./paper.upa))
 
 LaTeX Warning: There were multiply-defined labels.
 
-Package rerunfilecheck Info: File `paper-conference.out' has not changed.
+Package rerunfilecheck Info: File `paper.out' has not changed.
 (rerunfilecheck)             Checksum: 96F9064451FA5C02D5D70DD1BE5D110E;1751.
  ) 
 Here is how much of TeX's memory you used:
- 38192 strings out of 478994
- 732507 string characters out of 5858183
- 1192203 words of memory out of 5000000
+ 38190 strings out of 478994
+ 732251 string characters out of 5858183
+ 1192912 words of memory out of 5000000
  54301 multiletter control sequences out of 15000+600000
- 558465 words of font info for 498 fonts, out of 8000000 for 9000
+ 558414 words of font info for 497 fonts, out of 8000000 for 9000
  1144 hyphenation exceptions out of 8191
- 95i,23n,117p,2692b,824s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 95i,23n,117p,2681b,824s stack positions out of 5000i,500n,10000p,200000b,80000s
  </Users/iman/Library/texlive/2021/texmf-var/fonts/pk/ljfour/public/bbm/bbm10
 .600pk>{/usr/local/texlive/2021/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/lo
 cal/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/loc
@@ -1640,7 +1641,7 @@ texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/local/texlive/2
 dist/fonts/type1/urw/times/utmbi8a.pfb></usr/local/texlive/2021/texmf-dist/font
 s/type1/urw/times/utmr8a.pfb></usr/local/texlive/2021/texmf-dist/fonts/type1/ur
 w/times/utmri8a.pfb>
-Output written on paper-conference.pdf (10 pages, 861398 bytes).
+Output written on paper.pdf (10 pages, 861388 bytes).
 PDF statistics:
  620 PDF objects out of 1000 (max. 8388607)
  476 compressed objects within 5 object streams

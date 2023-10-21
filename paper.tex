@@ -688,6 +688,7 @@ $\mathcal{C}_i(\boldsymbol{s}_i(t),\boldsymbol{a}_i(t)) =$
 where $\phi_i(t)$ represents the MD $i$'s battery level. When the MD is operating in performance mode, the primary focus is on minimizing task delays, thus the delay contributes more to the cost. On the other hand, when the MD switches to ultra power-saving mode, the main attention is directed toward reducing power consumption.
 
 Finally, we define $\boldsymbol{q}_i(\boldsymbol{s}_i(t),\boldsymbol{a}_i(t))$ as the QoE associated with task $z_i(t)$ given the selected action $\boldsymbol{a}_i(t)$ and the observed state $\boldsymbol{s}_i(t)$. The QoE function is defined as follows:\vspace{1.7mm}
+
 $\boldsymbol{q}_i(\boldsymbol{s}_i(t),\boldsymbol{a}_i(t)) =$
 \begin{alignat}{2}
  \hspace*{8mm}
@@ -763,7 +764,7 @@ where $\theta_i$ establishes a functional relationship that maps Q-values to pai
 	\captionsetup{name=Fig.}
 	\vspace*{-6mm}
 	\caption{The neural network of MD $i \in \mathcal{I}$, which characterize the Q-value of each action $\boldsymbol{a} \in \mathcal{A}$ under state $\boldsymbol{s}_i(t) \in \mathcal{S}$.}
-	\vspace*{-6mm}
+	\vspace*{-4.5mm}
 	\label{DQN}
 \end{figure}
 
@@ -1001,6 +1002,7 @@ Fig.~\ref{chart2} (a) and ~\ref{chart2} (b) illustrate the overall energy consum
 	\caption{The average delay under different computation workloads: (a) task arrival rate; (b) the number of MDs.}
 	\label{chart3}
 \end{figure} 
+
 In Fig.~\ref{chart2} (b), an increasing trend in overall energy consumption is observed as the number of MDs increases. With the increase in MDs, the number of resources available in the system increases, which leads to higher energy consumption in the system. The QOCO algorithm consistently outperforms the benchmark methods in overall energy consumption, especially when the number of MDs is large. Specifically, QOCO demonstrates a 27\% and 16\% reduction in overall energy consumption compared to RD and PGOA, respectively, when the number of MDs increases to 110.
 
 As shown in Fig.~\ref{chart3} (a), the QOCO algorithm maintains a lower average delay compared to other methods as the task arrival rate increases from 50 to 350. Specifically, when the task arrival rate is 200, it reduces the average delay by at least 12\% compared to other methods. However, for task arrival rates exceeding 350, QOCO may experience a higher average delay compared to some of the other methods. This can be attributed to the fact that our algorithm processes a larger number of completed tasks in the same time slot, potentially leading to an increase in average delay. In Fig.~\ref{chart3} (b), as the number of MDs increases, we observe a rising trend in the average delay. It can be inferred that an increase in computational load in the system can lead to higher queuing delays and computations at ENs. Considering QOCO's ability to schedule workloads, when the number of MDs increases from 30 to 110, it consistently maintains an average delay at least 8\% lower than the other methods.
