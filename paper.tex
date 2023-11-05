@@ -14,10 +14,23 @@
 %\documentclass[conference,a4paper]{IEEEtran}[2015/08/26]
 
 \documentclass[10pt, journal,letterpaper]{IEEEtran}
+\pdfoutput=1
+
+\usepackage{hyperref}
+\hypersetup{
+	pdfinfo={
+		Title={QOCO: A QoE-Oriented Computation Offloading Algorithm based on Deep Reinforcement Learning for Mobile Edge Computing},
+		Author={Iman Rahmati, Hamed Shah-Mansouri, Ali Movaghar},
+		Subject={IEEE Internet of Things Journal},
+		Keywords={IoT, quality of experience, deep reinforcement learning, computation task offloading, Mobile edge computing}
+	}
+}
 
 % Balance the last page
 % The pbalance package (see https://ctan.org/pkg/pbalance) "just works" (in contrast to balance.sty or other solutions)
 \usepackage{pbalance}
+
+\usepackage{amsmath}
 
 % backticks (`) are rendered as such in verbatim environments.
 % See following links for details:
@@ -38,7 +51,7 @@
 % Links behave as they should. Enables "\url{...}" for URL typesettings.
 % Allow URL breaks also at a hyphen, even though it might be confusing: Is the "-" part of the address or just a hyphen?
 % See https://tex.stackexchange.com/a/3034/9075.
-\usepackage[hyphens]{url}
+%\usepackage[hyphens]{url}
 
 % When activated, use text font as url font, not the monospaced one.
 % For all options see https://tex.stackexchange.com/a/261435/9075.
@@ -342,6 +355,38 @@
 \usepackage{algorithm}
 \usepackage{algpseudocode}
 
+\usepackage{amsmath}
+
+
+\usepackage{tikz,xcolor,hyperref}
+
+% Make Orcid icon
+\definecolor{lime}{HTML}{A6CE39}
+\DeclareRobustCommand{\orcidicon}{%
+	\begin{tikzpicture}
+		\draw[lime, fill=lime] (0,0) 
+		circle [radius=0.16] 
+		node[white] {{\fontfamily{qag}\selectfont \tiny ID}};
+		\draw[white, fill=white] (-0.0625,0.095) 
+		circle [radius=0.007];
+	\end{tikzpicture}
+	\hspace{-2mm}
+}
+
+\foreach \x in {A, ..., Z}{%
+	\expandafter\xdef\csname orcid\x\endcsname{\noexpand\href{https://orcid.org/\csname orcidauthor\x\endcsname}{\noexpand\orcidicon}}
+}
+
+% Define the ORCID iD command for each author separately. Here done for two authors.
+\newcommand{\orcidauthorA}{0009-0005-2286-9035}
+\newcommand{\orcidauthorC}{0000-0002-6803-6750}
+\newcommand{\orcidauthorB}{0000-0002-3598-0294}
+
+
+\usepackage{blindtext,graphicx}
+\usepackage[absolute]{textpos}
+\setlength{\TPHorizModule}{1cm}
+\setlength{\TPVertModule}{1cm}
 
 
 \begin{document}
@@ -359,7 +404,7 @@
 
 
 \author{\IEEEauthorblockN{
-		Iman Rahmati, Hamed Shah-Mansouri, and Ali Movaghar\\}
+		Iman Rahmati\orcidA{}, Hamed Shah-Mansouri\orcidB{}, and Ali Movaghar\orcidC{}}
 %		$^\dagger$Department of Computer Engineering, Sharif University of Technology, Tehran, Iran \\
 %		$^\ddagger$Department of Electrical Engineering, Sharif University of Technology, Tehran, Iran \\
 %		email: {\{iman.rahmati, hamedsh, movaghar\}}@sharif.edu
@@ -428,6 +473,10 @@ Mobile edge computing, computation task offloading, quality of experience, deep 
 % For peerreview papers, this IEEEtran command inserts a page break and
 % creates the second title. It will be ignored for other modes.
 \IEEEpeerreviewmaketitle
+
+\begin{textblock}{12}(2,1)
+	\noindent \small  This Paper Submitted to IEEE Internet of Things Journal, October 2023
+\end{textblock}
 
 \section{Introduction} 
 
@@ -517,22 +566,22 @@ We define two binary variables, $x_i(t)$ and $y_{i,j}(t)$ for $i \in \mathcal{I}
 
 \subsection{Communication Model}
  We consider that the tasks in the transmission queue are dispatched to the appropriate ENs via the MD wireless interface. We denote the transmission rate of MD $i$'s interface when communicating with EN $j \in \mathcal{J}$ in time $t$ as $r_{i,j}(t)$. In time slot $t \in \mathcal{T}$, if task $z_i(t)$ is assigned to the transmission queue for computation offloading, we define $l_i^{\text{T}}(t) \in \mathcal{T}$ to represent the time slot when the task is either dispatched to the EN or dropped. We also define $\delta_i^{\text{T}}(t)$ as the number of time slots that task $z_i(t)$ should wait in the queue before transmission. It should be noted that MD $i$ computes the value of $\delta_i^{\text{T}}(t)$ before making a decision. The value of $\delta_i^{\text{T}}(t)$ is computed as follows:
-\begin{alignat}{2}
+\begin{alignat}{1}
 	\delta_i^{\text{T}}(t) =\textcolor{white}{i} \left[ \textcolor{white}{i}\max\limits_{t^{'}\textcolor{white}{i} \in \textcolor{white}{i} \{0,1,\ldots,t-1\}} l_i^{\text{T}}\textcolor{white}{i}(t^{'})-t+1\textcolor{white}{i}\right]^+\textcolor{white}{i},
 	\label{1}  
 \end{alignat}
 where $[\cdot]^+ =$ max$(0, \cdot)$ and $l_i^{\text{T}}(0)=0$ for the simplicity of presentation. Note that the value of $\delta_i^{\text{T}}(t)$ only depends on $l_i^{\text{T}}(t)$ for $t' < t$. If MD $i \in \mathcal{I}$ schedules task $z_i(t)$ for dispatching in time slot $t \in \mathcal{T}$, then it will either be dispatched or dropped in time slot $l_i^{\text{T}}(t)$, which is
-\begin{alignat}{2}
+\begin{alignat}{1}
 	l_i^{\text{T}}(t) = \min \Big\{t + \delta_i^{\text{T}}(t) + \lceil{D_i^{\text{T}}(t)}\rceil - 1, t + \Delta_i(t) - 1\Big\},
 	\label{2}  
 \end{alignat}
 where $D_i^{\text{T}}(t)$ refers to the number of time slots required for the transmission of task $z_i(t)$ from MD $i \in \mathcal{I}$ to EN $j \in \mathcal{J}$. We have
-\begin{alignat}{2}
+\begin{alignat}{1}
 	D_i^{\text{T}}(t) =  \sum_{\mathcal{J}} y_{i,j}(t) {\lambda_i(t) \over r_{i,j}(t)\tau}.
 	\label{3}  
 \end{alignat}
 Let $E_i^{\text{T}}(t)$ denote the energy consumption of the transmission from MD $i \in \mathcal{I}$ to EN $j \in \mathcal{J}$. We have
-\begin{alignat}{2}
+\begin{alignat}{1}
 	E_i^{\text{T}}(t) = D_i^{\text{T}}(t)p_i^{\text{T}}(t)\tau,
 	\label{4}  
 \end{alignat}
@@ -541,18 +590,18 @@ where $p_i^{\text{T}}(t)$ represents the power consumption of the communication 
 The computation tasks can be executed either locally on the MD or on the EN. In this subsection, we provide a detailed explanation of these two cases.
 \subsubsection{Local Execution}
 We model the local execution by a queuing system consisting the computation queue and the MD processor. Let $f_i$ denote the MD $i$'s processing power (in cycle per second). When task $z_i(t)$ is assigned to the computation queue at the beginning of time slot $t \in \mathcal{T}$, we define $l_i^{\text{C}}(t) \in \mathcal{T}$ as the time slot during which task $z_i(t)$ will either be processed or dropped. If the computation queue is empty, $l_i^{\text{C}}(t) = 0$. Let $\delta_i^{\text{C}}(t)$ denote the number of remaining time slots before processing task $z_i(t)$ in the computation queue. We have:
-\begin{alignat}{2}
+\begin{alignat}{1}
 	\delta_i^{\text{C}}(t) = \left[ \max \limits_{t' \in \{0,1,\ldots,t-1\}} l_i^{\text{C}}(t')-t+1 \right]^+.
 	\label{5}  
 \end{alignat}
 %In the above relation, the operator $[z]^+ = \max{0, z}$ is defined, and the variable $l_i^{\text{C}}(0) = 0$. Specifically, the expression $\max_{t' \in {0,1,2,\ldots,t-1}} l_i^{\text{C}}(t')$ determines the time slot until which all tasks placed in the local computation queue have been completed before time slot $t$. Therefore, $\delta_i^{\text{C}}(t)$ represents the number of time slots that task $z_i(t)$ needs to wait for processing. For example, suppose task $z_i(1)$ is in the computation queue, and its processing will be completed in time slot 5. Hence, $l_i^{\text{C}}(1) = 5$, meaning that the task should remain in the queue for $\Delta^{comp}(3) = [\max{5,0}-3+1]^+ = 3$ time slots until the process is finished.
 In the equation above, the term $\max_{t' \in \{0, 1, \ldots, t-1\}} l_i^{\text{C}}(t')$ denotes the time slot at which each existing task in the computation queue, which arrived before time slot $t$, is either processed or dropped. Consequently, $\delta_i^{\text{C}}(t)$ denotes the number of time slots that task $z_i(t)$ should wait before being processed. We denote the time slot in which task $z_i(t)$ will be completely processed by $l_i^{\text{C}}(t)$ if it is assigned to the computation queue for local processing in time slot $t$. We have
-\begin{alignat}{2}
+\begin{alignat}{1}
 	l_i^{\text{C}}(t) = \min \Big\{t + \delta_i^{\text{C}}(t) + \lceil D_i^{\text{C}}(t) \rceil - 1, t + \Delta_i(t) - 1\Big\}.
 	\label{6}  
 \end{alignat}
 The task $z_i(t)$ will be immediately dropped if its processing is not completed by the end of the time slot $t + \Delta_i(t) - 1$. In addition, we introduce $D_i^{\text{C}}(t)$ as the number of time slots required to complete the processing of task $z_i(t)$ on MD $i \in \mathcal{I}$. It is given by:
-\begin{alignat}{2}
+\begin{alignat}{1}
 	D_i^{\text{C}}(t) = { \lambda_i(t)  \over  f_i  \tau /  \rho_i(t)}.
 	\label{7}  
 \end{alignat}
@@ -561,29 +610,29 @@ The task $z_i(t)$ will be immediately dropped if its processing is not completed
 
 %In particular, the processing of task $z_i(t)$ will commence at time $t + \delta_i^{\text{C}}(t)$. Therefore, the first component of the minimum operator is equal to the duration of time in which task $z_i(t)$ is completed without exceeding its deadline, denoted by $\delta_i^{\text{C}}(t)$. The second component refers to the duration of time in which task $z_i(t)$ becomes expired and discarded. As a result, $l_i^{\text{C}}(t)$ represents the time slot in which task $z_i(t)$ will be completed.
 To compute the MD's energy consumption in the time slot $t \in \mathcal{T}$, we define $E_i^{\text{L}}(t)$ as:
-\begin{alignat}{2}
+\begin{alignat}{1}
 	E_i^{\text{L}}(t) =  D_i^{\text{C}}(t) p_i^{\text{C}}  \tau, %=  { \lambda_i(t) \rho_i(t)  \over  f_i} p_i^{\text{C}},
 	\label{8}  
 \end{alignat}
 where $p_i^{\text{C}} = 10^{-27}(f_i)^3$ represents the energy consumption of MD $i$'s CPU frequency \cite{mao2016dynamic}.
 \subsubsection{Edge Execution}
 We model the edge execution by the queues associated with MDs deployed at ENs. If computation task $z_i(t')$ is dispatched to EN $j$ in time $t' < t$, we let $z_{i,j}^{\text{E}}(t)$ and $\lambda_{i,j}^{\text{E}}(t)$ (in bits) denote the unique index of the task and the size of the task in the $i^{\text{th}}$ queue at EN $j$. We define $\eta_{i,j}^{\text{E}}(t)$ (in bits) as the length of this queue at the end of time slot $t \in \mathcal{T}$. We refer to a queue as an active queue in a certain time slot if it is not empty. That being said, if at least one task is already in the queue from previous time slots or there is a task arriving at the queue, that queue is active. We define $\mathcal{B}_j(t)$ to denote the set of active queues at EN $j$ in time slot $t$.
-\begin{alignat}{2}
+\begin{alignat}{1}
 	\mathcal{B}_j(t) = \textcolor{white}{i}\Big\{i \textcolor{white}{i}\big| i \in \mathcal{I}, \lambda_{i,j}^{\text{E}}(t)>0\,\, \textcolor{white}{i}\text{or}\textcolor{white}{i} \,\, \eta_{i,j}^{\text{E}}(t-1)>0\textcolor{white}{i}\Big\}.\textcolor{white}{i}
 	\label{9}  
 \end{alignat}
 We introduce $B_j(t) \triangleq |\mathcal{B}_j(t)|$ that represents the number of active queues in EN $j \in \mathcal{J}$ in time slot $t \in \mathcal{T}$. In each time slot $t \in \mathcal{T}$, the EN's processing power is divided among its active queues using a generalized processor sharing method~\cite{parekh1993generalized}. Let variable $f_j^{\text{E}}$ (in cycles per second) represent the computational capacity of EN $j$. Therefore, EN $j$ can allocate computational capacity of $f_j^{\text{E}}/(\rho_i(t) B_j(t))$ to each MD $i \in \mathcal{B}_j(t)$ during time slot $t$. To calculate the length of the computation queue for MD $i \in \mathcal{I}$ in EN $j \in \mathcal{J}$, we define $\omega_{i,j}(t)$ (in bits) to represent the number of bits from dropped tasks in that queue at the end of time slot $t \in \mathcal{T}$. The backlog of the queue, referred to as $\eta_{i,j}^{\text{E}}(t)$ is given by:
-\begin{alignat}{2}
+\begin{alignat}{1}
 	\eta_{i,j}^{\text{E}}(t)\hspace{-0.8mm}=\hspace{-1mm}\left[\eta_{i,j}^{\text{E}}(t-1)\hspace{-0.6mm}+\hspace{-0.7mm}\lambda_{i,j}^{\text{E}}(t)\hspace{-0.7mm}-\hspace{-0.7mm}{f_j^{\text{E}}\over \rho_i(t)B_j(t)} -\omega_{i,j}(t)\right]^+\hspace{-1mm}.
 	\label{10}  
 \end{alignat}
 We also define $l_{i,j}^{\text{E}}(t) \in \mathcal{T}$ as the time slot during which the offloaded task $z_{i,j}^{\text{\text{E}}}(t)$ is either processed or dropped by EN $j$. Given the uncertain workload ahead at EN $j$, neither MD $i$ nor EN $j$ has information about $l_{i,j}^{\text{E}}(t)$ until the corresponding task $z_{i,j}^{\text{E}}(t)$ is either processed or dropped. Let $\hat{l}_{i,j}^{\text{E}}(t)$ represent the time slot at which the execution of task $z_{i,j}^{\text{E}}(t)$ starts. In mathematical terms, for $i \in \mathcal{I}$, $j \in \mathcal{J}$, and $t \in \mathcal{T}$, we have:
-\begin{alignat}{2}
+\begin{alignat}{1}
 	\hat{l}_{i,j}^{\text{E}}(t) = \max \{t, \max \limits_{t^{'} \in \{0,1,\ldots,t-1\}} l_{i,j}^{\text{E}}(t^{'})+1\},
 	\label{11}  
 \end{alignat}
 where $l_{i,j}^{\text{E}}(0) = 0$. Indeed, the initial processing time slot of task $z_{i,j}^{\text{E}}(t)$ at EN should not precede the time slot when the task was enqueued or when the previously arrived tasks were processed or dropped. Therefore, $l_{i,j}^{\text{E}}(t)$ is the time slot that satisfies the following constraints. %For $i \in \mathcal{I}$, $j \in \mathcal{J}$, and $t \in \mathcal{T}$,
-\begin{alignat}{2}
+\begin{alignat}{1}
 	\sum_{t^{'}=\hat{l}_{i,j}^{\text{E}}(t)}^{l_{i,j}^{\text{E}}(t)}{f_j^{\text{E}} \over \rho_i(t)B_j(t^{'})}\mathbbm{1}(m \in \mathcal{B}_j(t^{'}))  \geq   \lambda_{i,j}^{\text{E}}(t),
 	\label{12}  \\
 	\sum_{t^{'}=\hat{l}_{i,j}^{\text{E}}(t)}^{l_{i,j}^{\text{E}}(t)-1}{f_j^{\text{E}} \over \rho_i(t)B_j(t^{'})}\mathbbm{1}(m \in \mathcal{B}_j(t^{'})) < \lambda_{i,j}^{\text{E}}(t),
@@ -592,24 +641,24 @@ where $l_{i,j}^{\text{E}}(0) = 0$. Indeed, the initial processing time slot of t
 where $\mathbbm{1} (z \in \mathbb{Z})$ is the indicator function. In particular, the total processing capacity that EN $j$ allocates to MD $i$ from the time slot $\hat{l}_{i,j}^{\text{E}}(t)$ to the time slot $l_{i,j}^{\text{E}}(t)$ should exceed the size of task $z_{i,j}^{\text{E}}(t)$. Conversely, the total allocated processing capacity from the time slot $l_{i,j}^{\text{E}}(t)$ to the time slot $l_{i,j}^{\text{E}}(t)-1$ should be less than the task's size.
 
 Additionally, we define $D_{i,j}^{\text{E}}(t)$ to represent the quantity of processing time slots allocated to task $z_{i,j}^{\text{E}}(t)$ when executed at EN $j$. This value is given by:
-\begin{alignat}{2}
+\begin{alignat}{1}
 	D_{i,j}^{\text{E}}(t) = { \lambda_{i,j}^{\text{E}}(t) \rho_i(t) \over f_j^{\text{E}} \tau /  B_j(t)}.
 	\label{14}  
 \end{alignat}
 We also define $E_{i,j}^{\text{E}}(t)$ as the energy consumption of processing at EN $j$ in time slot $t$ by MD $i$. This can be calculated as:
-\begin{alignat}{2}
+\begin{alignat}{1}
 	E_{i,j}^{\text{E}}(t) = {D_{i,j}^{\text{E}}(t)  p_j^{\text{E}} \tau \over B_j(t)},  % = { \lambda_{i,j}^{\text{E}}(t) \rho_i(t) \over  f_j^{\text{E}}}p_j^{\text{E}} ,
 	\label{15}  
 \end{alignat}
 where $p_j^{\text{E}}$ is a constant value which denotes the energy consumption of the EN $j$'s processor when operating at full capacity. 
 
 In addition to the energy consumed by EN $j$ for task processing, we also take into account the energy consumed by the MD $i$'s user interface in the standby state while waiting for task completion at the EN $j$. We define $E_{i,j}^{\text{I}}(t)$ as the energy consumption associated with the user interface of MD $i \in \mathcal{I}$, which is given by
-\begin{alignat}{2}
+\begin{alignat}{1}
 	E_i^{\text{I}}(t) = D_{i,j}^{\text{E}}(t) p_i^{\text{I}} \tau, %= {\lambda_{i,j}^{\text{E}}(t) \rho_i(t) \over \mathcal{B}_j(t) f_j^{\text{E}}} p_i^{\text{I}},
 	\label{16}
 \end{alignat}
 where $p_i^{\text{I}}$ is the energy consumption of MD $i \in \mathcal{I}$ in the standby state. Accordingly, by combining \eqref{4}, \eqref{15} and \eqref{16}, the overall energy consumption associated with offloading task $z_i(t)$ is formulated as
-\begin{alignat}{2}
+\begin{alignat}{1}
 	E_i^{\text{O}}(t) = E_i^{\text{T}}(t) + \sum_{\mathcal{J}} E_{i,j}^{\text{E}}(t) + E_i^{\text{I}}(t).
 	\label{17}
 \end{alignat}
@@ -625,14 +674,14 @@ Based on the introduced system model, we present the computation task offloading
 
 \subsection{State Space}
 A state in our MDP represents a conceptual space that comprehensively describes the state of an MD facing the environment. We represent the MD $i$'s state in time slot $t$ as vector $\boldsymbol{s}_i(t)$ that includes the newly arrived task size, the queues information, the MD's battery level, and the workload history at the ENs. The MD observers this vector at the beginning of each time slot. The vector $\boldsymbol{s}_i(t)$ is defined as follows:
-\begin{alignat}{2}
+\begin{alignat}{1}
 \boldsymbol{s}_i(t) = \Big(\lambda_i(t), \delta_i^{\text{C}}(t), \delta_i^{\text{T}}(t), \boldsymbol{\eta}_i^{\text{E}}\hspace{-0.4mm}(\hspace{-0.4mm}t\hspace{-0.4mm}-\hspace{-0.4mm}1\hspace{-0.5mm}),\phi_i(t), \mathcal{H}(t) \Big),
 	\label{18}
 \end{alignat}
 where vector $\boldsymbol{\eta}_i^{\text{E}}(t-1) = (\eta_{i,j}^{\text{E}}(t-1))_{j \in \mathcal{J}}$ represents the queues length of MD $i$ in ENs at the previous time slot and is computed by the MD according to \eqref{10}. Let $\phi_i(t)$ denote the battery level of MD $i$ in time slot $t$. Considering the power modes of a real mobile device, $\phi_i(t)$ is derived from the discrete set $\Phi=\{\phi_1,\phi_2,\phi_3\}$, corresponding to ultra power-saving, power-saving, and performance modes, respectively.
 
 In addition, to predict future EN workloads, we define the matrix $\mathcal{H}(t)$ as historical data, indicating the number of active queues for all ENs. This data is recorded over $T^{\text{s}}$ time slots, ranging from $t\hspace{-0.4mm}-\hspace{-0.4mm}T^{\text{s}}$ to $t\hspace{-0.4mm}-\hspace{-0.4mm}1$, in $T^{\text{s}}\hspace{-0.4mm}\times \hspace{-0.4mm} J$ matrix. For EN $j$ workload history at $i^{th}$ time slot from $T^{\text{s}}-t$, we define $h_{i,j}(t)$ as:
-\begin{alignat}{2}
+\begin{alignat}{1}
 	h_{i,j}(t) = B_j(t - T^{\text{s}} + i - 1).
 	\label{19}
 \end{alignat}
@@ -653,7 +702,7 @@ We define vector $\mathcal{S}$ as the discrete and finite state space for each M
 
 \subsection{Action Space}
 The action space represents the agent's behavior and the decisions. In this context, we define $\boldsymbol{a}_i(t)$ to denote the action taken by MD $i \in \mathcal{I}$ in time slot $t \in \mathcal{T}$. These actions involve two decisions, (a) Offloading decision to determine whether or not to offload the task, and (b) Offloading target to determine the EN to send the offloaded tasks. Thus, the action of MD $i$ in time slot $t$ can be concisely expressed as the following action tuple: \vspace{-1.5mm}
-\begin{alignat}{2}
+\begin{alignat}{1}
 	\boldsymbol{a}_i(t) = (x_i(t), \boldsymbol{y}_i(t)),
 	\label{20}
 \end{alignat}
@@ -665,14 +714,14 @@ where vector $\boldsymbol{y}_i(t)=(y_{i,j}(t))_{j \in \mathcal{J}}$ represents t
 The QoE function evaluates the influence of agent's actions by taking several key performance factors into account. Given the selected action $\boldsymbol{a}_i(t)$ in the observed state $\boldsymbol{s}_i(t)$, we represent $\mathcal{D}_i(\boldsymbol{s}_i(t), \boldsymbol{a}_i(t))$ as the delay of task $z_i(t),$ which indicates the number of time slots from time slot $t$ to the time slot in which task $z_i(t)$ is processed. It is calculated by: \vspace{1.7mm}
 
 $\mathcal{D}_i(\boldsymbol{s}_i(t),\boldsymbol{a}_i(t)) = (1-x_i(t))\Big(l_i^{\text{C}}(t) - t + 1\Big)  +$
-\begin{alignat}{2}
+\begin{alignat}{1}
 	\;\;\;\; x_i(t)\bigg( \sum\limits_{\mathcal{J}} \sum\limits_{t'=t}^{T}\mathbbm{1}\big(z_{i,j}^{\text{E}}(t')=z_i(t)\big) l_{i,j}^{\text{E}}(t') - t +1\bigg),
 	\label{21}  
 \end{alignat} 
 where $\mathcal{D}_i(\boldsymbol{s}_i(t),\boldsymbol{a}_i(t))= 0$ when task $z_i(t)$ is dropped. Correspondingly, we denote the energy consumption of task $z_i(t)$ when taking action $\boldsymbol{a}_i(t)$ in the observed state $\boldsymbol{s}_i(t)$ as $\mathcal{E}_i(\boldsymbol{s}_i(t),\boldsymbol{a}_i(t))$, which is: \vspace{1.7mm}
 
 $\mathcal{E}_i(\boldsymbol{s}_i(t),\boldsymbol{a}_i(t)) = (1-x_i(t)) E_i^{\text{L}}(t)+$
-\begin{alignat}{2}
+\begin{alignat}{1}
 \hspace{1.8cm} x_i(t)\bigg( \sum\limits_{\mathcal{J}} \sum\limits_{t^{'}=t}^{T}\mathbbm{1}\big(z_{i,j}^{\text{E}}(t') = z_i(t)\big) E_i^{\text{O}}(t)  \bigg).
 	\label{22}  
 \end{alignat}
@@ -680,7 +729,7 @@ Given the delay and energy consumtion of task $z_i(t)$, we also define $\mathcal
 
 
 $\mathcal{C}_i(\boldsymbol{s}_i(t),\boldsymbol{a}_i(t)) =$
-\begin{alignat}{2}
+\begin{alignat}{1}
 \phi_i(t) \, \mathcal{D}_i(\boldsymbol{s}_i(t),\boldsymbol{a}_i(t)) +(1-\phi_i(t)) \, \mathcal{E}_i(\boldsymbol{s}_i(t),\boldsymbol{a}_i(t)),
 	\label{23}  
 \end{alignat}
@@ -689,7 +738,7 @@ where $\phi_i(t)$ represents the MD $i$'s battery level. When the MD is operatin
 Finally, we define $\boldsymbol{q}_i(\boldsymbol{s}_i(t),\boldsymbol{a}_i(t))$ as the QoE associated with task $z_i(t)$ given the selected action $\boldsymbol{a}_i(t)$ and the observed state $\boldsymbol{s}_i(t)$. The QoE function is defined as follows:\vspace{1.7mm}
 
 $\boldsymbol{q}_i(\boldsymbol{s}_i(t),\boldsymbol{a}_i(t)) =$
-\begin{alignat}{2}
+\begin{alignat}{1}
  \hspace*{8mm}
 	\begin{cases} 
 		\mathcal{R} - \mathcal{C}_i(\boldsymbol{s}_i(t),\boldsymbol{a}_i(t)) & \hspace*{-2mm} \text{if task $z_i(t)$ is processed,} \\
@@ -702,7 +751,7 @@ where $\mathcal{R} > 0$ represents a constant reward for task completion. If $z_
 
 \subsection{Problem Formulation}
 We define the task offloading policy for MD $i \in \mathcal{I}$ as a mapping from its state to its corresponding action, denoted by i.e., $\pi_i : \mathcal{S} \rightarrow \mathcal{A}$. Especially, MD $i$ determines an action $\boldsymbol{a}_i(t) \in \mathcal{A}$, according to policy $\pi_i$ given the observed environment state $\boldsymbol{s}_i(t) \in \mathcal{S}$. The MD aims to find its optimal policy $\pi_i^*$ which maximizes the long-term QoE,
-\begin{alignat}{2}
+\begin{alignat}{1}
 	\pi_i^* = \text{arg}\,\,  \max\limits_{\pi_i}  \mathbbm{E} \Bigg[ \sum\limits_{t \in \mathcal{T}}  \gamma^{t-1}\boldsymbol{q}_i(t) \Bigg| \pi_i \Bigg],
 	\label{24}  
 \end{alignat}
@@ -747,7 +796,7 @@ For an MD $i \in \mathcal{I}$, the A\&V layer and the output layer collectively 
  
 
 $Q_i(\boldsymbol{s}_i(t), \boldsymbol{a}; \theta_i) = V_i(\boldsymbol{s}_i(t);\theta_i) +$
-\begin{alignat}{2}
+\begin{alignat}{1}
 	\hspace{0.94cm} \Bigg( A_i(\boldsymbol{s}_i(t),\boldsymbol{a};\theta_i) - {1 \over |\mathcal{A}|} \sum\limits_{\boldsymbol{a}' \in \mathcal{A}}(A_i(\boldsymbol{s}_i(t),\boldsymbol{a}';\theta_i) \Bigg),
 	\label{25}  
 \end{alignat}
@@ -806,7 +855,7 @@ In detail, EN $j \in \mathcal{J}$ maintains a replay buffer denotes as $\mathcal
 
 \subsubsection{Offloading Decision Algorithm at MD $i \in \mathcal{I}$}
  We analyze a series of episodes, where $N^{\text{ep}}$ denotes the number of them. At the beginning of each episode, if MD $i \in \mathcal{I}$ receives a new task $z_i(t)$, it initializes the state $\mathcal{S}_i(1)$ and sends an $\textit{UpdateRequest}$ to EN $j_i$. After receiving the requested vector $\theta_i^{\text{E}}$ of $\textit{Net}_i^{\text{E}}$ from EN $j_i$, MD $i$ chooses the following action for task $z_i(t)$.
-\begin{alignat}{2}
+\begin{alignat}{1}
 	\hspace*{-2mm}\boldsymbol{a}_i(t) \hspace*{-0.5mm} = \hspace*{-0.5mm}
 	\begin{cases} 
 		\text{arg $\max_{\boldsymbol{a}\in \mathcal{A}}Q_i^{\text{E}}(\boldsymbol{s}_i(t), \boldsymbol{a}; \theta^{\text{E}}_i)$,} & \text{w.p. $1-\boldsymbol{\epsilon}$,} \\
@@ -862,18 +911,18 @@ Therefore, MD $i$ observes a set of QoEs $\{\boldsymbol{q}_i(t') \mid t' \in \ma
 Upon initializing the replay buffer $\mathcal{M}_i$ with the neural networks $\textit{Net}_i^{\text{E}}$ and $\textit{Net}_i^{\text{T}}$ for each MD $i \in \mathcal{I}_j$, EN $j \in \mathcal{J}$ waits for messages from the MDs in the set $\mathcal{I}_j$. When EN $j$ receives an $\textit{UpdateRequest}$ signal from an MD $i \in \mathcal{I}_j$, it responds by transmitting the updated parameter vector $\theta^{\text{E}}_i$, obtained from $\textit{Net}_i^{\text{E}}$, back to MD $i$. On the other side, if EN $j$ receives an experience $(\boldsymbol{s}_i(t), \boldsymbol{a}_i(t), \boldsymbol{q}_i(t), \boldsymbol{s}_i(t+1))$ from MD $i \in \mathcal{I}_j$, the EN stores this experience in the replay buffer $\mathcal{M}_i$ associated with that MD. %The replay buffer operates at maximum capacity and FIFO principle.
 
 The EN randomly selects a sample collection of experiences from the replay buffer, denoted as $\mathcal{N}$. For each experience $n \in \mathcal{N}$, it calculates the value of $	\hat{Q}^{\text{T}}_{i,n}$. This value represents the QoE in experience $n$ and includes a discounted Q-value of the action anticipated to be taken in the subsequent state of experience $n$, according to the network $\textit{Net}^\text{T}_i$, given by
-\begin{alignat}{2}
+\begin{alignat}{1}
 	\hat{Q}_{i,n}^{\text{T}} = \boldsymbol{q}_i(n) + \gamma Q_i^{\text{T}}(\boldsymbol{s}_i(n+1)), \tilde{\boldsymbol{a}}_n; \theta_i^{\text{T}}),
 	\label{28}  
 \end{alignat}  
 where $\tilde{\boldsymbol{a}}_n$ denotes the optimal action for the state $\boldsymbol{s}_i(n+1)$ based on its highest Q-value under $\textit{Net}_i^{\text{E}}$, as given by:
-\begin{alignat}{2}
+\begin{alignat}{1}
 	\tilde{\boldsymbol{a}}_n = \text{arg} \; \max_{\boldsymbol{a} \in \mathcal{A}} \; Q_i^{\text{E}}(\boldsymbol{s}_i(n+1), \boldsymbol{a}; \theta_i^{\text{E}}).
 	\label{29}  
 \end{alignat} 
 In particular, regarding experience $n$, the target-Q value $\hat{Q}_{i,n}^{\text{T}}$ represents the long-term QoE for action $\boldsymbol{a}_i(n)$ under state $\boldsymbol{s}_i(n)$. This value corresponds to the QoE observed in experience $n$, as well as the approximate expected upcoming QoE. %based on $\textit{Net}_i^{\text{T}}_i$, i.e., $\gamma Q_i^{\text{T}}(\mathcal{S}_i(i+1)), \mathcal{A}_i^{\text{N}}; \theta_i^{\text{T}})$
 Based on the set $\mathcal{N}$, the EN trains the MD's neural network using previous sample experiences. Simultaneously, it updates $\theta^{\text{E}}_i$ in $\textit{Net}_i^{\text{E}}$ and computes vector $\hat{\mathbf{Q}}_i^{\text{T}} = (\hat{Q}^{\text{T}}_{i,n})_{n \in \mathcal{N}}$. The key idea of updating $\textit{Net}_i^{\text{E}}$ is to minimize the disparity in Q-values between $\textit{Net}_i^{\text{E}}$ and $\textit{Net}_i^{\text{T}}$, as indicated by the following loss function:
-\begin{alignat}{2}
+\begin{alignat}{1}
 	\hspace{-2mm}L(\theta_i^{\text{E}},\hat{\mathbf{Q}}_i^{\text{T}}) = {1 \over |\mathcal{N}| }\hspace{-1mm} \sum\limits_{n \in \mathcal{N}} \bigg(Q_i^{\text{E}}(\boldsymbol{s}_i(n) , \boldsymbol{a}_i(n); \theta_i^{\text{E}} ) -   \hat{Q}^{\text{T}}_{i,n}  \bigg)^2.
 	\label{30}  
 \end{alignat}  
@@ -1071,7 +1120,7 @@ There are multiple directions for future work. A complementary approach involves
 % 
 %----------------------------------\\ \\
 %$\mathcal{Q}_i(\boldsymbol{s}_i(t),\boldsymbol{a}_i(t)) = \mathcal{F}_i(\boldsymbol{s}_i(t),\boldsymbol{a}_i(t))  \mathcal{R}  \,\,\,- $
-%\begin{alignat}{2}
+%\begin{alignat}{1}
 %	 \Big(\phi_i(t) \, \mathcal{D}_i(\boldsymbol{s}_i(t),\boldsymbol{a}_i(t)) +(1-\phi_i(t)) \, \mathcal{E}_i(\boldsymbol{s}_i(t),\boldsymbol{a}_i(t))\Big).
 %	\label{57}  
 %\end{alignat}
