@@ -25,6 +25,7 @@ I. Rahmati, H. Shahmansouri, and A. Movaghar, "[QOCO: A QoE-Oriented Computation
 	archivePrefix={arXiv},
 	primaryClass={cs.NI}
 }
+```
 
 ## About Authors
 
